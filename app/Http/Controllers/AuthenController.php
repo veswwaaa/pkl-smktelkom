@@ -35,6 +35,7 @@ class AuthenController extends Controller
         $siswa->save();
 
 
+
          $user = new User();
          $user->username = $siswa->nis;
          $user->password = Hash::make($request->password);
@@ -46,10 +47,10 @@ class AuthenController extends Controller
 
 
         $result = $user->save();
-        if($result){
-            return back()->with('success','Registered successfully.');
+        if ($result) {
+            return back()->with('success', 'Registered successfully.');
         } else {
-            return back()->with('fail','Something went wrong!');
+            return back()->with('fail', 'Something went wrong!');
         }
     }
     public function registrationDudi()
@@ -71,6 +72,7 @@ class AuthenController extends Controller
         $dudi->save();
 
 
+
          $user = new User();
          $user->username = $dudi->nama_dudi;
          $user->password = Hash::make($request->password);
@@ -82,10 +84,10 @@ class AuthenController extends Controller
 
 
         $result = $user->save();
-        if($result){
-            return back()->with('success','Registered successfully.');
+        if ($result) {
+            return back()->with('success', 'Registered successfully.');
         } else {
-            return back()->with('fail','Something went wrong.');
+            return back()->with('fail', 'Something went wrong.');
         }
     }
     public function registrationAdmin()
@@ -95,7 +97,7 @@ class AuthenController extends Controller
     public function registerUserAdmin(Request $request)
     {
         $request->validate([
-            'password'=>'required|min:8|max:12'
+            'password' => 'required|min:8|max:20'
         ]);
 
         $admin = new tb_admin();
@@ -103,7 +105,9 @@ class AuthenController extends Controller
         $admin->no_telpon = $request->no_telpon;
         $admin->alamat = $request->alamat;
 
+
         $admin->save();
+
 
 
          $user = new User();
@@ -117,12 +121,14 @@ class AuthenController extends Controller
 
 
         $result = $user->save();
-        if($result){
-            return back()->with('success','Registered successfully.');
+        if ($result) {
+            return back()->with('success', 'Registered successfully.');
         } else {
-            return back()->with('fail','Something went wrong!');
+            return back()->with('fail', 'Something went wrong!');
         }
     }
+
+
 
 
     ////Login
@@ -137,14 +143,14 @@ class AuthenController extends Controller
             'password'=>'required|min:8|max:20'
         ]);
 
-        $user = User::where('username','=',$request->username)->first();
-        if($user){
-            if(Hash::check($request->password, $user->password)){
+        $user = User::where('username', '=', $request->username)->first();
+        if ($user) {
+            if (Hash::check($request->password, $user->password)) {
                 $request->session()->put('loginId', $user->id);
                 $request->session()->put('role', $user->role);
                 return redirect('dashboard');
             } else {
-                return back()->with('fail','Password does not match!');
+                return back()->with('fail', 'Password does not match!');
             }
         } else {
             return back()->with('fail','This email is not registered.');
@@ -156,7 +162,7 @@ class AuthenController extends Controller
         // return "Welcome to your dashabord.";
         $data = null;
         $role = null;
-        if(Session::has('loginId')){
+        if (Session::has('loginId')) {
             $user = User::where('id', Session::get('loginId'))->first();
             if ($user) {
                 $role = $user->role;
@@ -185,7 +191,7 @@ class AuthenController extends Controller
     public function logout()
     {
         $data = array();
-        if(Session::has('loginId')){
+        if (Session::has('loginId')) {
             Session::pull('loginId');
             return redirect('login');
         }

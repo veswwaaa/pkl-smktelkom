@@ -33,11 +33,11 @@ class AuthenController extends Controller
         $siswa->angkatan = $request->angkatan;
         $siswa->jurusan = $request->jurusan;
         $siswa->save();
-        
+
 
          $user = new User();
          $user->username = $siswa->nis;
-         $user->password = $request->password;
+         $user->password = Hash::make($request->password);
          $user->role = 'siswa';
          $user->id_admin = null;
          $user->id_dudi =null;
@@ -59,7 +59,7 @@ class AuthenController extends Controller
     public function registerUserDudi(Request $request)
     {
          $request->validate([
-             'password'=>'required|min:8|max:12'
+             'password'=>'required|min:8|max:20'
          ]);
 
         $dudi = new tb_dudi();
@@ -69,11 +69,11 @@ class AuthenController extends Controller
         $dudi->person_in_charge = $request->person_in_charge;
 
         $dudi->save();
-        
+
 
          $user = new User();
          $user->username = $dudi->nama_dudi;
-         $user->password = $request->password;
+         $user->password = Hash::make($request->password);
          $user->role = 'dudi';
          $user->id_admin = null;
          $user->id_dudi = $dudi->id;
@@ -102,13 +102,13 @@ class AuthenController extends Controller
         $admin->nama_admin = $request->nama_admin;
         $admin->no_telpon = $request->no_telpon;
         $admin->alamat = $request->alamat;
-        
+
         $admin->save();
-        
+
 
          $user = new User();
          $user->username = $admin->nama_admin;
-         $user->password = $request->password;
+         $user->password = Hash::make($request->password);
          $user->role = 'admin';
          $user->id_admin = $admin->id;
          $user->id_dudi =null;
@@ -123,8 +123,8 @@ class AuthenController extends Controller
             return back()->with('fail','Something went wrong!');
         }
     }
-    
-    
+
+
     ////Login
     public function login()
     {
@@ -132,7 +132,7 @@ class AuthenController extends Controller
     }
     public function loginUser(Request $request)
     {
-        $request->validate([            
+        $request->validate([
             'username'=>'required',
             'password'=>'required|min:8|max:20'
         ]);
@@ -148,7 +148,7 @@ class AuthenController extends Controller
             }
         } else {
             return back()->with('fail','This email is not registered.');
-        }        
+        }
     }
     //// Dashboard
     public function dashboard()

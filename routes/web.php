@@ -7,6 +7,10 @@ use App\Http\Controllers\AuthenController;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/test-tailwind', function () {
+    return view('test-tailwind');
+});
 // Route::get('/register', function () {
 //     return view('auth.register');
 // });
@@ -24,10 +28,10 @@ Route::controller(AuthenController::class)->group(function () {
 
     //Route untuk crud dudi di admin
     Route::get('/admin/dudi', [DudiController::class,'index'])->middleware('isLoggedIn');
-    Route::post('/admin/dudi/store', [DudiController::class,'store'])->middleware('isLoggedIn');
+    Route::post('/admin/dudi', [DudiController::class,'store'])->middleware('isLoggedIn');
     Route::put('/admin/dudi/{id}', [DudiController::class,'update'])->middleware('isLoggedIn');
     Route::delete('/admin/dudi/{id}',[DudiController::class,'destroy'])->middleware('isLoggedIn');
-    
+
 
     Route::get('/logout', [AuthenController::class, 'logout']);
 });

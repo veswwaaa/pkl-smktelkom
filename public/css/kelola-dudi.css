@@ -1,0 +1,492 @@
+/* Kelola DUDI Styles */
+:root {
+    --telkom-red: #e53e3e;
+    --telkom-gray: #f5f6fa;
+    --sidebar-width: 90px;
+}
+
+body {
+    background-color: var(--telkom-gray);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Top Navbar */
+.top-navbar {
+    background: white;
+    height: 70px;
+    border-bottom: 1px solid #e9ecef;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1050;
+    padding: 0 20px;
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+}
+
+.telkom-logo {
+    width: 40px;
+    height: 40px;
+    background: var(--telkom-red);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+}
+
+.telkom-logo i {
+    color: white;
+    font-size: 20px;
+}
+
+.brand-text h5 {
+    margin: 0;
+    font-weight: bold;
+    color: #333;
+}
+
+.brand-text small {
+    color: #666;
+    font-size: 12px;
+}
+
+.navbar-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.notification-btn {
+    position: relative;
+    background: none;
+    border: none;
+    color: #666;
+    font-size: 20px;
+    padding: 8px;
+    border-radius: 50%;
+    transition: background-color 0.3s;
+}
+
+.notification-btn:hover {
+    background-color: #f8f9fa;
+}
+
+.notification-badge {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    background: var(--telkom-red);
+    color: white;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.profile-dropdown {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border-radius: 25px;
+    background: #f8f9fa;
+    border: none;
+    transition: background-color 0.3s;
+}
+
+.profile-dropdown:hover {
+    background: #e9ecef;
+}
+
+.profile-avatar {
+    width: 32px;
+    height: 32px;
+    background: #ff9800;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+}
+
+/* Left Sidebar */
+.left-sidebar {
+    position: fixed;
+    top: 70px;
+    left: 0;
+    width: var(--sidebar-width);
+    height: calc(100vh - 70px);
+    background: var(--telkom-red);
+    z-index: 1040;
+    padding: 20px 0;
+}
+
+.sidebar-menu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.sidebar-item {
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-decoration: none;
+    transition: all 0.3s;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-item:hover,
+.sidebar-item.active {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.05);
+    color: white;
+}
+
+.sidebar-item i {
+    font-size: 20px;
+}
+
+/* Main Content */
+.main-content {
+    margin-left: var(--sidebar-width);
+    margin-top: 70px;
+    padding: 30px;
+}
+
+/* Page Header */
+.page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 30px;
+    background: white;
+    padding: 20px 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+}
+
+.page-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.page-title i {
+    color: var(--telkom-red);
+    font-size: 28px;
+}
+
+.page-title h1 {
+    margin: 0;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #333;
+}
+
+.page-title p {
+    margin: 0;
+    color: #666;
+    font-size: 0.95rem;
+}
+
+.back-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background: #6c757d;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: all 0.3s;
+}
+
+.back-btn:hover {
+    background: #5a6268;
+    color: white;
+    transform: translateY(-2px);
+}
+
+/* Data Table Card */
+.data-table-card {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+    overflow: hidden;
+}
+
+.table-header {
+    background: linear-gradient(135deg, var(--telkom-red), #ff6b6b);
+    padding: 20px 30px;
+    color: white;
+}
+
+.table-header-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.table-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.table-title h5 {
+    margin: 0;
+    font-weight: 600;
+    font-size: 1.2rem;
+}
+
+.add-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.3s;
+    cursor: pointer;
+}
+
+.add-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    color: white;
+    transform: translateY(-2px);
+}
+
+/* Table Styles */
+.table-container {
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+.custom-table {
+    margin: 0;
+}
+
+.custom-table thead th {
+    background: #f8f9fa;
+    border: none;
+    font-weight: 600;
+    color: #333;
+    padding: 15px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.custom-table tbody td {
+    padding: 15px;
+    vertical-align: middle;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.custom-table tbody tr:hover {
+    background-color: #f8f9fa;
+}
+
+.status-badge {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.status-active {
+    background: #d4edda;
+    color: #155724;
+}
+
+.status-inactive {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+/* Action Buttons */
+.action-btn {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin: 0 2px;
+}
+
+.btn-edit {
+    background: #ffc107;
+    color: #212529;
+}
+
+.btn-edit:hover {
+    background: #e0a800;
+    transform: translateY(-1px);
+}
+
+.btn-delete {
+    background: #dc3545;
+    color: white;
+}
+
+.btn-delete:hover {
+    background: #c82333;
+    transform: translateY(-1px);
+}
+
+/* Modal Styles */
+.modal-content {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.modal-header {
+    border-bottom: none;
+    border-radius: 15px 15px 0 0;
+    padding: 20px 30px;
+}
+
+.modal-header.bg-primary {
+    background: linear-gradient(135deg, #007bff, #0056b3) !important;
+}
+
+.modal-header.bg-warning {
+    background: linear-gradient(135deg, #ffc107, #e0a800) !important;
+}
+
+.modal-body {
+    padding: 30px;
+}
+
+.modal-footer {
+    border-top: none;
+    padding: 20px 30px;
+}
+
+/* Form Styles */
+.form-label {
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.form-control {
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    padding: 12px 15px;
+    transition: all 0.3s;
+}
+
+.form-control:focus {
+    border-color: var(--telkom-red);
+    box-shadow: 0 0 0 0.25rem rgba(229, 62, 62, 0.25);
+}
+
+/* Alert Styles */
+.alert {
+    border: none;
+    border-radius: 10px;
+    padding: 15px 20px;
+    margin-bottom: 20px;
+}
+
+.alert-success {
+    background: linear-gradient(135deg, #d4edda, #c3e6cb);
+    color: #155724;
+    border-left: 4px solid #28a745;
+}
+
+.alert-danger {
+    background: linear-gradient(135deg, #f8d7da, #f5c6cb);
+    color: #721c24;
+    border-left: 4px solid #dc3545;
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: #666;
+}
+
+.empty-state i {
+    font-size: 4rem;
+    color: #ddd;
+    margin-bottom: 20px;
+}
+
+.empty-state h6 {
+    color: #333;
+    margin-bottom: 10px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .main-content {
+        margin-left: 0;
+        padding: 20px;
+    }
+
+    .left-sidebar {
+        transform: translateX(-100%);
+        transition: transform 0.3s;
+    }
+
+    .left-sidebar.show {
+        transform: translateX(0);
+    }
+
+    .page-header {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+
+    .table-header-content {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .table-container {
+        overflow-x: auto;
+    }
+
+    .custom-table {
+        min-width: 600px;
+    }
+}
+
+@media (max-width: 480px) {
+    .modal-body {
+        padding: 20px;
+    }
+
+    .page-title h1 {
+        font-size: 1.5rem;
+    }
+
+    .action-btn {
+        padding: 4px 8px;
+        font-size: 0.7rem;
+    }
+}

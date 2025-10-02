@@ -31,38 +31,64 @@ class DudiController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            //validasi inputan data
-            'nama_dudi' => 'required|unique:tb_users,username',
-            'nomor_telpon' => 'required',
-            'alamat' => 'required',
-            'person_in_charge' => 'required',
-            'password' => 'required|min:8|max:20',
-        ], [
-            // pesan eror form data
-            'nama_dudi.unique' => 'Nama DUDI sudah terdaftar! Gunakan nama yang berbeda.',
-        ]);
+        try {
+            $request->validate([
+                //validasi inputan data
+                'nama_dudi' => 'required|unique:tb_users,username',
+                'nomor_telpon' => 'required',
+                'alamat' => 'required',
+                'person_in_charge' => 'required',
+                'password' => 'required|min:8|max:20',
+            ], [
+                // pesan eror form data
+                'nama_dudi.unique' => 'Nama DUDI sudah terdaftar! Gunakan nama yang berbeda.',
+            ]);
 
-        //nyimpan data dudinya
-        $dudi = new tb_dudi();
-        $dudi->nama_dudi = $request->nama_dudi;
-        $dudi->nomor_telpon = $request->nomor_telpon;
-        $dudi->alamat = $request->alamat;
-        $dudi->person_in_charge = $request->person_in_charge;
-        $dudi->save();
+            //nyimpan data dudinya
+            $dudi = new tb_dudi();
+            $dudi->nama_dudi = $request->nama_dudi;
+            $dudi->nomor_telpon = $request->nomor_telpon;
+            $dudi->alamat = $request->alamat;
+            $dudi->person_in_charge = $request->person_in_charge;
+            $dudi->save();
 
-        //buat akun user untuk dudi
-        $user = new User();
-        $user->username = $dudi->nama_dudi;
-        $user->password = Hash::make($request->password);
-        $user->role = 'dudi';
-        $user->id_admin = null;
-        $user->id_dudi = $dudi->id;
-        $user->id_siswa = null;
-        $user->save();
+            //buat akun user untuk dudi
+            $user = new User();
+            $user->username = $dudi->nama_dudi;
+            $user->password = Hash::make($request->password);
+            $user->role = 'dudi';
+            $user->id_admin = null;
+            $user->id_dudi = $dudi->id;
+            $user->id_siswa = null;
+            $user->save();
 
-        return redirect('/admin/dudi')->with('success', 'DUDI baru berhasil ditambahkan!');
+            // Check if request is AJAX
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'DUDI baru berhasil ditambahkan!'
+                ]);
+            }
 
+            return redirect('/admin/dudi')->with('success', 'DUDI baru berhasil ditambahkan!');
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Validasi gagal: ' . implode(', ', $e->validator->errors()->all())
+                ], 422);
+            }
+            return redirect()->back()->withErrors($e->validator)->withInput();
+        } catch (\Exception $e) {
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Terjadi kesalahan: ' . $e->getMessage()
+                ], 500);
+            }
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 
     /**
@@ -86,31 +112,66 @@ class DudiController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $request->validate([
-            //validasi pas menginputkan datanya
-            'nama_dudi' => 'required',
-            'nomor_telpon' => 'required',
-            'alamat' => 'required',
-            'person_in_charge' => 'required',
+        try {
+            $request->validate([
+                //validasi pas menginputkan datanya
+                'nama_dudi' => 'required',
+                'nomor_telpon' => 'required',
+                'alamat' => 'required',
+                'person_in_charge' => 'required',
+            ]);
 
-        ]);
+            $dudi = tb_dudi::findOrFail($id);
+            $dudi->update([
+                'nama_dudi' => $request->nama_dudi,
+                'nomor_telpon' => $request->nomor_telpon,
+                'alamat' => $request->alamat,
+                'person_in_charge' => $request->person_in_charge,
+            ]);
 
-        $dudi = tb_dudi::findOrFail($id);
-        $dudi->update([
-            'nama_dudi' => $request->nama_dudi,
-            'nomor_telpon' => $request->nomor_telpon,
-            'alamat' => $request->alamat,
-            'person_in_charge' => $request->person_in_charge,
-        ]);
+            // 4. UPDATE USERNAME DI TB_USERS
+            $user = User::where('id_dudi', $id)->first();
+            if ($user) {
+                $user->username = $request->nama_dudi;
 
-        // 4. UPDATE USERNAME DI TB_USERS
-        $user = User::where('id_dudi', $id)->first();
-        if ($user) {
-            $user->username = $request->nama_dudi;
-            $user->save();
+                // Update password only if provided
+                if ($request->password) {
+                    $request->validate([
+                        'password' => 'min:8|max:20',
+                    ]);
+                    $user->password = Hash::make($request->password);
+                }
+
+                $user->save();
+            }
+
+            // Check if request is AJAX
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'DUDI berhasil diperbarui!'
+                ]);
+            }
+
+            return redirect('/admin/dudi')->with('success', 'DUDI berhasil diperbarui!');
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Validasi gagal: ' . implode(', ', $e->validator->errors()->all())
+                ], 422);
+            }
+            return redirect()->back()->withErrors($e->validator)->withInput();
+        } catch (\Exception $e) {
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Terjadi kesalahan: ' . $e->getMessage()
+                ], 500);
+            }
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
-
-        return redirect('/admin/dudi')->with('success', 'DUDI berhasil diperbarui!');
     }
 
     /**
@@ -118,17 +179,35 @@ class DudiController extends Controller
      */
     public function destroy(string $id)
     {
-        //cari data dudinya yang mau di hapus
+        try {
+            //cari data dudinya yang mau di hapus
+            $dudi = tb_dudi::FindOrFail($id);
 
-        $dudi = tb_dudi::FindOrFail($id);
+            //hapus user yang terkait
+            User::where('id_dudi', $id)->delete();
 
-        //hapus user yang terkait
-        User::where('id_dudi', $id)->delete();
+            //hapus data dudi
+            $dudi->delete();
 
-        //hapus data dudi
-        $dudi->delete();
+            // Check if request is AJAX
+            if (request()->ajax() || request()->wantsJson()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'DUDI berhasil dihapus!'
+                ]);
+            }
 
-        // Redirect dengan pesan success
-        return redirect('/admin/dudi')->with('success', 'DUDI berhasil dihapus!');
+            // Redirect dengan pesan success
+            return redirect('/admin/dudi')->with('success', 'DUDI berhasil dihapus!');
+
+        } catch (\Exception $e) {
+            if (request()->ajax() || request()->wantsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Terjadi kesalahan: ' . $e->getMessage()
+                ], 500);
+            }
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 }

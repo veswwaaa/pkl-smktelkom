@@ -4,90 +4,256 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Dashboard Admin</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <title>Dashboard PKL - SMK Telkom</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="{{ asset('css/dashboard-admin.css') }}" rel="stylesheet">
 </head>
 
 <body>
-    <div class="container mt-4">
-        <h1 class="text-center mb-4">Dashboard Admin</h1>
+    <!-- Top Navbar -->
+    <nav class="top-navbar d-flex align-items-center justify-content-between">
+        <!-- Logo dan Brand -->
+        <div class="navbar-brand">
+            <div class="telkom-logo">
+                <i class="fas fa-graduation-cap"></i>
+            </div>
+            <div class="brand-text">
+                <h5>Telkom</h5>
+                <small>Schools</small>
+            </div>
+        </div>
 
-        <!-- Menu Cards -->
-        <div class="row justify-content-center">
-            <div class="col-md-4 mb-3">
-                <div class="card h-100">
-                    <div class="card-body text-center">
-                        <h5>👤 Info Admin</h5>
-                        <p><strong>{{ $data->nama_admin }}</strong></p>
-                        <p>{{ $data->no_telpon }}</p>
-                        <p class="text-muted">{{ $data->alamat }}</p>
+        <!-- Right side -->
+        <div class="navbar-right">
+            <!-- Notification -->
+            <button class="notification-btn">
+                <i class="fas fa-bell"></i>
+                <span class="notification-badge">3</span>
+            </button>
+
+            <!-- Profile Dropdown -->
+            <div class="dropdown">
+                <button class="profile-dropdown" type="button" data-bs-toggle="dropdown">
+                    <div class="profile-avatar">A</div>
+                    <i class="fas fa-chevron-down text-muted"></i>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>Profile</a></li>
+                    <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>Pengaturan</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item text-danger" href="logout"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Left Sidebar -->
+    <div class="left-sidebar">
+        <div class="sidebar-menu">
+            <a href="#" class="sidebar-item active" title="Dashboard">
+                <i class="fas fa-th-large"></i>
+            </a>
+            <a href="#" class="sidebar-item" title="Menu">
+                <i class="fas fa-th"></i>
+            </a>
+            <a href="#" class="sidebar-item" title="Data Siswa">
+                <i class="fas fa-users"></i>
+            </a>
+            <a href="/admin/dudi" class="sidebar-item" title="Kelola DUDI">
+                <i class="fas fa-building"></i>
+            </a>
+            <a href="#" class="sidebar-item" title="Tasks">
+                <i class="fas fa-tasks"></i>
+            </a>
+            <a href="#" class="sidebar-item" title="Reports">
+                <i class="fas fa-chart-bar"></i>
+            </a>
+            <a href="#" class="sidebar-item" title="Upload">
+                <i class="fas fa-upload"></i>
+            </a>
+            <a href="#" class="sidebar-item" title="Share">
+                <i class="fas fa-share-alt"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Welcome Header -->
+        <div class="welcome-header">
+            <div class="d-flex justify-content-between align-items-start">
+                <div>
+                    <h1>Selamat Datang Di Dashboard PKL</h1>
+                    <p>Kelola program Praktik Kerja Lapangan SMK Telkom Banjarbaru dengan mudah dan efisien</p>
+                </div>
+                <div class="user-avatars">
+                    <div class="user-avatar avatar-orange">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="user-avatar avatar-green">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="user-avatar avatar-gray">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="user-avatar avatar-blue">
+                        <i class="fas fa-user"></i>
                     </div>
                 </div>
             </div>
-            <div class="col-md-4 mb-3">
-                <div class="card h-100" onclick="toggleSidebar()" style="cursor: pointer; border: 2px solid #007bff;">
-                    <div class="card-body text-center">
-                        <h5>🏢 Kelola DUDI</h5>
-                        <p>Manajemen data DUDI</p>
-                        <small class="text-primary">Klik untuk membuka menu</small>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="stats-row">
+            <!-- Total Siswa -->
+            <div class="stat-card border-red">
+                <div class="stat-icon icon-red">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="stat-number">2</div>
+                <div class="stat-label">Total Siswa</div>
+                <div class="stat-change positive">+12 bulan dari lalu</div>
+                <i class="fas fa-chevron-right stat-arrow"></i>
+            </div>
+
+            <!-- Total DUDI -->
+            <div class="stat-card border-green">
+                <div class="stat-icon icon-green">
+                    <i class="fas fa-building"></i>
+                </div>
+                <div class="stat-number">2</div>
+                <div class="stat-label">Total DUDI</div>
+                <div class="stat-change positive">+5 mitra baru</div>
+                <i class="fas fa-chevron-right stat-arrow"></i>
+            </div>
+
+            <!-- Siswa Ditempatkan -->
+            <div class="stat-card border-blue">
+                <div class="stat-icon icon-blue">
+                    <i class="fas fa-user-check"></i>
+                </div>
+                <div class="stat-number">187</div>
+                <div class="stat-label">Siswa Ditempatkan</div>
+                <div class="stat-change positive">93.5% dari total</div>
+                <i class="fas fa-chevron-right stat-arrow"></i>
+            </div>
+
+            <!-- Menunggu Penempatan -->
+            <div class="stat-card border-orange">
+                <div class="stat-icon icon-orange">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <div class="stat-number">32</div>
+                <div class="stat-label">Menunggu Penempatan</div>
+                <div class="stat-change negative">perlu tindak lanjut</div>
+                <i class="fas fa-chevron-right stat-arrow"></i>
+            </div>
+        </div>
+
+        <!-- Content Row -->
+        <div class="content-row">
+            <!-- Activities Section -->
+            <div class="activities-card">
+                <div class="activities-header">
+                    <div class="activities-title">
+                        <i class="fas fa-calendar-alt"></i>
+                        <h5>Aktivitas Terkini</h5>
+                    </div>
+                    <span class="activities-subtitle">Kegiatan terbaru dalam sistem PKL</span>
+                </div>
+
+                <div class="activity-item">
+                    <div class="activity-dot blue"></div>
+                    <div class="activity-content">
+                        <h6>Production</h6>
+                        <p>Pembuatan web</p>
+                        <span class="activity-time">39 minutes ago</span>
+                    </div>
+                </div>
+
+                <div class="activity-item">
+                    <div class="activity-dot green"></div>
+                    <div class="activity-content">
+                        <h6>DUDI Baru Terdaftar</h6>
+                        <p>Mitra industri baru pt ankangPanoJaya 88 telah terdaftar dalam sistem</p>
+                        <span class="activity-time">52 minutes ago</span>
                     </div>
                 </div>
             </div>
-            <div class="col-md-4 mb-3">
-                <div class="card h-100">
-                    <div class="card-body text-center">
-                        <h5>🚪 Logout</h5>
-                        <p>Keluar dari sistem</p>
-                        <a href="logout" class="btn btn-danger">Keluar</a>
+
+            <!-- Right Sidebar -->
+            <div class="right-sidebar">
+                <!-- Calendar -->
+                <div class="calendar-card">
+                    <div class="calendar-header">
+                        <i class="fas fa-calendar text-primary"></i>
+                        <h6>Kalender</h6>
+                    </div>
+                    <div class="calendar-widget">
+                        <iframe src="https://calendar.google.com/calendar/embed?height=300&wkst=1&bgcolor=%23ffffff&ctz=Asia%2FMakassar&src=id.indonesian%23holiday%40group.v.calendar.google.com&color=%23039BE5&showTitle=0&showCalendars=0&showTabs=0&showPrint=0&showDate=1&showNav=1"
+                                class="calendar-iframe"
+                                frameborder="0"
+                                scrolling="no">
+                        </iframe>
+                    </div>
+                </div>
+
+                <!-- Notes & Agenda -->
+                <div class="notes-card">
+                    <div class="notes-header">
+                        <i class="fas fa-sticky-note text-warning"></i>
+                        <h6>Notes & Agenda</h6>
+                    </div>
+
+                    <div class="note-item">
+                        <h6>Rapat Koordinasi PKL</h6>
+                        <p>Rapat dengan pihak DUDI terkait evaluasi siswa PKL - 15:00 WIB</p>
+                    </div>
+
+                    <div class="note-item">
+                        <h6>Deadline Laporan</h6>
+                        <p>Pengumpulan laporan akhir PKL siswa kelas XII - 3 hari lagi</p>
+                    </div>
+
+                    <div class="note-item">
+                        <h6>Kunjungan Industri</h6>
+                        <p>Survey tempat PKL baru di kawasan industri Banjarbaru</p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Sidebar -->
-    <div class="card position-fixed top-50 start-0 translate-middle-y" id="sidebar"
-        style="display: none; width: 250px; z-index: 1000; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
-        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-            <h5 class="mb-0">📋 Menu Admin</h5>
-            <button onclick="toggleSidebar()" class="btn btn-sm btn-outline-light">✖</button>
-        </div>
-        <div class="card-body p-0">
-            <div class="list-group list-group-flush">
-                <a href="/admin/dudi" class="list-group-item list-group-item-action">
-                    🏢 Kelola DUDI
-                </a>
-                <a href="#siswa" class="list-group-item list-group-item-action">
-                    👥 Kelola Siswa
-                </a>
-                <a href="#laporan" class="list-group-item list-group-item-action">
-                    📄 Laporan PKL
-                </a>
-                <a href="#pengaturan" class="list-group-item list-group-item-action">
-                    ⚙️ Pengaturan
-                </a>
-                <hr class="my-0">
-                <a href="logout" class="list-group-item list-group-item-action text-danger">
-                    🚪 Logout
-                </a>
-            </div>
-        </div>
-    </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous">
-    </script>
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        // Sidebar interactions
+        document.querySelectorAll('.sidebar-item').forEach(item => {
+            item.addEventListener('click', function(e) {
+                document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Card hover effects
+        document.querySelectorAll('.stat-card').forEach(card => {
+            card.addEventListener('click', function() {
+                console.log('Card clicked:', this.querySelector('.stat-label').textContent);
+            });
+        });
+
+        // Mobile sidebar toggle (for future use)
         function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            if (sidebar.style.display === 'none' || sidebar.style.display === '') {
-                sidebar.style.display = 'block';
-            } else {
-                sidebar.style.display = 'none';
-            }
+            const sidebar = document.querySelector('.left-sidebar');
+            sidebar.classList.toggle('show');
         }
+
+        // Responsive behavior
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 768) {
+                document.querySelector('.left-sidebar').classList.remove('show');
+            }
+        });
     </script>
 </body>
 

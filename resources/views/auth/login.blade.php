@@ -32,7 +32,6 @@
                 @endif
 
                 <label for="username">Username</label>
-                <h1>tessss</h1>
                 <input type="text" id="username" name="username" placeholder="Masukkan Username" />
                 <span class="text-danger">
                     @error('username')

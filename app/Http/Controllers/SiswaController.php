@@ -147,11 +147,27 @@ class SiswaController extends Controller
             $siswa->update();
 
 
-            //update juga usernamenya untuk di tb_users jika nis nya di ubah
+            //update juga usernamenya dan passwordnya di tb_users jika nis nya di ubah
             $user = User::where('id_siswa', $id)->first();
             if ($user && $user->username != $request->nis) {
-                $user->username = $request->nis;
+                $oldNis = $user->username;
+                $newNis = $request->nis;
+
+                // Update username
+                $user->username = $newNis;
+
+                // Update password juga dengan format dummy@NIS_BARU
+                $newPassword = 'dummy@' . $newNis;
+                $user->password = Hash::make($newPassword);
+
                 $user->save();
+
+                // Log perubahan NIS & Password
+                logActivity(
+                    'update',
+                    'NIS & Password Diperbarui',
+                    "NIS siswa {$siswa->nama} diubah dari {$oldNis} menjadi {$newNis}. Password otomatis diperbarui."
+                );
             }
 
 

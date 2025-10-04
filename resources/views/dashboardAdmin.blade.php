@@ -41,8 +41,11 @@
                 <ul class="dropdown-menu dropdown-menu-end">
                     <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>Profile</a></li>
                     <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>Pengaturan</a></li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item text-danger" href="logout"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li><a class="dropdown-item text-danger" href="logout"><i
+                                class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
                 </ul>
             </div>
         </div>
@@ -54,14 +57,14 @@
             <a href="#" class="sidebar-item active" title="Dashboard">
                 <i class="fas fa-th-large"></i>
             </a>
-            <a href="#" class="sidebar-item" title="Menu">
-                <i class="fas fa-th"></i>
-            </a>
-            <a href="#" class="sidebar-item" title="Data Siswa">
-                <i class="fas fa-users"></i>
-            </a>
             <a href="/admin/dudi" class="sidebar-item" title="Kelola DUDI">
                 <i class="fas fa-building"></i>
+            </a>
+             <a href="/admin/siswa" class="sidebar-item" title="kelola Siswa">
+                <i class="fas fa-users"></i>
+            </a>
+            <a href="#" class="sidebar-item" title="Menu">
+                <i class="fas fa-th"></i>
             </a>
             <a href="#" class="sidebar-item" title="Tasks">
                 <i class="fas fa-tasks"></i>
@@ -160,26 +163,43 @@
                         <i class="fas fa-calendar-alt"></i>
                         <h5>Aktivitas Terkini</h5>
                     </div>
-                    <span class="activities-subtitle">Kegiatan terbaru dalam sistem PKL</span>
+                    <span class="activities-subtitle">Kegiatan terbaru dalam sistem PKL (Hari Ini)</span>
                 </div>
 
-                <div class="activity-item">
-                    <div class="activity-dot blue"></div>
-                    <div class="activity-content">
-                        <h6>Production</h6>
-                        <p>Pembuatan web</p>
-                        <span class="activity-time">39 minutes ago</span>
+                @forelse($activities as $activity)
+                    <div class="activity-item">
+                        @php
+                            $dotColor = match ($activity->type) {
+                                'login' => 'blue',
+                                'create' => 'green',
+                                'update' => 'orange',
+                                'delete' => 'red',
+                                'success' => 'green',
+                                'warning' => 'orange',
+                                'info' => 'blue',
+                                default => 'gray',
+                            };
+                        @endphp
+                        <div class="activity-dot {{ $dotColor }}"></div>
+                        <div class="activity-content">
+                            <h6>{{ $activity->title }}</h6>
+                            <p>{{ $activity->description }}</p>
+                            <span class="activity-time">
+                                <i class="fas fa-user me-1"></i>{{ $activity->username }} •
+                                {{ $activity->created_at->diffForHumans() }}
+                            </span>
+                        </div>
                     </div>
-                </div>
-
-                <div class="activity-item">
-                    <div class="activity-dot green"></div>
-                    <div class="activity-content">
-                        <h6>DUDI Baru Terdaftar</h6>
-                        <p>Mitra industri baru pt ankangPanoJaya 88 telah terdaftar dalam sistem</p>
-                        <span class="activity-time">52 minutes ago</span>
+                @empty
+                    <div class="activity-item">
+                        <div class="activity-dot gray"></div>
+                        <div class="activity-content">
+                            <h6>Belum Ada Aktivitas</h6>
+                            <p>Belum ada aktivitas yang tercatat hari ini</p>
+                            <span class="activity-time">-</span>
+                        </div>
                     </div>
-                </div>
+                @endforelse
             </div>
 
             <!-- Right Sidebar -->
@@ -191,10 +211,9 @@
                         <h6>Kalender</h6>
                     </div>
                     <div class="calendar-widget">
-                        <iframe src="https://calendar.google.com/calendar/embed?height=300&wkst=1&bgcolor=%23ffffff&ctz=Asia%2FMakassar&src=id.indonesian%23holiday%40group.v.calendar.google.com&color=%23039BE5&showTitle=0&showCalendars=0&showTabs=0&showPrint=0&showDate=1&showNav=1"
-                                class="calendar-iframe"
-                                frameborder="0"
-                                scrolling="no">
+                        <iframe
+                            src="https://calendar.google.com/calendar/embed?height=300&wkst=1&bgcolor=%23ffffff&ctz=Asia%2FMakassar&src=id.indonesian%23holiday%40group.v.calendar.google.com&color=%23039BE5&showTitle=0&showCalendars=0&showTabs=0&showPrint=0&showDate=1&showNav=1"
+                            class="calendar-iframe" frameborder="0" scrolling="no">
                         </iframe>
                     </div>
                 </div>

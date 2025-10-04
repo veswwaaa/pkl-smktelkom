@@ -62,6 +62,13 @@ class DudiController extends Controller
             $user->id_siswa = null;
             $user->save();
 
+            // Log activity
+            logActivity(
+                'create',
+                'DUDI Baru Ditambahkan',
+                "DUDI {$dudi->nama_dudi} berhasil didaftarkan dengan PIC: {$dudi->person_in_charge}"
+            );
+
             // Check if request is AJAX
             if ($request->ajax() || $request->wantsJson()) {
                 return response()->json([
@@ -145,6 +152,13 @@ class DudiController extends Controller
                 $user->save();
             }
 
+            // Log activity
+            logActivity(
+                'update',
+                'Data DUDI Diperbarui',
+                "Data DUDI {$dudi->nama_dudi} telah diperbarui"
+            );
+
             // Check if request is AJAX
             if ($request->ajax() || $request->wantsJson()) {
                 return response()->json([
@@ -182,12 +196,20 @@ class DudiController extends Controller
         try {
             //cari data dudinya yang mau di hapus
             $dudi = tb_dudi::FindOrFail($id);
+            $namaDudi = $dudi->nama_dudi;
 
             //hapus user yang terkait
             User::where('id_dudi', $id)->delete();
 
             //hapus data dudi
             $dudi->delete();
+
+            // Log activity
+            logActivity(
+                'delete',
+                'DUDI Dihapus',
+                "DUDI {$namaDudi} telah dihapus dari sistem"
+            );
 
             // Check if request is AJAX
             if (request()->ajax() || request()->wantsJson()) {
@@ -209,5 +231,70 @@ class DudiController extends Controller
             }
             return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
+    }
+
+    /**
+     * Reset password DUDI
+     */
+    public function resetPassword(string $id)
+    {
+        try {
+            // Cari data DUDI
+            $dudi = tb_dudi::findOrFail($id);
+
+            // Generate password baru
+            $newPassword = $this->generatePassword();
+
+            // Update password di tb_users
+            $user = User::where('id_dudi', $id)->first();
+            if (!$user) {
+                throw new \Exception('User DUDI tidak ditemukan');
+            }
+
+            $user->password = Hash::make($newPassword);
+            $user->save();
+
+            // Log activity
+            logActivity(
+                'update',
+                'Password DUDI Direset',
+                "Password DUDI {$dudi->nama_dudi} telah direset oleh admin"
+            );
+
+            // Return response dengan password baru
+            if (request()->ajax() || request()->wantsJson()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Password berhasil direset!',
+                    'new_password' => $newPassword,
+                    'dudi_name' => $dudi->nama_dudi
+                ]);
+            }
+
+            return redirect('/admin/dudi')->with([
+                'success' => 'Password berhasil direset!',
+                'new_password' => $newPassword,
+                'dudi_name' => $dudi->nama_dudi
+            ]);
+
+        } catch (\Exception $e) {
+            if (request()->ajax() || request()->wantsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Terjadi kesalahan: ' . $e->getMessage()
+                ], 500);
+            }
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Generate random password untuk DUDI
+     */
+    private function generatePassword()
+    {
+        $prefix = 'DUDI2025';
+        $randomChars = strtoupper(substr(str_shuffle('abcdefghijklmnopqrstuvwxyz0123456789'), 0, 4));
+        return $prefix . $randomChars;
     }
 }

@@ -36,18 +36,25 @@ class AuthenController extends Controller
 
 
 
-         $user = new User();
-         $user->username = $siswa->nis;
-         $user->password = Hash::make($request->password);
-         $user->role = 'siswa';
-         $user->id_admin = null;
-         $user->id_dudi =null;
-         $user->id_siswa = $siswa->id;
+        $user = new User();
+        $user->username = $siswa->nis;
+        $user->password = Hash::make($request->password);
+        $user->role = 'siswa';
+        $user->id_admin = null;
+        $user->id_dudi = null;
+        $user->id_siswa = $siswa->id;
 
 
 
         $result = $user->save();
         if ($result) {
+            // Log activity
+            logActivity(
+                'create',
+                'Siswa Baru Terdaftar',
+                "Siswa {$siswa->nama} (NIS: {$siswa->nis}) berhasil mendaftar",
+                $user->id
+            );
             return back()->with('success', 'Registered successfully.');
         } else {
             return back()->with('fail', 'Something went wrong!');
@@ -59,9 +66,9 @@ class AuthenController extends Controller
     }
     public function registerUserDudi(Request $request)
     {
-         $request->validate([
-             'password'=>'required|min:8|max:20'
-         ]);
+        $request->validate([
+            'password' => 'required|min:8|max:20'
+        ]);
 
         $dudi = new tb_dudi();
         $dudi->nama_dudi = $request->nama_dudi;
@@ -73,18 +80,25 @@ class AuthenController extends Controller
 
 
 
-         $user = new User();
-         $user->username = $dudi->nama_dudi;
-         $user->password = Hash::make($request->password);
-         $user->role = 'dudi';
-         $user->id_admin = null;
-         $user->id_dudi = $dudi->id;
-         $user->id_siswa = null;
+        $user = new User();
+        $user->username = $dudi->nama_dudi;
+        $user->password = Hash::make($request->password);
+        $user->role = 'dudi';
+        $user->id_admin = null;
+        $user->id_dudi = $dudi->id;
+        $user->id_siswa = null;
 
 
 
         $result = $user->save();
         if ($result) {
+            // Log activity
+            logActivity(
+                'create',
+                'DUDI Baru Terdaftar',
+                "DUDI {$dudi->nama_dudi} berhasil mendaftar dengan PIC: {$dudi->person_in_charge}",
+                $user->id
+            );
             return back()->with('success', 'Registered successfully.');
         } else {
             return back()->with('fail', 'Something went wrong.');
@@ -110,18 +124,25 @@ class AuthenController extends Controller
 
 
 
-         $user = new User();
-         $user->username = $admin->nama_admin;
-         $user->password = Hash::make($request->password);
-         $user->role = 'admin';
-         $user->id_admin = $admin->id;
-         $user->id_dudi =null;
-         $user->id_siswa = null;
+        $user = new User();
+        $user->username = $admin->nama_admin;
+        $user->password = Hash::make($request->password);
+        $user->role = 'admin';
+        $user->id_admin = $admin->id;
+        $user->id_dudi = null;
+        $user->id_siswa = null;
 
 
 
         $result = $user->save();
         if ($result) {
+            // Log activity
+            logActivity(
+                'create',
+                'Admin Baru Terdaftar',
+                "Admin {$admin->nama_admin} berhasil terdaftar di sistem",
+                $user->id
+            );
             return back()->with('success', 'Registered successfully.');
         } else {
             return back()->with('fail', 'Something went wrong!');
@@ -139,8 +160,8 @@ class AuthenController extends Controller
     public function loginUser(Request $request)
     {
         $request->validate([
-            'username'=>'required',
-            'password'=>'required|min:8|max:20'
+            'username' => 'required',
+            'password' => 'required|min:8|max:20'
         ]);
 
         $user = User::where('username', '=', $request->username)->first();
@@ -148,12 +169,29 @@ class AuthenController extends Controller
             if (Hash::check($request->password, $user->password)) {
                 $request->session()->put('loginId', $user->id);
                 $request->session()->put('role', $user->role);
+
+                // Log activity dengan detail yang lebih spesifik
+                $roleText = 'User';
+                if ($user->role === 'siswa')
+                    $roleText = 'Siswa';
+                elseif ($user->role === 'dudi')
+                    $roleText = 'DUDI';
+                elseif ($user->role === 'admin')
+                    $roleText = 'Admin';
+
+                logActivity(
+                    'login',
+                    "{$roleText} Login",
+                    "Login berhasil ke dalam sistem",
+                    $user->id
+                );
+
                 return redirect('dashboard');
             } else {
                 return back()->with('fail', 'Password does not match!');
             }
         } else {
-            return back()->with('fail','This email is not registered.');
+            return back()->with('fail', 'This email is not registered.');
         }
     }
     //// Dashboard
@@ -180,11 +218,14 @@ class AuthenController extends Controller
         if ($role === 'siswa') {
             return view('dashboardSiswa', compact('data'));
         } elseif ($role === 'admin') {
-            return view('dashboardAdmin', compact('data'));
+            // Ambil aktivitas terkini untuk dashboard admin
+            $activities = getRecentActivities(10);
+            return view('dashboardAdmin', compact('data', 'activities'));
         } elseif ($role === 'dudi') {
             return view('dashboardDudi', compact('data'));
         } else {
-            return view('dashboard', compact('data', 'role'));
+            Session::flush();
+            return redirect('login')->with('fail', 'Unauthorized access');
         }
     }
     ///Logout
@@ -192,6 +233,19 @@ class AuthenController extends Controller
     {
         $data = array();
         if (Session::has('loginId')) {
+            $userId = Session::get('loginId');
+            $user = User::find($userId);
+
+            // Log activity sebelum logout
+            if ($user) {
+                logActivity(
+                    'info',
+                    'User Logout',
+                    "User {$user->username} ({$user->role}) keluar dari sistem",
+                    $userId
+                );
+            }
+
             Session::pull('loginId');
             return redirect('login');
         }

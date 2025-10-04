@@ -7,7 +7,7 @@
 
 body {
     background-color: var(--telkom-gray);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 /* Top Navbar */
@@ -207,10 +207,18 @@ body {
     border: 2px solid rgba(255, 255, 255, 0.3);
 }
 
-.avatar-orange { background: #ff9800; }
-.avatar-green { background: #4caf50; }
-.avatar-gray { background: #9e9e9e; }
-.avatar-blue { background: #2196f3; }
+.avatar-orange {
+    background: #ff9800;
+}
+.avatar-green {
+    background: #4caf50;
+}
+.avatar-gray {
+    background: #9e9e9e;
+}
+.avatar-blue {
+    background: #2196f3;
+}
 
 /* Dashboard Cards */
 .stats-row {
@@ -235,10 +243,18 @@ body {
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
 }
 
-.stat-card.border-red { border-color: #e53e3e; }
-.stat-card.border-green { border-color: #4caf50; }
-.stat-card.border-blue { border-color: #2196f3; }
-.stat-card.border-orange { border-color: #ff9800; }
+.stat-card.border-red {
+    border-color: #e53e3e;
+}
+.stat-card.border-green {
+    border-color: #4caf50;
+}
+.stat-card.border-blue {
+    border-color: #2196f3;
+}
+.stat-card.border-orange {
+    border-color: #ff9800;
+}
 
 .stat-icon {
     width: 50px;
@@ -252,10 +268,18 @@ body {
     margin-bottom: 15px;
 }
 
-.icon-red { background: #e53e3e; }
-.icon-green { background: #4caf50; }
-.icon-blue { background: #2196f3; }
-.icon-orange { background: #ff9800; }
+.icon-red {
+    background: #e53e3e;
+}
+.icon-green {
+    background: #4caf50;
+}
+.icon-blue {
+    background: #2196f3;
+}
+.icon-orange {
+    background: #ff9800;
+}
 
 .stat-number {
     font-size: 2.5rem;
@@ -274,8 +298,12 @@ body {
     font-size: 0.9rem;
 }
 
-.stat-change.positive { color: #4caf50; }
-.stat-change.negative { color: #e53e3e; }
+.stat-change.positive {
+    color: #4caf50;
+}
+.stat-change.negative {
+    color: #e53e3e;
+}
 
 .stat-arrow {
     position: absolute;
@@ -348,8 +376,21 @@ body {
     flex-shrink: 0;
 }
 
-.activity-dot.blue { background: #2196f3; }
-.activity-dot.green { background: #4caf50; }
+.activity-dot.blue {
+    background: #2196f3;
+}
+.activity-dot.green {
+    background: #4caf50;
+}
+.activity-dot.orange {
+    background: #ff9800;
+}
+.activity-dot.red {
+    background: #e53e3e;
+}
+.activity-dot.gray {
+    background: #9e9e9e;
+}
 
 .activity-content h6 {
     margin: 0 0 5px 0;

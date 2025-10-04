@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DudiController;
+use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\AuthenController;
 
 Route::get('/', function () {
@@ -27,10 +28,20 @@ Route::controller(AuthenController::class)->group(function () {
     Route::get('/dashboard', [AuthenController::class, 'dashboard'])->middleware('isLoggedIn');
 
     //Route untuk crud dudi di admin
-    Route::get('/admin/dudi', [DudiController::class,'index'])->middleware('isLoggedIn');
-    Route::post('/admin/dudi', [DudiController::class,'store'])->middleware('isLoggedIn');
-    Route::put('/admin/dudi/{id}', [DudiController::class,'update'])->middleware('isLoggedIn');
-    Route::delete('/admin/dudi/{id}',[DudiController::class,'destroy'])->middleware('isLoggedIn');
+    Route::get('/admin/dudi', [DudiController::class, 'index'])->middleware('isLoggedIn');
+    Route::post('/admin/dudi', [DudiController::class, 'store'])->middleware('isLoggedIn');
+    Route::put('/admin/dudi/{id}', [DudiController::class, 'update'])->middleware('isLoggedIn');
+    Route::delete('/admin/dudi/{id}', [DudiController::class, 'destroy'])->middleware('isLoggedIn');
+    Route::post('/admin/dudi/{id}/reset-password', [DudiController::class, 'resetPassword'])->middleware('isLoggedIn');
+
+
+    //Route untuk crud siswa di admin
+    Route::get('/admin/siswa', [SiswaController::class,'index'])->middleware('isLoggedIn');
+    Route::post('/admin/siswa', [SiswaController::class,'store'])->middleware('isLoggedIn');
+    Route::put('/admin/siswa/{id}', [SiswaController::class,'update'])->middleware('isLoggedIn');
+    Route::delete('/admin/siswa/{id}', [SiswaController::class,'destroy'])->middleware('isLoggedIn');
+    Route::post('/admin/siswa/import',[SiswaController::Class, 'import'])->middleware('isLoggedIn');
+
 
 
     Route::get('/logout', [AuthenController::class, 'logout']);

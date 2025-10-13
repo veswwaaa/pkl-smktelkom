@@ -14,14 +14,8 @@
     <!-- Top Navbar -->
     <nav class="top-navbar d-flex align-items-center justify-content-between">
         <!-- Logo dan Brand -->
-        <div class="navbar-brand">
-            <div class="telkom-logo">
-                <i class="fas fa-graduation-cap"></i>
-            </div>
-            <div class="brand-text">
-                <h5>Telkom</h5>
-                <small>Schools</small>
-            </div>
+        <div class="telkom-logo">
+            <img src="{{ asset('img/telkom-logo.png') }}" alt="Telkom Logo" height="40">
         </div>
 
         <!-- Right side -->

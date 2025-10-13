@@ -15,7 +15,7 @@
         <!-- Panel kiri -->
         <div class="form-box">
             <div class="logo">
-                <img src="{{ asset('img/WhatsApp Image 2025-09-19 at 08.49.57_8928faaa.png') }}" alt="Logo Telkom Schools">
+                <img src="{{ asset('img/telkom-logo.png') }}" alt="Logo Telkom Schools">
             </div>
 
             <form action="{{ route('login-user') }}" method="post" enctype="multipart/form-data">

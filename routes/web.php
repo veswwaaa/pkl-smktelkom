@@ -40,7 +40,7 @@ Route::controller(AuthenController::class)->group(function () {
     Route::post('/admin/siswa', [SiswaController::class,'store'])->middleware('isLoggedIn');
     Route::put('/admin/siswa/{id}', [SiswaController::class,'update'])->middleware('isLoggedIn');
     Route::delete('/admin/siswa/{id}', [SiswaController::class,'destroy'])->middleware('isLoggedIn');
-    Route::post('/admin/siswa/import',[SiswaController::Class, 'import'])->middleware('isLoggedIn');
+    Route::post('/admin/siswa/import', [SiswaController::class, 'import'])->middleware('isLoggedIn');
 
 
 

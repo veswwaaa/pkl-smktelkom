@@ -28,7 +28,7 @@ body {
     align-items: center;
 }
 
-.telkom-logo {
+/* .telkom-logo {
     width: 40px;
     height: 40px;
     background: var(--telkom-red);
@@ -42,7 +42,7 @@ body {
 .telkom-logo i {
     color: white;
     font-size: 20px;
-}
+} */
 
 .brand-text h5 {
     margin: 0;

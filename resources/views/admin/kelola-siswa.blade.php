@@ -16,14 +16,8 @@
     <!-- Top Navbar -->
     <nav class="top-navbar d-flex align-items-center justify-content-between">
         <!-- Logo dan Brand -->
-        <div class="navbar-brand">
-            <div class="telkom-logo">
-                <i class="fas fa-graduation-cap"></i>
-            </div>
-            <div class="brand-text">
-                <h5>Telkom</h5>
-                <small>Schools</small>
-            </div>
+        <div class="telkom-logo">
+            <img src="{{ asset('img/telkom-logo.png') }}" alt="Telkom Logo" height="40">
         </div>
 
         <!-- Right side -->
@@ -82,11 +76,6 @@
             </a>
         </div>
     </div>
-
-    <!-- Main Content -->
-    <div class="main-content">
-
-
         <!-- Main Content -->
         <div class="main-content">
             <!-- Page Header -->
@@ -107,10 +96,9 @@
             </div>
 
 
-
-            <div class="container mt-4">
+            {{-- <div class="container mt-4">
                 {{-- headerrrrr --}}
-                <div class="row mb-4" style="display: none;">
+                {{-- <div class="row mb-4" style="display: none;">
                     <div class="col-md-8">
                         <h2><i class="fas fa-users text-primary"></i>Kelola Siswa</h2>
                         <p class="text-muted">Manajemen data siswa PKL SMK Telkom</p>
@@ -120,7 +108,9 @@
                             <i class="fas fa-arrow-left"></i> Kembali
                         </a>
                     </div>
-                </div>
+                </div> --}}
+
+
 
                 {{-- alert Messages - Hidden untuk SweetAlert --}}
                 <div style="display: none;">
@@ -137,25 +127,29 @@
                     @endif
                 </div>
 
-                {{-- add Button --}}
-                <div class="row mb-3">
-                    <div class="col-12">
-                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addSiswaModal">
-                            <i class="fas fa-plus"></i> Tambah Siswa
-                        </button>
-                        <button class="btn btn-success ms-2" data-bs-toggle="modal"
-                            data-bs-target="#importSiswaModal">
-                            <i class="fas fa-file-excel"></i> Import Excel
-                        </button>
+        {{-- add Button --}}
+        <div class="data-table-card">
+            <div class="table-header">
+                <div class="table-header-content">
+                    <div class="table-title">
+                        <i class="fas fa-table"></i>
+                        <h5>Daftar Siswa</h5>
                     </div>
+                    <button class="add-btn" data-bs-toggle="modal" data-bs-target="#addSiswaModal">
+                        <i class="fas fa-plus"></i>
+                        Tambah Siswa
+                    </button>
+                    <button class="excel-btn" data-bs-toggle="modal" data-bs-target="#importSiswaModal">
+                        <i class="fas fa-file-excel"></i> Import Excel
+                    </button>
                 </div>
+            </div>
+        </div>
 
-                {{-- tabel siswa --}}
-                <div class="card">
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-striped table-hover">
-                                <thead class="table-dark">
+                    {{-- tabel siswa --}}
+                        <div class="table-container">
+                            <table class="table custom-table">
+                                <thead>
                                     <tr>
                                         <th>NO</th>
                                         <th>NIS</th>
@@ -183,12 +177,12 @@
                                                     <i class="fas fa-edit"></i>
                                                 </button>
                                                 <button class="btn btn-danger btn-sm" title="Delete"
-                                                    onclick="confirmDelete({{ $siswaItem->id }}, '{{ $siswaItem->nama }}', '{{ $siswaItem->nis }}')">
-                                                    <i class="fas fa-trash"></i>
-                                                </button>
-                                            </td>
+                                                onclick="confirmDelete({{ $siswaItem->id }}, '{{ $siswaItem->nama }}', '{{ $siswaItem->nis }}')">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </td>
                                         </tr>
-                                    @empty
+                                        @empty
                                         <tr>
                                             <td colspan="8" class="text-center">
                                                 <div class="py-4">
@@ -198,14 +192,11 @@
                                                 </div>
                                             </td>
                                         </tr>
-                                    @endforelse
-                                </tbody>
-                            </table>
+                                        @endforelse
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
-                    </div>
-                </div>
-
-            </div>
 
             {{-- Modal Add Siswa --}}
             <div class="modal fade" id="addSiswaModal" tabindex="-1">

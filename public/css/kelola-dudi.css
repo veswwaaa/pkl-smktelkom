@@ -28,7 +28,7 @@ body {
     align-items: center;
 }
 
-.telkom-logo {
+/* .telkom-logo {
     width: 40px;
     height: 40px;
     background: var(--telkom-red);
@@ -42,7 +42,7 @@ body {
 .telkom-logo i {
     color: white;
     font-size: 20px;
-}
+} */
 
 .brand-text h5 {
     margin: 0;
@@ -225,7 +225,8 @@ body {
 /* Data Table Card */
 .data-table-card {
     background: white;
-    border-radius: 15px;
+    border-top-right-radius: 15px;
+    border-top-left-radius: 15px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
     overflow: hidden;
 }
@@ -266,9 +267,30 @@ body {
     text-decoration: none;
     transition: all 0.3s;
     cursor: pointer;
+    margin: 0px 20px 0px auto;
 }
 
 .add-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    color: white;
+    transform: translateY(-2px);
+}
+
+.excel-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.3s;
+    cursor: pointer;
+}
+
+.excel-btn:hover {
     background: rgba(255, 255, 255, 0.3);
     color: white;
     transform: translateY(-2px);

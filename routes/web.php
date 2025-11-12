@@ -43,10 +43,17 @@ Route::controller(AuthenController::class)->group(function () {
 
 
     //Route untuk crud siswa di admin
+<<<<<<< HEAD
     Route::get('/admin/siswa', [SiswaController::class, 'index'])->middleware('isLoggedIn');
     Route::post('/admin/siswa', [SiswaController::class, 'store'])->middleware('isLoggedIn');
     Route::put('/admin/siswa/{id}', [SiswaController::class, 'update'])->middleware('isLoggedIn');
     Route::delete('/admin/siswa/{id}', [SiswaController::class, 'destroy'])->middleware('isLoggedIn');
+=======
+    Route::get('/admin/siswa', [SiswaController::class,'index'])->middleware('isLoggedIn');
+    Route::post('/admin/siswa', [SiswaController::class,'store'])->middleware('isLoggedIn');
+    Route::put('/admin/siswa/{id}', [SiswaController::class,'update'])->middleware('isLoggedIn');
+    Route::delete('/admin/siswa/{id}', [SiswaController::class,'destroy'])->middleware('isLoggedIn');
+>>>>>>> daa3339c43b458fbb56aba2ab46a8cb73cbf90ba
     Route::post('/admin/siswa/import', [SiswaController::class, 'import'])->middleware('isLoggedIn');
 
     // Route untuk assign/cancel penempatan PKL

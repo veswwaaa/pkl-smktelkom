@@ -16,10 +16,13 @@ class SiswaController extends Controller
      */
     public function index()
     {
-        //
-        $siswa = tb_siswa::all();
-        return view('admin.kelola-siswa', compact('siswa'));
+        // Ambil semua siswa dengan relasi DUDI
+        $siswa = tb_siswa::with('dudi')->get();
 
+        // Ambil semua DUDI untuk dropdown di modal assign
+        $dudis = \App\Models\tb_dudi::all();
+
+        return view('admin.kelola-siswa', compact('siswa', 'dudis'));
     }
 
     /**
@@ -279,6 +282,118 @@ class SiswaController extends Controller
             }
 
             return redirect()->back()->with('error', $errorText);
+        }
+    }
+
+    /**
+     * Assign siswa ke DUDI untuk penempatan PKL
+     */
+    public function assignDudi(Request $request, string $id)
+    {
+        try {
+            $request->validate([
+                'id_dudi' => 'required|exists:tb_dudi,id',
+                'tanggal_mulai_pkl' => 'required|date',
+                'tanggal_selesai_pkl' => 'required|date|after:tanggal_mulai_pkl'
+            ], [
+                'id_dudi.required' => 'DUDI wajib dipilih',
+                'id_dudi.exists' => 'DUDI tidak ditemukan',
+                'tanggal_mulai_pkl.required' => 'Tanggal mulai PKL wajib diisi',
+                'tanggal_selesai_pkl.required' => 'Tanggal selesai PKL wajib diisi',
+                'tanggal_selesai_pkl.after' => 'Tanggal selesai harus setelah tanggal mulai'
+            ]);
+
+            $siswa = tb_siswa::findOrFail($id);
+            $dudi = \App\Models\tb_dudi::findOrFail($request->id_dudi);
+
+            // Update data penempatan
+            $siswa->id_dudi = $request->id_dudi;
+            $siswa->status_penempatan = 'ditempatkan';
+            $siswa->tanggal_mulai_pkl = $request->tanggal_mulai_pkl;
+            $siswa->tanggal_selesai_pkl = $request->tanggal_selesai_pkl;
+            $siswa->save();
+
+            // Log activity
+            logActivity(
+                'update',
+                'Siswa Ditempatkan ke DUDI',
+                "Siswa {$siswa->nama} (NIS: {$siswa->nis}) ditempatkan di {$dudi->nama_dudi} untuk PKL periode {$request->tanggal_mulai_pkl} s/d {$request->tanggal_selesai_pkl}"
+            );
+
+            return redirect('/admin/siswa')->with('success', "Siswa {$siswa->nama} berhasil ditempatkan di {$dudi->nama_dudi}!");
+
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Batalkan penempatan siswa dari DUDI
+     */
+    public function cancelAssignment(string $id)
+    {
+        try {
+            $siswa = tb_siswa::findOrFail($id);
+            $dudiName = $siswa->dudi ? $siswa->dudi->nama_dudi : 'DUDI';
+
+            // Reset data penempatan
+            $siswa->id_dudi = null;
+            $siswa->status_penempatan = 'belum';
+            $siswa->tanggal_mulai_pkl = null;
+            $siswa->tanggal_selesai_pkl = null;
+            $siswa->save();
+
+            // Log activity
+            logActivity(
+                'update',
+                'Penempatan Siswa Dibatalkan',
+                "Penempatan siswa {$siswa->nama} (NIS: {$siswa->nis}) di {$dudiName} dibatalkan"
+            );
+
+            return redirect('/admin/siswa')->with('success', "Penempatan siswa {$siswa->nama} berhasil dibatalkan!");
+
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
+    }
+
+    // Set tanggal PKL
+    public function setTanggalPkl(Request $request, string $id)
+    {
+        try {
+            $request->validate([
+                'tanggal_mulai_pkl' => 'required|date',
+                'tanggal_selesai_pkl' => 'required|date|after:tanggal_mulai_pkl'
+            ], [
+                'tanggal_mulai_pkl.required' => 'Tanggal mulai PKL wajib diisi',
+                'tanggal_mulai_pkl.date' => 'Format tanggal mulai tidak valid',
+                'tanggal_selesai_pkl.required' => 'Tanggal selesai PKL wajib diisi',
+                'tanggal_selesai_pkl.date' => 'Format tanggal selesai tidak valid',
+                'tanggal_selesai_pkl.after' => 'Tanggal selesai harus setelah tanggal mulai'
+            ]);
+
+            $siswa = tb_siswa::find($id);
+
+            if (!$siswa) {
+                return back()->with('error', 'Data siswa tidak ditemukan.');
+            }
+
+            // Update tanggal PKL
+            $siswa->tanggal_mulai_pkl = $request->tanggal_mulai_pkl;
+            $siswa->tanggal_selesai_pkl = $request->tanggal_selesai_pkl;
+            $siswa->save();
+
+            logActivity(
+                'update',
+                'Tanggal PKL Diatur',
+                "Tanggal PKL siswa {$siswa->nama} (NIS: {$siswa->nis}) diatur: {$request->tanggal_mulai_pkl} s/d {$request->tanggal_selesai_pkl}",
+                \Illuminate\Support\Facades\Session::get('loginId')
+            );
+
+            return back()->with('success', 'Tanggal PKL berhasil diatur!');
+
+        } catch (\Exception $e) {
+            return back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
     }
 }

@@ -12,15 +12,21 @@ class DudiController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $dudi = tb_dudi::all();
-        return view('admin.kelola-dudi', compact('dudi'));
-    }
+        $query = tb_dudi::query();
 
-    /**
-     * Show the form for creating a new resource.
-     */
+        // Filter by jenis_dudi
+        if ($request->has('jenis_dudi') && $request->jenis_dudi != '') {
+            $query->where('jenis_dudi', $request->jenis_dudi);
+        }
+
+        $dudi = $query->get();
+
+        return view('admin.kelola-dudi', compact('dudi'));
+    }    /**
+         * Show the form for creating a new resource.
+         */
     public function create()
     {
         //
@@ -50,6 +56,7 @@ class DudiController extends Controller
             $dudi->nomor_telpon = $request->nomor_telpon;
             $dudi->alamat = $request->alamat;
             $dudi->person_in_charge = $request->person_in_charge;
+            $dudi->jenis_dudi = 'sekolah'; // DUDI yang ditambahkan manual oleh admin = DUDI Sekolah
             $dudi->save();
 
             //buat akun user untuk dudi

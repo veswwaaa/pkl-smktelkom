@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Dashboard PKL - SMK Telkom</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
@@ -60,14 +61,11 @@
             <a href="/admin/dudi" class="sidebar-item" title="Kelola DUDI">
                 <i class="fas fa-building"></i>
             </a>
-             <a href="/admin/siswa" class="sidebar-item" title="kelola Siswa">
+            <a href="/admin/siswa" class="sidebar-item" title="kelola Siswa">
                 <i class="fas fa-users"></i>
             </a>
-            <a href="#" class="sidebar-item" title="Menu">
-                <i class="fas fa-th"></i>
-            </a>
-            <a href="#" class="sidebar-item" title="Tasks">
-                <i class="fas fa-tasks"></i>
+            <a href="/admin/pengajuan-pkl" class="sidebar-item" title="Pengajuan PKL">
+                <i class="fas fa-clipboard-list"></i>
             </a>
             <a href="#" class="sidebar-item" title="Reports">
                 <i class="fas fa-chart-bar"></i>
@@ -110,46 +108,72 @@
         <!-- Stats Cards -->
         <div class="stats-row">
             <!-- Total Siswa -->
-            <div class="stat-card border-red">
+            <div class="stat-card border-red" onclick="window.location.href='/admin/siswa'" style="cursor: pointer;">
                 <div class="stat-icon icon-red">
                     <i class="fas fa-users"></i>
                 </div>
-                <div class="stat-number">2</div>
+                <div class="stat-number">{{ $totalSiswa }}</div>
                 <div class="stat-label">Total Siswa</div>
-                <div class="stat-change positive">+12 bulan dari lalu</div>
+                <div class="stat-change {{ $siswaGrowth > 0 ? 'positive' : 'negative' }}">
+                    @if ($siswaGrowth > 0)
+                        +{{ $siswaGrowth }} bulan dari lalu
+                    @elseif($siswaGrowth < 0)
+                        {{ $siswaGrowth }} bulan dari lalu
+                    @else
+                        Tidak ada perubahan
+                    @endif
+                </div>
                 <i class="fas fa-chevron-right stat-arrow"></i>
             </div>
 
             <!-- Total DUDI -->
-            <div class="stat-card border-green">
+            <div class="stat-card border-green" onclick="window.location.href='/admin/dudi'" style="cursor: pointer;">
                 <div class="stat-icon icon-green">
                     <i class="fas fa-building"></i>
                 </div>
-                <div class="stat-number">2</div>
+                <div class="stat-number">{{ $totalDudi }}</div>
                 <div class="stat-label">Total DUDI</div>
-                <div class="stat-change positive">+5 mitra baru</div>
+                <div class="stat-change {{ $dudiGrowth > 0 ? 'positive' : 'negative' }}">
+                    @if ($dudiGrowth > 0)
+                        +{{ $dudiGrowth }} mitra baru
+                    @elseif($dudiGrowth < 0)
+                        {{ $dudiGrowth }} mitra berkurang
+                    @else
+                        Tidak ada perubahan
+                    @endif
+                </div>
                 <i class="fas fa-chevron-right stat-arrow"></i>
             </div>
 
             <!-- Siswa Ditempatkan -->
-            <div class="stat-card border-blue">
+            <div class="stat-card border-blue" onclick="window.location.href='/admin/siswa?status=ditempatkan'"
+                style="cursor: pointer;">
                 <div class="stat-icon icon-blue">
                     <i class="fas fa-user-check"></i>
                 </div>
-                <div class="stat-number">187</div>
+                <div class="stat-number">{{ $siswaDitempatkan }}</div>
                 <div class="stat-label">Siswa Ditempatkan</div>
-                <div class="stat-change positive">93.5% dari total</div>
+                <div class="stat-change {{ $persenDitempatkan >= 75 ? 'positive' : 'negative' }}">
+                    {{ $persenDitempatkan }}% dari total
+                </div>
                 <i class="fas fa-chevron-right stat-arrow"></i>
             </div>
 
             <!-- Menunggu Penempatan -->
-            <div class="stat-card border-orange">
+            <div class="stat-card border-orange" onclick="window.location.href='/admin/siswa?status=belum'"
+                style="cursor: pointer;">
                 <div class="stat-icon icon-orange">
                     <i class="fas fa-clock"></i>
                 </div>
-                <div class="stat-number">32</div>
+                <div class="stat-number">{{ $siswaMenunggu }}</div>
                 <div class="stat-label">Menunggu Penempatan</div>
-                <div class="stat-change negative">perlu tindak lanjut</div>
+                <div class="stat-change {{ $siswaMenunggu > 0 ? 'negative' : 'positive' }}">
+                    @if ($siswaMenunggu > 0)
+                        Perlu tindak lanjut
+                    @else
+                        Semua sudah ditempatkan!
+                    @endif
+                </div>
                 <i class="fas fa-chevron-right stat-arrow"></i>
             </div>
         </div>
@@ -220,60 +244,32 @@
 
                 <!-- Notes & Agenda -->
                 <div class="notes-card">
-                    <div class="notes-header">
-                        <i class="fas fa-sticky-note text-warning"></i>
-                        <h6>Notes & Agenda</h6>
+                    <div class="notes-header d-flex justify-content-between align-items-center">
+                        <div>
+                            <i class="fas fa-sticky-note text-warning"></i>
+                            <h6>Catatan Admin</h6>
+                        </div>
+                        <button class="btn btn-sm btn-primary" onclick="addNote()">
+                            <i class="fas fa-plus"></i> Catatan Baru
+                        </button>
                     </div>
 
-                    <div class="note-item">
-                        <h6>Rapat Koordinasi PKL</h6>
-                        <p>Rapat dengan pihak DUDI terkait evaluasi siswa PKL - 15:00 WIB</p>
-                    </div>
-
-                    <div class="note-item">
-                        <h6>Deadline Laporan</h6>
-                        <p>Pengumpulan laporan akhir PKL siswa kelas XII - 3 hari lagi</p>
-                    </div>
-
-                    <div class="note-item">
-                        <h6>Kunjungan Industri</h6>
-                        <p>Survey tempat PKL baru di kawasan industri Banjarbaru</p>
+                    <div id="notesList">
+                        <!-- Notes akan dimuat via AJAX -->
+                        <div class="text-center text-muted py-3">
+                            <i class="fas fa-spinner fa-spin"></i>
+                            <p>Memuat catatan...</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // Sidebar interactions
-        document.querySelectorAll('.sidebar-item').forEach(item => {
-            item.addEventListener('click', function(e) {
-                document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
-                this.classList.add('active');
-            });
-        });
-
-        // Card hover effects
-        document.querySelectorAll('.stat-card').forEach(card => {
-            card.addEventListener('click', function() {
-                console.log('Card clicked:', this.querySelector('.stat-label').textContent);
-            });
-        });
-
-        // Mobile sidebar toggle (for future use)
-        function toggleSidebar() {
-            const sidebar = document.querySelector('.left-sidebar');
-            sidebar.classList.toggle('show');
-        }
-
-        // Responsive behavior
-        window.addEventListener('resize', function() {
-            if (window.innerWidth > 768) {
-                document.querySelector('.left-sidebar').classList.remove('show');
-            }
-        });
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{{ asset('js/dashboard-notes.js') }}"></script>
 </body>
 
 </html>

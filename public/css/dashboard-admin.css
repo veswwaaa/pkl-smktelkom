@@ -438,6 +438,97 @@ body {
     color: #333;
 }
 
+/* Notes List Container - Scrollable with max 4 items visible */
+#notesList {
+    max-height: 400px; /* Approx 4 items (each ~100px) */
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 5px;
+    scroll-behavior: smooth;
+    position: relative;
+}
+
+/* Scroll Indicator - Tampil jika ada lebih banyak notes */
+#notesList.has-more-items::after {
+    content: "⬇ Scroll untuk melihat lebih banyak";
+    position: sticky;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 10px;
+    text-align: center;
+    font-size: 0.75rem;
+    color: #e53e3e;
+    background: linear-gradient(to top, white 50%, transparent);
+    pointer-events: none;
+    animation: bounce 2s infinite;
+}
+
+#notesList.is-scrolled.has-more-items::after {
+    content: "⬆ Scroll ke atas untuk melihat awal";
+}
+
+@keyframes bounce {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-5px);
+    }
+}
+
+/* Custom Scrollbar Styling */
+#notesList::-webkit-scrollbar {
+    width: 6px;
+}
+
+#notesList::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+#notesList::-webkit-scrollbar-thumb {
+    background: #e53e3e;
+    border-radius: 10px;
+    transition: background 0.3s ease;
+}
+
+#notesList::-webkit-scrollbar-thumb:hover {
+    background: #c53030;
+}
+
+/* Fade effect at top and bottom when scrolling */
+#notesList::before {
+    content: "";
+    position: sticky;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 20px;
+    background: linear-gradient(to bottom, white, transparent);
+    z-index: 10;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+#notesList.is-scrolled::before {
+    opacity: 1;
+}
+
+#notesList::after {
+    content: "";
+    position: sticky;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 20px;
+    background: linear-gradient(to top, white, transparent);
+    z-index: 10;
+    pointer-events: none;
+}
+
 .calendar-widget {
     background: #f8f9fa;
     border-radius: 10px;
@@ -462,6 +553,87 @@ body {
     padding: 15px;
     margin-bottom: 10px;
     border-left: 4px solid #e53e3e;
+    position: relative;
+    transition: all 0.3s ease;
+    opacity: 0;
+    transform: translateX(-20px);
+    animation: slideInFromLeft 0.4s ease forwards;
+}
+
+/* Staggered animation delay untuk item yang visible */
+.note-item:nth-child(1) {
+    animation-delay: 0.1s;
+}
+.note-item:nth-child(2) {
+    animation-delay: 0.2s;
+}
+.note-item:nth-child(3) {
+    animation-delay: 0.3s;
+}
+.note-item:nth-child(4) {
+    animation-delay: 0.4s;
+}
+
+/* Item ke-5 dan seterusnya (yang di-scroll) muncul saat visible */
+.note-item:nth-child(n + 5) {
+    animation: none;
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.note-item:nth-child(n + 5).visible {
+    animation: fadeInUp 0.4s ease forwards;
+}
+
+@keyframes slideInFromLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.note-item:hover {
+    transform: translateX(5px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    border-left-color: #c53030;
+}
+
+.note-item .note-date {
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.note-item .note-content {
+    color: #666;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.note-item .note-actions {
+    display: flex;
+    gap: 5px;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.note-item:hover .note-actions {
+    opacity: 1;
 }
 
 .note-item h6 {
@@ -475,6 +647,39 @@ body {
     margin: 0;
     color: #666;
     font-size: 0.8rem;
+}
+
+/* Animation untuk item baru ditambahkan */
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.note-item.newly-added {
+    animation: fadeInScale 0.5s ease forwards;
+    border-left-color: #48bb78;
+}
+
+/* Animation untuk item yang dihapus */
+@keyframes fadeOutSlide {
+    from {
+        opacity: 1;
+        transform: translateX(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateX(100px);
+    }
+}
+
+.note-item.removing {
+    animation: fadeOutSlide 0.3s ease forwards;
 }
 
 /* Responsive Design */

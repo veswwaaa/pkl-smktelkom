@@ -11,16 +11,13 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('activities', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id')->nullable();
-            $table->string('username');
-            $table->string('type'); // login, create, update, delete, info, warning, success
-            $table->string('title');
+            $table->string('username', 255);
+            $table->string('type', 255); // login, create, update, delete, info, warning, success
+            $table->string('title', 255);
             $table->text('description');
             $table->timestamps();
-
-            // Index untuk foreign key
-            $table->index('user_id');
         });
     }
 

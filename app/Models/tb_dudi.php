@@ -15,6 +15,6 @@ class tb_dudi extends Model
     'person_in_charge',
     'jurusan',
     'jobdesk',
-
+    'jenis_dudi',
   ];
 }

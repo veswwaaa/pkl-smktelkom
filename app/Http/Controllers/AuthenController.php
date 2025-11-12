@@ -2,13 +2,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Models\tb_siswa;
-use App\Models\tb_admin;
 use App\Models\tb_dudi;
+use App\Models\tb_admin;
+use App\Models\tb_siswa;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
-
-use Illuminate\Http\Request;
 
 class AuthenController extends Controller
 {
@@ -110,7 +111,9 @@ class AuthenController extends Controller
     }
     public function registerUserAdmin(Request $request)
     {
+        // Pastikan nama_admin unik di tb_users.username untuk mencegah duplicate key
         $request->validate([
+            'nama_admin' => 'required|unique:tb_users,username',
             'password' => 'required|min:8|max:20'
         ]);
 
@@ -134,7 +137,16 @@ class AuthenController extends Controller
 
 
 
-        $result = $user->save();
+        try {
+            $result = $user->save();
+        } catch (\Illuminate\Database\QueryException $e) {
+            // Tangani duplicate key secara ramah apabila validasi gagal karena race condition
+            if (isset($e->errorInfo[1]) && $e->errorInfo[1] == 1062) {
+                return back()->with('fail', 'Username sudah digunakan. Gunakan nama lain.');
+            }
+            throw $e;
+        }
+
         if ($result) {
             // Log activity
             logActivity(
@@ -164,11 +176,38 @@ class AuthenController extends Controller
             'password' => 'required|min:8|max:20'
         ]);
 
-        $user = User::where('username', '=', $request->username)->first();
+        // Trim whitespace dari username untuk menghindari error
+        $username = trim($request->username);
+
+        $user = User::where('username', '=', $username)->first();
         if ($user) {
             if (Hash::check($request->password, $user->password)) {
                 $request->session()->put('loginId', $user->id);
                 $request->session()->put('role', $user->role);
+
+                // Simpan ID dan nama sesuai role
+                if ($user->role === 'siswa' && $user->id_siswa) {
+                    $siswa = tb_siswa::find($user->id_siswa);
+                    if ($siswa) {
+                        $request->session()->put('id', $siswa->id);
+                        $request->session()->put('id_siswa', $siswa->id);
+                        $request->session()->put('nama', $siswa->nama);
+                    }
+                } elseif ($user->role === 'dudi' && $user->id_dudi) {
+                    $dudi = tb_dudi::find($user->id_dudi);
+                    if ($dudi) {
+                        $request->session()->put('id', $dudi->id);
+                        $request->session()->put('id_dudi', $dudi->id);
+                        $request->session()->put('nama_dudi', $dudi->nama_dudi);
+                    }
+                } elseif ($user->role === 'admin' && $user->id_admin) {
+                    $admin = tb_admin::find($user->id_admin);
+                    if ($admin) {
+                        $request->session()->put('id', $admin->id);
+                        $request->session()->put('id_admin', $admin->id);
+                        $request->session()->put('nama', $admin->nama);
+                    }
+                }
 
                 // Log activity dengan detail yang lebih spesifik
                 $roleText = 'User';
@@ -188,10 +227,10 @@ class AuthenController extends Controller
 
                 return redirect('dashboard');
             } else {
-                return back()->with('fail', 'Password does not match!');
+                return back()->with('fail', 'Password salah! Pastikan password yang dimasukkan benar.');
             }
         } else {
-            return back()->with('fail', 'This email is not registered.');
+            return back()->with('fail', 'Username tidak terdaftar.');
         }
     }
     //// Dashboard
@@ -216,13 +255,102 @@ class AuthenController extends Controller
             }
         }
         if ($role === 'siswa') {
-            return view('dashboardSiswa', compact('data'));
+            $totalSiswa = DB::table('tb_siswa')->count();
+
+            // Ambil pengajuan PKL siswa jika ada
+            $pengajuan = \App\Models\PengajuanPkl::with([
+                'dudiPilihan1',
+                'dudiPilihan2',
+                'dudiPilihan3',
+                'dudiMandiriPilihan1',
+                'dudiMandiriPilihan2',
+                'dudiMandiriPilihan3'
+            ])
+                ->where('id_siswa', $data->id)
+                ->first();
+
+            return view('dashboardSiswa', compact('data', 'pengajuan'));
+
         } elseif ($role === 'admin') {
             // Ambil aktivitas terkini untuk dashboard admin
             $activities = getRecentActivities(10);
-            return view('dashboardAdmin', compact('data', 'activities'));
+
+            $totalSiswa = DB::table('tb_siswa')->count();
+            $totalDudi = DB::table('tb_dudi')->count();
+
+            $siswaLastMonth = DB::table('tb_siswa')
+                ->where('created_at', '<', now()->subDays(30))
+                ->count();
+
+            $dudiLastMonth = DB::table('tb_dudi')
+                ->where('created_at', '<', now()->subDays(30))
+                ->count();
+
+            // Hitung pertumbuhan
+            $siswaGrowth = $totalSiswa - $siswaLastMonth;
+            $dudiGrowth = $totalDudi - $dudiLastMonth;
+
+            // Hitung siswa ditempatkan dan menunggu
+            $siswaDitempatkan = DB::table('tb_siswa')
+                ->where('status_penempatan', 'ditempatkan')
+                ->orWhere('status_penempatan', 'selesai')
+                ->count();
+
+            $siswaMenunggu = DB::table('tb_siswa')
+                ->where('status_penempatan', 'belum')
+                ->count();
+
+            // Hitung persentase
+            $persenDitempatkan = $totalSiswa > 0 ? round(($siswaDitempatkan / $totalSiswa) * 100, 1) : 0;
+
+            return view('dashboardAdmin', compact('data', 'activities', 'totalSiswa', 'totalDudi', 'siswaGrowth', 'dudiGrowth', 'siswaDitempatkan', 'siswaMenunggu', 'persenDitempatkan'));
+
         } elseif ($role === 'dudi') {
-            return view('dashboardDudi', compact('data'));
+            // Ambil statistik lamaran untuk DUDI
+            $idDudi = $data->id;
+
+            // Total lamaran masuk
+            $totalLamaran = \App\Models\PengajuanPkl::where(function ($query) use ($idDudi) {
+                $query->where(function ($q) use ($idDudi) {
+                    $q->where('pilihan_aktif', '1')
+                        ->where('id_dudi_pilihan_1', $idDudi);
+                })
+                    ->orWhere(function ($q) use ($idDudi) {
+                        $q->where('pilihan_aktif', '2')
+                            ->where('id_dudi_pilihan_2', $idDudi);
+                    })
+                    ->orWhere(function ($q) use ($idDudi) {
+                        $q->where('pilihan_aktif', '3')
+                            ->where('id_dudi_pilihan_3', $idDudi);
+                    });
+            })->count();
+
+            // Lamaran pending
+            $lamaranPending = \App\Models\PengajuanPkl::where(function ($query) use ($idDudi) {
+                $query->where(function ($q) use ($idDudi) {
+                    $q->where('pilihan_aktif', '1')
+                        ->where('id_dudi_pilihan_1', $idDudi);
+                })
+                    ->orWhere(function ($q) use ($idDudi) {
+                        $q->where('pilihan_aktif', '2')
+                            ->where('id_dudi_pilihan_2', $idDudi);
+                    })
+                    ->orWhere(function ($q) use ($idDudi) {
+                        $q->where('pilihan_aktif', '3')
+                            ->where('id_dudi_pilihan_3', $idDudi);
+                    });
+            })
+                ->where('status', 'pending')
+                ->count();
+
+            // Siswa yang diterima (ditempatkan di DUDI ini)
+            $siswaDiterima = DB::table('tb_siswa')
+                ->where('id_dudi', $idDudi)
+                ->where('status_penempatan', 'ditempatkan')
+                ->count();
+
+            return view('dashboardDudi', compact('data', 'totalLamaran', 'lamaranPending', 'siswaDiterima'));
+
         } else {
             Session::flush();
             return redirect('login')->with('fail', 'Unauthorized access');

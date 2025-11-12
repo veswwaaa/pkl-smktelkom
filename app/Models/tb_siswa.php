@@ -15,6 +15,16 @@ class tb_siswa extends Model
         'kelas',
         'jenis_kelamin',
         'angkatan',
-        'jurusan'
+        'jurusan',
+        'id_dudi',
+        'status_penempatan',
+        'tanggal_mulai_pkl',
+        'tanggal_selesai_pkl'
     ];
+
+    // Relasi ke DUDI
+    public function dudi()
+    {
+        return $this->belongsTo(\App\Models\tb_dudi::class, 'id_dudi', 'id');
+    }
 }

@@ -65,11 +65,8 @@
             <a href="/admin/siswa" class="sidebar-item active" title="Kelola Siswa">
                 <i class="fas fa-users"></i>
             </a>
-            <a href="#" class="sidebar-item" title="Menu">
-                <i class="fas fa-th"></i>
-            </a>
-            <a href="#" class="sidebar-item" title="Tasks">
-                <i class="fas fa-tasks"></i>
+            <a href="/admin/pengajuan-pkl" class="sidebar-item" title="Pengajuan PKL">
+                <i class="fas fa-clipboard-list"></i>
             </a>
             <a href="#" class="sidebar-item" title="Reports">
                 <i class="fas fa-chart-bar"></i>
@@ -163,7 +160,9 @@
                                         <th>Kelas</th>
                                         <th>Jenis Kelamin</th>
                                         <th>Angkatan</th>
-                                        <th>Jrusan</th>
+                                        <th>Jurusan</th>
+                                        <th>Status PKL</th>
+                                        <th>DUDI</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
@@ -178,6 +177,47 @@
                                             <td>{{ $siswaItem->angkatan }}</td>
                                             <td><span class="badge bg-success">{{ $siswaItem->jurusan }}</span></td>
                                             <td>
+                                                @if ($siswaItem->status_penempatan == 'ditempatkan')
+                                                    <span class="badge bg-success">
+                                                        <i class="fas fa-check-circle"></i> Ditempatkan
+                                                    </span>
+                                                @elseif($siswaItem->status_penempatan == 'selesai')
+                                                    <span class="badge bg-secondary">
+                                                        <i class="fas fa-flag-checkered"></i> Selesai
+                                                    </span>
+                                                @else
+                                                    <span class="badge bg-warning">
+                                                        <i class="fas fa-clock"></i> Belum
+                                                    </span>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @if ($siswaItem->dudi)
+                                                    <small>{{ $siswaItem->dudi->nama_dudi }}</small>
+                                                @else
+                                                    <span class="text-muted">-</span>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @if ($siswaItem->status_penempatan == 'belum')
+                                                    <button class="btn btn-success btn-sm" title="Tempatkan ke DUDI"
+                                                        onclick="openAssignModal({{ $siswaItem->id }}, '{{ $siswaItem->nama }}', '{{ $siswaItem->nis }}')">
+                                                        <i class="fas fa-map-marker-alt"></i>
+                                                    </button>
+                                                @else
+                                                    <button class="btn btn-info btn-sm" title="Lihat Detail PKL"
+                                                        onclick="viewPklDetail({{ $siswaItem->id }}, '{{ $siswaItem->nama }}', '{{ $siswaItem->dudi ? $siswaItem->dudi->nama_dudi : '' }}', '{{ $siswaItem->tanggal_mulai_pkl }}', '{{ $siswaItem->tanggal_selesai_pkl }}')">
+                                                        <i class="fas fa-eye"></i>
+                                                    </button>
+                                                    <button class="btn btn-primary btn-sm" title="Set Tanggal PKL"
+                                                        onclick="openSetTanggalModal({{ $siswaItem->id }}, '{{ $siswaItem->nama }}', '{{ $siswaItem->tanggal_mulai_pkl }}', '{{ $siswaItem->tanggal_selesai_pkl }}')">
+                                                        <i class="fas fa-calendar-alt"></i>
+                                                    </button>
+                                                    <button class="btn btn-danger btn-sm" title="Batalkan Penempatan"
+                                                        onclick="confirmCancelAssignment({{ $siswaItem->id }}, '{{ $siswaItem->nama }}')">
+                                                        <i class="fas fa-times-circle"></i>
+                                                    </button>
+                                                @endif
                                                 <button class="btn btn-warning btn-sm" title="Edit"
                                                     onclick="editSiswa({{ $siswaItem->id }},'{{ $siswaItem->nis }}', '{{ $siswaItem->nama }}','{{ $siswaItem->kelas }}','{{ $siswaItem->jenis_kelamin }}','{{ $siswaItem->angkatan }}','{{ $siswaItem->jurusan }}')">
                                                     <i class="fas fa-edit"></i>
@@ -190,7 +230,7 @@
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td colspan="8" class="text-center">
+                                            <td colspan="10" class="text-center">
                                                 <div class="py-4">
                                                     <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
                                                     <h5 class="text-muted">Belum ada data siswa</h5>
@@ -290,7 +330,7 @@
                                                 <option value="TJKT">TJKT (Teknik Jaringan Komputer
                                                     danTelekomunikasi)</option>
                                                 <option value="DKV">DKV (Desain Komunikasi Visual)</option>
-                                                <option value="Animasi">Animasi</option>
+                                                <option value="ANM">ANM (Animasi)</option>
                                                 </option>
                                             </select>
                                         </div>
@@ -497,6 +537,163 @@
             </div>
         </div>
 
+        {{-- Modal Assign Siswa ke DUDI --}}
+        <div class="modal fade" id="assignDudiModal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header bg-success text-white">
+                        <h5 class="modal-title">
+                            <i class="fas fa-map-marker-alt"></i> Tempatkan Siswa ke DUDI
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+                    <form id="assignDudiForm" method="POST">
+                        @csrf
+                        <div class="modal-body">
+                            <div class="alert alert-info">
+                                <i class="fas fa-user"></i> <strong id="assignSiswaName"></strong>
+                                (<span id="assignSiswaNis"></span>)
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="id_dudi" class="form-label">
+                                    <i class="fas fa-building text-success"></i> Pilih DUDI
+                                </label>
+                                <select class="form-select" id="id_dudi" name="id_dudi" required>
+                                    <option value="">-- Pilih DUDI --</option>
+                                    @foreach ($dudis as $dudi)
+                                        <option value="{{ $dudi->id }}">{{ $dudi->nama_dudi }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="tanggal_mulai_pkl" class="form-label">
+                                    <i class="fas fa-calendar-alt text-success"></i> Tanggal Mulai PKL
+                                </label>
+                                <input type="date" class="form-control" id="tanggal_mulai_pkl"
+                                    name="tanggal_mulai_pkl" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="tanggal_selesai_pkl" class="form-label">
+                                    <i class="fas fa-calendar-check text-success"></i> Tanggal Selesai PKL
+                                </label>
+                                <input type="date" class="form-control" id="tanggal_selesai_pkl"
+                                    name="tanggal_selesai_pkl" required>
+                            </div>
+
+                            <div class="alert alert-warning">
+                                <i class="fas fa-info-circle"></i>
+                                <small>Pastikan data DUDI dan tanggal PKL sudah benar sebelum menyimpan.</small>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                <i class="fas fa-times"></i> Batal
+                            </button>
+                            <button type="submit" class="btn btn-success">
+                                <i class="fas fa-save"></i> Tempatkan
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        {{-- Modal Detail PKL --}}
+        <div class="modal fade" id="pklDetailModal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header bg-info text-white">
+                        <h5 class="modal-title">
+                            <i class="fas fa-info-circle"></i> Detail Penempatan PKL
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table table-borderless">
+                            <tr>
+                                <th width="40%"><i class="fas fa-user text-info"></i> Nama Siswa</th>
+                                <td id="detailNamaSiswa">-</td>
+                            </tr>
+                            <tr>
+                                <th><i class="fas fa-building text-info"></i> DUDI</th>
+                                <td id="detailNamaDudi">-</td>
+                            </tr>
+                            <tr>
+                                <th><i class="fas fa-calendar-alt text-info"></i> Tanggal Mulai</th>
+                                <td id="detailTanggalMulai">-</td>
+                            </tr>
+                            <tr>
+                                <th><i class="fas fa-calendar-check text-info"></i> Tanggal Selesai</th>
+                                <td id="detailTanggalSelesai">-</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            <i class="fas fa-times"></i> Tutup
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{-- Modal Set Tanggal PKL --}}
+        <div class="modal fade" id="setTanggalModal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header bg-primary text-white">
+                        <h5 class="modal-title">
+                            <i class="fas fa-calendar-alt"></i> Set Tanggal PKL
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+                    <form id="setTanggalForm" method="POST">
+                        @csrf
+                        <div class="modal-body">
+                            <div class="alert alert-info">
+                                <i class="fas fa-info-circle"></i>
+                                Atur tanggal mulai dan selesai PKL untuk: <strong id="setTanggalNamaSiswa"></strong>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="tanggal_mulai_pkl" class="form-label">
+                                    <i class="fas fa-calendar-check text-success"></i> Tanggal Mulai PKL
+                                </label>
+                                <input type="date" class="form-control" id="tanggal_mulai_pkl"
+                                    name="tanggal_mulai_pkl" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="tanggal_selesai_pkl" class="form-label">
+                                    <i class="fas fa-calendar-times text-danger"></i> Tanggal Selesai PKL
+                                </label>
+                                <input type="date" class="form-control" id="tanggal_selesai_pkl"
+                                    name="tanggal_selesai_pkl" required>
+                            </div>
+
+                            <div class="alert alert-warning">
+                                <small>
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                    <strong>Catatan:</strong> Pastikan tanggal selesai lebih akhir dari tanggal mulai.
+                                </small>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                <i class="fas fa-times"></i> Batal
+                            </button>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i> Simpan Tanggal
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
         {{-- modal import dari excel --}}
 
 
@@ -612,6 +809,73 @@
                 // Tampilkan modal
                 var editModal = new bootstrap.Modal(document.getElementById('editSiswaModal'));
                 editModal.show();
+            }
+
+            // Function untuk membuka modal assign DUDI
+            function openAssignModal(id, nama, nis) {
+                document.getElementById('assignSiswaName').textContent = nama;
+                document.getElementById('assignSiswaNis').textContent = nis;
+                document.getElementById('assignDudiForm').action = '/admin/siswa/' + id + '/assign';
+                document.getElementById('assignDudiForm').reset();
+
+                var assignModal = new bootstrap.Modal(document.getElementById('assignDudiModal'));
+                assignModal.show();
+            }
+
+            // Function untuk lihat detail PKL
+            function viewPklDetail(id, nama, dudi, tanggalMulai, tanggalSelesai) {
+                document.getElementById('detailNamaSiswa').textContent = nama;
+                document.getElementById('detailNamaDudi').textContent = dudi || '-';
+                document.getElementById('detailTanggalMulai').textContent = tanggalMulai || '-';
+                document.getElementById('detailTanggalSelesai').textContent = tanggalSelesai || '-';
+
+                var detailModal = new bootstrap.Modal(document.getElementById('pklDetailModal'));
+                detailModal.show();
+            }
+
+            // Function untuk membuka modal set tanggal PKL
+            function openSetTanggalModal(id, nama, tanggalMulai, tanggalSelesai) {
+                document.getElementById('setTanggalNamaSiswa').textContent = nama;
+                document.getElementById('setTanggalForm').action = '/admin/siswa/' + id + '/set-tanggal-pkl';
+
+                // Set value jika sudah ada
+                document.getElementById('tanggal_mulai_pkl').value = tanggalMulai || '';
+                document.getElementById('tanggal_selesai_pkl').value = tanggalSelesai || '';
+
+                var setTanggalModal = new bootstrap.Modal(document.getElementById('setTanggalModal'));
+                setTanggalModal.show();
+            }
+
+            // Function untuk konfirmasi batalkan penempatan
+            function confirmCancelAssignment(id, nama) {
+                Swal.fire({
+                    title: 'Batalkan Penempatan?',
+                    html: `Anda akan membatalkan penempatan PKL untuk:<br><strong>${nama}</strong><br><br>Siswa akan kembali ke status "Belum Ditempatkan"`,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: 'Ya, Batalkan!',
+                    cancelButtonText: 'Batal',
+                    reverseButtons: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Submit form cancel assignment
+                        const form = document.createElement('form');
+                        form.method = 'POST';
+                        form.action = '/admin/siswa/' + id + '/cancel-assignment';
+
+                        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                        const csrfInput = document.createElement('input');
+                        csrfInput.type = 'hidden';
+                        csrfInput.name = '_token';
+                        csrfInput.value = csrfToken;
+
+                        form.appendChild(csrfInput);
+                        document.body.appendChild(form);
+                        form.submit();
+                    }
+                });
             }
         </script>
 

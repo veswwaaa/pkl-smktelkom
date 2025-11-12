@@ -11,11 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tb_users', function (Blueprint $table) {
-            $table->id();
-            $table->string('username')->unique(); // Username untuk login (nama DUDI)
-            $table->string('password'); // Password untuk login
-            $table->enum('role', ['admin', 'dudi', 'siswa'])->default('dudi'); // Role user
+        Schema::create('users_old', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->string('name');
+            $table->string('email')->unique('users_email_unique');
+            $table->timestamp('email_verified_at')->nullable();
+            $table->string('password');
+            $table->rememberToken();
             $table->timestamps();
         });
     }
@@ -25,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tb_users');
+        Schema::dropIfExists('users_old');
     }
 };

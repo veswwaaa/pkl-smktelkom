@@ -4,6 +4,13 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DudiController;
 use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\AuthenController;
+use App\Http\Controllers\NoteController;
+use App\Http\Controllers\DudiMandiriController;
+use App\Http\Controllers\DudiMandiriAdminController;
+use App\Http\Controllers\PengajuanPklController;
+use App\Http\Controllers\PengajuanPklAdminController;
+use App\Http\Controllers\PengajuanPklDudiController;
+use App\Http\Controllers\InfoPklSiswaController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -36,13 +43,53 @@ Route::controller(AuthenController::class)->group(function () {
 
 
     //Route untuk crud siswa di admin
-    Route::get('/admin/siswa', [SiswaController::class,'index'])->middleware('isLoggedIn');
-    Route::post('/admin/siswa', [SiswaController::class,'store'])->middleware('isLoggedIn');
-    Route::put('/admin/siswa/{id}', [SiswaController::class,'update'])->middleware('isLoggedIn');
-    Route::delete('/admin/siswa/{id}', [SiswaController::class,'destroy'])->middleware('isLoggedIn');
-    Route::post('/admin/siswa/import',[SiswaController::Class, 'import'])->middleware('isLoggedIn');
+    Route::get('/admin/siswa', [SiswaController::class, 'index'])->middleware('isLoggedIn');
+    Route::post('/admin/siswa', [SiswaController::class, 'store'])->middleware('isLoggedIn');
+    Route::put('/admin/siswa/{id}', [SiswaController::class, 'update'])->middleware('isLoggedIn');
+    Route::delete('/admin/siswa/{id}', [SiswaController::class, 'destroy'])->middleware('isLoggedIn');
+    Route::post('/admin/siswa/import', [SiswaController::class, 'import'])->middleware('isLoggedIn');
 
+    // Route untuk assign/cancel penempatan PKL
+    Route::post('/admin/siswa/{id}/assign', [SiswaController::class, 'assignDudi'])->middleware('isLoggedIn');
+    Route::post('/admin/siswa/{id}/cancel-assignment', [SiswaController::class, 'cancelAssignment'])->middleware('isLoggedIn');
+    Route::post('/admin/siswa/{id}/set-tanggal-pkl', [SiswaController::class, 'setTanggalPkl'])->middleware('isLoggedIn');
 
+    //Route untuk crud notes di admin dashboard
+    Route::get('/admin/notes', [NoteController::class, 'index'])->middleware('isLoggedIn');
+    Route::post('/admin/notes', [NoteController::class, 'store'])->middleware('isLoggedIn');
+    Route::put('/admin/notes/{id}', [NoteController::class, 'update'])->middleware('isLoggedIn');
+    Route::delete('/admin/notes/{id}', [NoteController::class, 'destroy'])->middleware('isLoggedIn');
+
+    //Route untuk DUDI Mandiri (Siswa)
+    Route::post('/siswa/dudi-mandiri', [DudiMandiriController::class, 'store'])->middleware('isLoggedIn');
+    Route::get('/siswa/dudi-mandiri/current', [DudiMandiriController::class, 'getByCurrentSiswa'])->middleware('isLoggedIn');
+    Route::delete('/siswa/dudi-mandiri/{id}', [DudiMandiriController::class, 'destroy'])->middleware('isLoggedIn');
+
+    //Route untuk DUDI Mandiri (Admin)
+    Route::get('/admin/dudi-mandiri', [DudiMandiriAdminController::class, 'index'])->middleware('isLoggedIn');
+    Route::post('/admin/dudi-mandiri/{id}/approve', [DudiMandiriAdminController::class, 'approve'])->middleware('isLoggedIn');
+    Route::post('/admin/dudi-mandiri/{id}/reject', [DudiMandiriAdminController::class, 'reject'])->middleware('isLoggedIn');
+    Route::delete('/admin/dudi-mandiri/{id}', [DudiMandiriAdminController::class, 'destroy'])->middleware('isLoggedIn');
+
+    //Route untuk Pengajuan PKL (Siswa)
+    Route::get('/siswa/pengajuan-pkl', [PengajuanPklController::class, 'index'])->middleware('isLoggedIn');
+    Route::post('/siswa/pengajuan-pkl', [PengajuanPklController::class, 'store'])->middleware('isLoggedIn');
+
+    //Route untuk Info PKL (Siswa)
+    Route::get('/siswa/info-pkl', [InfoPklSiswaController::class, 'index'])->middleware('isLoggedIn');
+
+    //Route untuk Pengajuan PKL (Admin)
+    Route::get('/admin/pengajuan-pkl', [PengajuanPklAdminController::class, 'index'])->middleware('isLoggedIn');
+    Route::get('/admin/pengajuan-pkl/{id}/detail', [PengajuanPklAdminController::class, 'detail'])->middleware('isLoggedIn');
+    Route::post('/admin/pengajuan-pkl/{id}/approve', [PengajuanPklAdminController::class, 'approve'])->middleware('isLoggedIn');
+    Route::post('/admin/pengajuan-pkl/{id}/reject', [PengajuanPklAdminController::class, 'reject'])->middleware('isLoggedIn');
+    Route::post('/admin/pengajuan-pkl/{id}/change-pilihan', [PengajuanPklAdminController::class, 'changePilihan'])->middleware('isLoggedIn');
+    Route::delete('/admin/pengajuan-pkl/{id}', [PengajuanPklAdminController::class, 'destroy'])->middleware('isLoggedIn');
+
+    //Route untuk Pengajuan PKL (DUDI)
+    Route::get('/dudi/lamaran-pkl', [PengajuanPklDudiController::class, 'index'])->middleware('isLoggedIn');
+    Route::post('/dudi/lamaran-pkl/{id}/approve', [PengajuanPklDudiController::class, 'approve'])->middleware('isLoggedIn');
+    Route::post('/dudi/lamaran-pkl/{id}/reject', [PengajuanPklDudiController::class, 'reject'])->middleware('isLoggedIn');
 
     Route::get('/logout', [AuthenController::class, 'logout']);
 });

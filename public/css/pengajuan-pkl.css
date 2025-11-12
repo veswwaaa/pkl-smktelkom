@@ -1,0 +1,61 @@
+/* Pengajuan PKL Styling */
+.nav-link.active {
+    background-color: #495057 !important;
+    border-radius: 5px;
+}
+
+.card {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+.form-check-input:checked {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+}
+
+.input-group .form-select {
+    max-width: 200px;
+}
+
+.input-group .pilihan-dudi {
+    flex: 1;
+}
+
+.btn-primary {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #0b5ed7;
+    border-color: #0a58ca;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.table-responsive {
+    margin-top: 20px;
+}
+
+.badge {
+    padding: 5px 10px;
+    font-size: 12px;
+}
+
+/* Sidebar Styling */
+.min-vh-100 {
+    position: sticky;
+    top: 0;
+}
+
+.nav-item .nav-link {
+    transition: all 0.3s ease;
+    padding: 10px 15px;
+    border-radius: 5px;
+}
+
+.nav-item .nav-link:hover {
+    background-color: #495057;
+}

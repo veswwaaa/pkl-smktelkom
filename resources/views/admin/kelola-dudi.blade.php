@@ -65,11 +65,8 @@
             <a href="/admin/siswa" class="sidebar-item" title="Kelola Siswa">
                 <i class="fas fa-users"></i>
             </a>
-            <a href="#" class="sidebar-item" title="Menu">
-                <i class="fas fa-th"></i>
-            </a>
-            <a href="#" class="sidebar-item" title="Tasks">
-                <i class="fas fa-tasks"></i>
+            <a href="/admin/pengajuan-pkl" class="sidebar-item" title="Pengajuan PKL">
+                <i class="fas fa-clipboard-list"></i>
             </a>
             <a href="#" class="sidebar-item" title="Reports">
                 <i class="fas fa-chart-bar"></i>
@@ -140,10 +137,25 @@
                         <i class="fas fa-table"></i>
                         <h5>Daftar DUDI</h5>
                     </div>
-                    <button class="add-btn" onclick="showAddModal()">
-                        <i class="fas fa-plus"></i>
-                        Tambah DUDI
-                    </button>
+                    <div class="d-flex gap-2 align-items-center">
+                        <!-- Filter Dropdown -->
+                        <div class="dropdown">
+                            <select class="form-select" id="filterJenisDudi" onchange="filterDudi()"
+                                style="min-width: 200px;">
+                                <option value="">🏢 Semua DUDI</option>
+                                <option value="sekolah" {{ request('jenis_dudi') == 'sekolah' ? 'selected' : '' }}>
+                                    🏫 DUDI Sekolah
+                                </option>
+                                <option value="mandiri" {{ request('jenis_dudi') == 'mandiri' ? 'selected' : '' }}>
+                                    👨‍🎓 DUDI Mandiri Siswa
+                                </option>
+                            </select>
+                        </div>
+                        <button class="add-btn" onclick="showAddModal()">
+                            <i class="fas fa-plus"></i>
+                            Tambah DUDI
+                        </button>
+                    </div>
                 </div>
             </div>
 
@@ -152,10 +164,11 @@
                     <thead>
                         <tr>
                             <th width="5%" class="text-center">No</th>
-                            <th width="20%">Nama DUDI</th>
-                            <th width="15%">No. Telpon</th>
-                            <th width="18%">Alamat</th>
-                            <th width="12%">PIC</th>
+                            <th width="18%">Nama DUDI</th>
+                            <th width="12%">No. Telpon</th>
+                            <th width="15%">Alamat</th>
+                            <th width="10%">PIC</th>
+                            <th width="10%">Jenis</th>
                             <th width="10%">Status</th>
                             <th width="20%" class="text-center">Aksi</th>
                         </tr>
@@ -182,6 +195,17 @@
                                     <span class="badge bg-info">{{ $dudiItem->alamat }}</span>
                                 </td>
                                 <td>{{ $dudiItem->person_in_charge }}</td>
+                                <td>
+                                    @if ($dudiItem->jenis_dudi == 'mandiri')
+                                        <span class="badge bg-primary">
+                                            <i class="fas fa-user-graduate"></i> Mandiri
+                                        </span>
+                                    @else
+                                        <span class="badge bg-success">
+                                            <i class="fas fa-school"></i> Sekolah
+                                        </span>
+                                    @endif
+                                </td>
                                 <td>
                                     <span class="status-badge status-active">
                                         Ditempatkan
@@ -601,6 +625,30 @@
             color: #212529;
         }
 
+        .btn-info {
+            background: #17a2b8;
+            border-color: #17a2b8;
+            color: white;
+        }
+
+        .btn-info:hover {
+            background: #138496;
+            border-color: #117a8b;
+            color: white;
+        }
+
+        .info-group {
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            border-left: 3px solid #007bff;
+        }
+
+        .info-group label {
+            margin-bottom: 5px;
+            display: block;
+        }
+
         .password-result-container {
             background: #f8f9fa;
             padding: 15px;
@@ -652,6 +700,22 @@
             }
         }
     </style>
+
+    <script>
+        // Function untuk filter DUDI berdasarkan jenis
+        function filterDudi() {
+            const jenisDudi = document.getElementById('filterJenisDudi').value;
+            const currentUrl = new URL(window.location.href);
+
+            if (jenisDudi) {
+                currentUrl.searchParams.set('jenis_dudi', jenisDudi);
+            } else {
+                currentUrl.searchParams.delete('jenis_dudi');
+            }
+
+            window.location.href = currentUrl.toString();
+        }
+    </script>
 </body>
 
 </html>

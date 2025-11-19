@@ -11,7 +11,7 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::table('tb_siswa', function (Blueprint $table) {
-            $table->integer('id_dudi')->nullable()->after('jurusan');
+            $table->integer('id_dudi')->unsigned()->nullable()->after('jurusan');
             $table->enum('status_penempatan', ['belum', 'ditempatkan', 'selesai'])->default('belum')->after('id_dudi');
             $table->date('tanggal_mulai_pkl')->nullable()->after('status_penempatan');
             $table->date('tanggal_selesai_pkl')->nullable()->after('tanggal_mulai_pkl');

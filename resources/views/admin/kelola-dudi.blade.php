@@ -8,6 +8,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="{{ asset('css/kelola-dudi.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/kelola-dudi-additional.css') }}" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
@@ -40,7 +41,7 @@
                     <li>
                         <hr class="dropdown-divider">
                     </li>
-                    <li><a class="dropdown-item text-danger" href="logout"><i
+                    <li><a class="dropdown-item text-danger" href="/logout"><i
                                 class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
                 </ul>
             </div>
@@ -62,14 +63,11 @@
             <a href="/admin/pengajuan-pkl" class="sidebar-item" title="Pengajuan PKL">
                 <i class="fas fa-clipboard-list"></i>
             </a>
+            <a href="/admin/surat-dudi" class="sidebar-item" title="Surat DUDI">
+                <i class="fas fa-envelope"></i>
+            </a>
             <a href="#" class="sidebar-item" title="Reports">
                 <i class="fas fa-chart-bar"></i>
-            </a>
-            <a href="#" class="sidebar-item" title="Upload">
-                <i class="fas fa-upload"></i>
-            </a>
-            <a href="#" class="sidebar-item" title="Share">
-                <i class="fas fa-share-alt"></i>
             </a>
         </div>
     </div>
@@ -206,6 +204,18 @@
                                     </span>
                                 </td>
                                 <td class="text-center">
+                                    @if ($dudiItem->jenis_dudi == 'sekolah')
+                                        <button class="action-btn btn-info"
+                                            onclick="viewProfilPenerimaan({{ $dudiItem->id }}, '{{ $dudiItem->nama_dudi }}', {{ json_encode($dudiItem->jurusan_diterima) }}, '{{ addslashes($dudiItem->jobdesk ?? '') }}')"
+                                            data-bs-toggle="tooltip" title="Lihat Profil Penerimaan">
+                                            <i class="fas fa-info-circle"></i>
+                                        </button>
+                                    @endif
+                                    <button class="action-btn btn-success btn-upload-surat"
+                                        data-dudi-id="{{ $dudiItem->id }}"
+                                        data-dudi-nama="{{ $dudiItem->nama_dudi }}" title="Upload Surat Pengajuan">
+                                        <i class="fas fa-upload"></i>
+                                    </button>
                                     <button class="action-btn btn-edit"
                                         onclick="editDudi({{ $dudiItem->id }}, '{{ $dudiItem->nama_dudi }}', '{{ $dudiItem->nomor_telpon }}', '{{ $dudiItem->alamat }}', '{{ $dudiItem->person_in_charge }}')"
                                         data-bs-toggle="tooltip" title="Edit Data">
@@ -476,240 +486,308 @@
         </div>
     </div>
 
+    <!-- Modal Profil Penerimaan PKL -->
+    <div class="modal fade" id="profilPenerimaanModal" tabindex="-1" aria-labelledby="profilPenerimaanModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title" id="profilPenerimaanModalLabel">
+                        <i class="fas fa-info-circle me-2"></i>
+                        Profil Penerimaan PKL
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <h6 class="text-primary"><i class="fas fa-building me-2"></i>Nama DUDI:</h6>
+                        <p class="fs-5 fw-bold" id="detail_nama_dudi">-</p>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6 class="text-primary"><i class="fas fa-graduation-cap me-2"></i>Jurusan yang Diterima:
+                            </h6>
+                            <div id="detail_jurusan_diterima">
+                                <p class="text-muted">Belum diatur</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="text-primary"><i class="fas fa-briefcase me-2"></i>Jobdesk Siswa PKL:</h6>
+                            <div id="detail_jobdesk">
+                                <p class="text-muted">Belum diatur</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="fas fa-times me-1"></i>
+                        Tutup
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Upload Surat Pengajuan -->
+    <div class="modal fade" id="uploadSuratModal" tabindex="-1" aria-labelledby="uploadSuratModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="uploadSuratModalLabel">
+                        <i class="fas fa-upload me-2"></i>
+                        Upload Surat Pengajuan PKL
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="uploadSuratForm" enctype="multipart/form-data">
+                        @csrf
+                        <input type="hidden" id="upload_id_dudi" name="id_dudi">
+
+                        <div class="mb-3">
+                            <label class="form-label">Untuk DUDI:</label>
+                            <input type="text" class="form-control bg-light" id="upload_nama_dudi" readonly>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="file_surat" class="form-label">
+                                <i class="fas fa-file-pdf me-1"></i>
+                                File Surat Pengajuan <span class="text-danger">*</span>
+                            </label>
+                            <input type="file" class="form-control" id="file_surat" name="file_surat"
+                                accept=".pdf,.doc,.docx" required>
+                            <small class="text-muted">Format: PDF, DOC, DOCX (Max: 5MB)</small>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="catatan_admin" class="form-label">
+                                <i class="fas fa-sticky-note me-1"></i>
+                                Catatan (Opsional)
+                            </label>
+                            <textarea class="form-control" id="catatan_admin" name="catatan_admin" rows="3"
+                                placeholder="Tambahkan catatan untuk DUDI..."></textarea>
+                        </div>
+
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle me-2"></i>
+                            Surat ini akan dikirim ke DUDI untuk semua siswa yang mengajukan ke DUDI ini.
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="fas fa-times me-1"></i>
+                        Batal
+                    </button>
+                    <button type="button" class="btn btn-primary" onclick="submitUploadSurat()">
+                        <i class="fas fa-upload me-1"></i>
+                        Upload Surat
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="{{ asset('js/kelola-dudi-clean.js') }}"></script>
 
-    <!-- Reset Password JavaScript -->
+    <!-- Inline functions untuk memastikan tersedia saat halaman load -->
     <script>
-        let currentResetDudiId = null;
-        let currentResetDudiName = null;
+        // Event listener untuk button upload surat
+        document.addEventListener('DOMContentLoaded', function() {
+            // Attach event listener ke semua button upload
+            document.querySelectorAll('.btn-upload-surat').forEach(function(button) {
+                button.addEventListener('click', function() {
+                    var idDudi = this.getAttribute('data-dudi-id');
+                    var namaDudi = this.getAttribute('data-dudi-nama');
 
-        // Function to show reset password confirmation modal
-        function resetPasswordDudi(dudiId, dudiName) {
-            currentResetDudiId = dudiId;
-            currentResetDudiName = dudiName;
+                    console.log('Button clicked - ID:', idDudi, 'Nama:', namaDudi);
 
-            document.getElementById('reset_dudi_name').textContent = dudiName;
+                    // Reset form
+                    document.getElementById("uploadSuratForm").reset();
 
-            const resetModal = new bootstrap.Modal(document.getElementById('resetPasswordModal'));
-            resetModal.show();
+                    // Set values
+                    document.getElementById("upload_id_dudi").value = idDudi;
+                    document.getElementById("upload_nama_dudi").value = namaDudi;
+
+                    console.log('Values set - ID:', document.getElementById("upload_id_dudi")
+                        .value);
+                    console.log('Values set - Nama:', document.getElementById("upload_nama_dudi")
+                        .value);
+
+                    // Show modal
+                    var uploadModal = new bootstrap.Modal(document.getElementById(
+                        "uploadSuratModal"));
+                    uploadModal.show();
+                });
+            });
+        });
+
+        // Function to show upload surat modal (backup, jika masih dipanggil dari tempat lain)
+        // Function to view profil penerimaan PKL
+        function viewProfilPenerimaan(idDudi, namaDudi, jurusanDiterima, jobdesk) {
+            console.log('=== viewProfilPenerimaan called ===');
+            console.log('ID DUDI:', idDudi);
+            console.log('Nama DUDI:', namaDudi);
+            console.log('Jurusan Diterima:', jurusanDiterima);
+            console.log('Jobdesk:', jobdesk);
+
+            // Set nama DUDI
+            document.getElementById('detail_nama_dudi').textContent = namaDudi;
+
+            // Set jurusan diterima
+            var jurusanContainer = document.getElementById('detail_jurusan_diterima');
+            if (jurusanDiterima && jurusanDiterima.length > 0) {
+                var jurusanHtml = '<ul class=\"list-unstyled\">';
+                jurusanDiterima.forEach(function(jurusan) {
+                    jurusanHtml +=
+                        '<li class=\"mb-1\"><i class=\"fas fa-check-circle text-success me-2\"></i><span class=\"badge bg-primary\">' +
+                        jurusan + '</span></li>';
+                });
+                jurusanHtml += '</ul>';
+                jurusanContainer.innerHTML = jurusanHtml;
+            } else {
+                jurusanContainer.innerHTML =
+                    '<div class=\"alert alert-warning\"><i class=\"fas fa-exclamation-triangle me-2\"></i>Belum diatur oleh DUDI</div>';
+            }
+
+            // Set jobdesk
+            var jobdeskContainer = document.getElementById('detail_jobdesk');
+            if (jobdesk && jobdesk.trim() !== '') {
+                jobdeskContainer.innerHTML = '<div class=\"alert alert-light border\"><p class=\"mb-0\">' + jobdesk +
+                    '</p></div>';
+            } else {
+                jobdeskContainer.innerHTML =
+                    '<div class=\"alert alert-warning\"><i class=\"fas fa-exclamation-triangle me-2\"></i>Belum diatur oleh DUDI</div>';
+            }
+
+            // Show modal
+            var profilModal = new bootstrap.Modal(document.getElementById('profilPenerimaanModal'));
+            profilModal.show();
         }
 
-        // Function to confirm reset password
-        function confirmResetPassword() {
-            if (!currentResetDudiId) {
-                Swal.fire('Error', 'Data DUDI tidak valid', 'error');
+        // Function to show upload surat modal
+        function showUploadSuratModal(idDudi, namaDudi) {
+            console.log('=== showUploadSuratModal called ===');
+            console.log('ID DUDI:', idDudi);
+            console.log('Nama DUDI:', namaDudi);
+
+            // Get elements
+            var fieldIdDudi = document.getElementById("upload_id_dudi");
+            var fieldNamaDudi = document.getElementById("upload_nama_dudi");
+
+            console.log('Field ID DUDI found:', fieldIdDudi);
+            console.log('Field Nama DUDI found:', fieldNamaDudi);
+
+            // Reset form dulu
+            document.getElementById("uploadSuratForm").reset();
+            console.log('Form reset');
+
+            // Baru set value setelah reset
+            fieldIdDudi.value = idDudi;
+            fieldNamaDudi.value = namaDudi;
+
+            console.log('After set - ID DUDI value:', fieldIdDudi.value);
+            console.log('After set - Nama DUDI value:', fieldNamaDudi.value);
+
+            var uploadModal = new bootstrap.Modal(document.getElementById("uploadSuratModal"));
+            uploadModal.show();
+            console.log('Modal shown');
+        }
+        // Function to submit upload surat form
+        function submitUploadSurat() {
+            var form = document.getElementById("uploadSuratForm");
+            var formData = new FormData(form);
+            var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
+
+            // Validate file
+            var fileInput = document.getElementById("file_surat");
+            if (!fileInput.files.length) {
+                Swal.fire({
+                    icon: "warning",
+                    title: "Perhatian!",
+                    text: "Silakan pilih file surat terlebih dahulu",
+                });
+                return;
+            }
+
+            // Validate file size (5MB)
+            var maxSize = 5 * 1024 * 1024;
+            if (fileInput.files[0].size > maxSize) {
+                Swal.fire({
+                    icon: "error",
+                    title: "File Terlalu Besar!",
+                    text: "Ukuran file maksimal adalah 5MB",
+                });
                 return;
             }
 
             // Show loading
             Swal.fire({
-                title: 'Mereset Password...',
-                text: 'Mohon tunggu sebentar',
+                title: "Mengupload Surat...",
+                text: "Mohon tunggu sebentar",
                 allowOutsideClick: false,
+                allowEscapeKey: false,
                 showConfirmButton: false,
-                willOpen: () => {
+                didOpen: () => {
                     Swal.showLoading();
-                }
+                },
             });
 
-            // Send AJAX request
-            fetch(`/admin/dudi/${currentResetDudiId}/reset-password`, {
-                    method: 'POST',
+            // Submit form via AJAX
+            fetch("/admin/dudi/upload-surat", {
+                    method: "POST",
+                    body: formData,
                     headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                        'Accept': 'application/json'
-                    }
+                        "X-CSRF-TOKEN": csrfToken,
+                        "X-Requested-With": "XMLHttpRequest",
+                        Accept: "application/json",
+                    },
                 })
-                .then(response => response.json())
-                .then(data => {
-                    Swal.close();
-
-                    if (data.success) {
-                        // Hide confirmation modal
-                        const resetModal = bootstrap.Modal.getInstance(document.getElementById('resetPasswordModal'));
-                        resetModal.hide();
-
-                        // Show result modal
-                        document.getElementById('result_dudi_name').textContent = data.dudi_name;
-                        document.getElementById('new_password_display').value = data.new_password;
-
-                        const resultModal = new bootstrap.Modal(document.getElementById('resetPasswordResultModal'));
-                        resultModal.show();
-
-                        // Show success notification
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Berhasil!',
-                            text: data.message,
-                            timer: 3000,
-                            showConfirmButton: false
-                        });
-
+                .then(async (response) => {
+                    const contentType = response.headers.get("content-type");
+                    if (contentType && contentType.includes("application/json")) {
+                        const data = await response.json();
+                        if (!response.ok) {
+                            throw new Error(data.message || "Terjadi kesalahan pada server");
+                        }
+                        return data;
                     } else {
-                        Swal.fire('Error', data.message || 'Terjadi kesalahan', 'error');
+                        throw new Error("Server tidak mengembalikan response JSON yang valid");
                     }
                 })
-                .catch(error => {
-                    Swal.close();
-                    console.error('Error:', error);
-                    Swal.fire('Error', 'Terjadi kesalahan sistem', 'error');
+                .then((data) => {
+                    if (data.success) {
+                        Swal.fire({
+                            icon: "success",
+                            title: "Berhasil!",
+                            text: data.message,
+                            showConfirmButton: false,
+                            timer: 1500,
+                        }).then(() => {
+                            bootstrap.Modal.getInstance(document.getElementById("uploadSuratModal")).hide();
+                            location.reload();
+                        });
+                    } else {
+                        throw new Error(data.message || "Terjadi kesalahan");
+                    }
+                })
+                .catch((error) => {
+                    console.error("Upload error:", error);
+                    Swal.fire({
+                        icon: "error",
+                        title: "Gagal Upload!",
+                        text: error.message || "Terjadi kesalahan saat mengupload surat",
+                        confirmButtonColor: "#e53e3e",
+                    });
                 });
-        }
-
-        // Function to copy password to clipboard
-        function copyPassword() {
-            const passwordField = document.getElementById('new_password_display');
-            passwordField.select();
-            passwordField.setSelectionRange(0, 99999); // For mobile devices
-
-            navigator.clipboard.writeText(passwordField.value).then(function() {
-                // Show copy success feedback
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Berhasil!',
-                    text: 'Password telah disalin ke clipboard',
-                    timer: 2000,
-                    showConfirmButton: false,
-                    toast: true,
-                    position: 'top-end'
-                });
-            }).catch(function(err) {
-                console.error('Could not copy text: ', err);
-                // Fallback for older browsers
-                document.execCommand('copy');
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Berhasil!',
-                    text: 'Password telah disalin',
-                    timer: 2000,
-                    showConfirmButton: false,
-                    toast: true,
-                    position: 'top-end'
-                });
-            });
         }
     </script>
 
-    <!-- Additional CSS for avatar circle and reset button -->
-    <style>
-        .avatar-circle {
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            background: linear-gradient(45deg, #e53e3e, #ff6b6b);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 14px;
-        }
-
-        .btn-reset {
-            background: #ffc107;
-            border-color: #ffc107;
-            color: #212529;
-        }
-
-        .btn-reset:hover {
-            background: #ffca2c;
-            border-color: #ffc720;
-            color: #212529;
-        }
-
-        .btn-info {
-            background: #17a2b8;
-            border-color: #17a2b8;
-            color: white;
-        }
-
-        .btn-info:hover {
-            background: #138496;
-            border-color: #117a8b;
-            color: white;
-        }
-
-        .info-group {
-            padding: 10px;
-            background: #f8f9fa;
-            border-radius: 5px;
-            border-left: 3px solid #007bff;
-        }
-
-        .info-group label {
-            margin-bottom: 5px;
-            display: block;
-        }
-
-        .password-result-container {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 8px;
-            border: 2px dashed #28a745;
-        }
-
-        .password-result-container .form-control {
-            font-family: 'Courier New', monospace;
-            font-weight: bold;
-            font-size: 16px;
-            text-align: center;
-            letter-spacing: 1px;
-        }
-
-        /* Action Buttons Spacing */
-        .action-btn {
-            margin: 0 2px;
-            min-width: 35px;
-            min-height: 35px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        /* Responsive untuk action buttons */
-        @media (max-width: 1200px) {
-            .action-btn {
-                margin: 1px;
-                min-width: 32px;
-                min-height: 32px;
-                font-size: 12px;
-            }
-        }
-
-        @media (max-width: 992px) {
-            .action-btn {
-                margin: 1px;
-                min-width: 28px;
-                min-height: 28px;
-                font-size: 11px;
-            }
-
-            /* Stack buttons vertically on smaller screens */
-            td .action-btn {
-                display: block;
-                margin: 2px auto;
-                width: 80%;
-            }
-        }
-    </style>
-
-    <script>
-        // Function untuk filter DUDI berdasarkan jenis
-        function filterDudi() {
-            const jenisDudi = document.getElementById('filterJenisDudi').value;
-            const currentUrl = new URL(window.location.href);
-
-            if (jenisDudi) {
-                currentUrl.searchParams.set('jenis_dudi', jenisDudi);
-            } else {
-                currentUrl.searchParams.delete('jenis_dudi');
-            }
-
-            window.location.href = currentUrl.toString();
-        }
-    </script>
+    <script src="{{ asset('js/kelola-dudi-clean.js') }}"></script>
+    <script src="{{ asset('js/kelola-dudi-reset-password.js') }}"></script>
 </body>
 
 </html>

@@ -56,6 +56,11 @@
                             <i class="fas fa-file-alt"></i>
                         </a>
                     </li>
+                    <li>
+                        <a href="/dudi/surat-pkl" data-bs-toggle="tooltip" title="Surat PKL">
+                            <i class="fas fa-envelope"></i>
+                        </a>
+                    </li>
                 </ul>
             </div>
 

@@ -19,7 +19,9 @@ class tb_siswa extends Model
         'id_dudi',
         'status_penempatan',
         'tanggal_mulai_pkl',
-        'tanggal_selesai_pkl'
+        'tanggal_selesai_pkl',
+        'grade_kesiswaan',
+        'grade_kurikulum'
     ];
 
     // Relasi ke DUDI

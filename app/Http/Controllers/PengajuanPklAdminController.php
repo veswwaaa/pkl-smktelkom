@@ -6,6 +6,7 @@ use App\Models\PengajuanPkl;
 use App\Models\tb_siswa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
 
 class PengajuanPklAdminController extends Controller
 {
@@ -56,6 +57,32 @@ class PengajuanPklAdminController extends Controller
         $data = \App\Models\tb_admin::find($user->id_admin);
 
         return view('admin.kelola-pengajuan', compact('pengajuan', 'data'));
+    }
+
+    // Tampilkan detail pengajuan (untuk AJAX)
+    public function detail($id)
+    {
+        $pengajuan = PengajuanPkl::with([
+            'siswa',
+            'dudiPilihan1',
+            'dudiPilihan2',
+            'dudiPilihan3',
+            'dudiMandiriPilihan1',
+            'dudiMandiriPilihan2',
+            'dudiMandiriPilihan3'
+        ])->find($id);
+
+        if (!$pengajuan) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Pengajuan tidak ditemukan.'
+            ], 404);
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => $pengajuan
+        ]);
     }
 
     // Ubah status pengajuan
@@ -142,17 +169,29 @@ class PengajuanPklAdminController extends Controller
 
         if ($pilihanAktif == '1') {
             $idDudi = $pengajuan->id_dudi_pilihan_1 ?? $pengajuan->id_dudi_mandiri_pilihan_1;
+            // Update status pilihan 1 menjadi approved
+            $pengajuan->status_pilihan_1 = 'approved';
+            $pengajuan->tanggal_response_pilihan_1 = now();
+            $pengajuan->catatan_pilihan_1 = $request->input('catatan', 'Disetujui oleh admin');
         } elseif ($pilihanAktif == '2') {
             $idDudi = $pengajuan->id_dudi_pilihan_2 ?? $pengajuan->id_dudi_mandiri_pilihan_2;
+            // Update status pilihan 2 menjadi approved
+            $pengajuan->status_pilihan_2 = 'approved';
+            $pengajuan->tanggal_response_pilihan_2 = now();
+            $pengajuan->catatan_pilihan_2 = $request->input('catatan', 'Disetujui oleh admin');
         } else {
             $idDudi = $pengajuan->id_dudi_pilihan_3 ?? $pengajuan->id_dudi_mandiri_pilihan_3;
+            // Update status pilihan 3 menjadi approved
+            $pengajuan->status_pilihan_3 = 'approved';
+            $pengajuan->tanggal_response_pilihan_3 = now();
+            $pengajuan->catatan_pilihan_3 = $request->input('catatan', 'Disetujui oleh admin');
         }
 
         if (!$idDudi) {
             return back()->with('error', 'DUDI pilihan tidak valid.');
         }
 
-        // Update pengajuan
+        // Update pengajuan status menjadi approved
         $pengajuan->status = 'approved';
         $pengajuan->save();
 
@@ -165,7 +204,7 @@ class PengajuanPklAdminController extends Controller
         logActivity(
             'update',
             'Pengajuan PKL Disetujui',
-            "Pengajuan PKL siswa {$siswa->nama} (NIS: {$siswa->nis}) disetujui dan ditempatkan",
+            "Pengajuan PKL siswa {$siswa->nama} (NIS: {$siswa->nis}) Pilihan {$pilihanAktif} disetujui dan ditempatkan",
             Session::get('loginId')
         );
 
@@ -268,31 +307,5 @@ class PengajuanPklAdminController extends Controller
         );
 
         return back()->with('success', 'Pengajuan berhasil dihapus.');
-    }
-
-    // View detail pengajuan (JSON for AJAX)
-    public function detail($id)
-    {
-        $pengajuan = PengajuanPkl::with([
-            'siswa',
-            'dudiPilihan1',
-            'dudiPilihan2',
-            'dudiPilihan3',
-            'dudiMandiriPilihan1',
-            'dudiMandiriPilihan2',
-            'dudiMandiriPilihan3'
-        ])->find($id);
-
-        if (!$pengajuan) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Pengajuan tidak ditemukan'
-            ], 404);
-        }
-
-        return response()->json([
-            'success' => true,
-            'data' => $pengajuan
-        ]);
     }
 }

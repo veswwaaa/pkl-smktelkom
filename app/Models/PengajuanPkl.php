@@ -27,7 +27,9 @@ class PengajuanPkl extends Model
         'catatan_pilihan_1',
         'catatan_pilihan_2',
         'catatan_pilihan_3',
-        'tanggal_pengajuan'
+        'tanggal_pengajuan',
+        'cv_file',
+        'surat_balasan'
     ];
 
     // Relasi ke Siswa

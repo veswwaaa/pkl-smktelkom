@@ -39,7 +39,7 @@
                     <li>
                         <hr class="dropdown-divider">
                     </li>
-                    <li><a class="dropdown-item text-danger" href="logout"><i
+                    <li><a class="dropdown-item text-danger" href="/logout"><i
                                 class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
                 </ul>
             </div>

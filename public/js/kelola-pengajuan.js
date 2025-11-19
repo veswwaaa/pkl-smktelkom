@@ -286,16 +286,24 @@ function changePilihan(event, id) {
 // Confirm Approve
 function confirmApprove(id, nama, namaDudi) {
     Swal.fire({
-        title: "Approve & Kirim ke DUDI?",
+        title: "Approve Pengajuan PKL?",
         html: `
             <div class="text-start">
                 <p>Anda akan menyetujui pengajuan PKL dari:</p>
                 <strong>${nama}</strong>
-                <p class="mt-2">Pengajuan akan dikirim ke:</p>
+                <p class="mt-2">Akan ditempatkan di:</p>
                 <strong class="text-primary">${namaDudi}</strong>
                 <hr>
+                <div class="alert alert-success small">
+                    <i class="fas fa-check-circle"></i> <strong>Yang akan dilakukan:</strong>
+                    <ul class="mb-0 mt-2">
+                        <li>Siswa akan ditempatkan ke DUDI</li>
+                        <li>Pengajuan akan dikirim ke akun DUDI</li>
+                        <li>DUDI dapat melihat detail siswa dan memberikan approval akhir</li>
+                    </ul>
+                </div>
                 <div class="alert alert-info small">
-                    <i class="fas fa-info-circle"></i> Siswa akan otomatis ditempatkan ke DUDI dan pengajuan akan dikirim ke akun DUDI untuk diproses lebih lanjut.
+                    <i class="fas fa-info-circle"></i> <strong>Catatan:</strong> Pastikan Anda sudah menerima surat balasan persetujuan dari DUDI sebelum meng-approve!
                 </div>
             </div>
         `,
@@ -303,10 +311,10 @@ function confirmApprove(id, nama, namaDudi) {
         showCancelButton: true,
         confirmButtonColor: "#28a745",
         cancelButtonColor: "#6c757d",
-        confirmButtonText: '<i class="fas fa-check"></i> Ya, Approve & Kirim!',
+        confirmButtonText: '<i class="fas fa-check"></i> Ya, Approve!',
         cancelButtonText: "Batal",
         reverseButtons: true,
-        width: "500px",
+        width: "550px",
     }).then((result) => {
         if (result.isConfirmed) {
             const form = document.createElement("form");
@@ -368,7 +376,7 @@ function confirmCreateDudiAccount(
     namaSiswa
 ) {
     Swal.fire({
-        title: "Buat Akun DUDI & Approve?",
+        title: "Buat Akun DUDI?",
         html: `
             <div class="text-start">
                 <p>Anda akan membuat akun untuk DUDI Mandiri:</p>
@@ -380,12 +388,20 @@ function confirmCreateDudiAccount(
                     <ul class="mb-0 mt-2">
                         <li>Membuat data DUDI di sistem</li>
                         <li>Membuat akun login untuk DUDI</li>
-                        <li>Approve pengajuan PKL siswa</li>
-                        <li>Mengirim pengajuan ke DUDI</li>
+                        <li>Status pengajuan diubah ke <strong>"Diproses"</strong></li>
                     </ul>
                 </div>
                 <div class="alert alert-warning small">
-                    <i class="fas fa-exclamation-triangle"></i> Pastikan Anda sudah menghubungi DUDI dan mendapat persetujuan!
+                    <i class="fas fa-exclamation-triangle"></i> <strong>Langkah selanjutnya setelah akun dibuat:</strong>
+                    <ol class="mb-0 mt-2">
+                        <li>Kirim surat pengajuan PKL + CV & portofolio siswa ke DUDI</li>
+                        <li>Tunggu surat balasan dari DUDI</li>
+                        <li>Jika DUDI menyetujui, klik tombol <strong>"Approve"</strong></li>
+                        <li>Jika DUDI menolak, klik tombol <strong>"Tolak"</strong></li>
+                    </ol>
+                </div>
+                <div class="alert alert-danger small">
+                    <i class="fas fa-info-circle"></i> <strong>PENTING:</strong> Siswa <u>BELUM</u> langsung diterima. Anda masih perlu menunggu persetujuan dari DUDI sebelum meng-approve pengajuan PKL siswa!
                 </div>
             </div>
         `,
@@ -394,16 +410,16 @@ function confirmCreateDudiAccount(
         confirmButtonColor: "#0d6efd",
         cancelButtonColor: "#6c757d",
         confirmButtonText:
-            '<i class="fas fa-user-plus"></i> Ya, Buat Akun & Approve',
+            '<i class="fas fa-user-plus"></i> Ya, Buat Akun DUDI',
         cancelButtonText: "Batal",
         reverseButtons: true,
-        width: "600px",
+        width: "650px",
     }).then((result) => {
         if (result.isConfirmed) {
             // Show loading
             Swal.fire({
                 title: "Memproses...",
-                html: "Sedang membuat akun DUDI dan approve pengajuan PKL",
+                html: "Sedang membuat akun DUDI",
                 allowOutsideClick: false,
                 didOpen: () => {
                     Swal.showLoading();
@@ -423,7 +439,7 @@ function confirmCreateDudiAccount(
             csrfInput.name = "_token";
             csrfInput.value = csrfToken;
 
-            // Tambahkan pengajuan_id untuk auto-approve setelah create akun
+            // Tambahkan pengajuan_id untuk mengubah status ke 'diproses'
             const pengajuanInput = document.createElement("input");
             pengajuanInput.type = "hidden";
             pengajuanInput.name = "pengajuan_id";
@@ -514,6 +530,89 @@ function confirmRejectDudiMandiri(pengajuanId, namaSiswa, namaDudi) {
     });
 }
 
+// Confirm DUDI Tidak Bersedia (sebelum akun dibuat)
+function confirmDudiTidakBersedia(pengajuanId, namaSiswa, namaDudi) {
+    Swal.fire({
+        title: "DUDI Tidak Bersedia?",
+        html: `
+            <div class="text-start">
+                <p><strong>DUDI tidak bersedia dijadikan tempat PKL:</strong></p>
+                <h5 class="text-danger">${namaDudi}</h5>
+                <p class="text-muted small mt-2">Pengajuan dari: ${namaSiswa}</p>
+                <hr>
+                <div class="alert alert-warning small">
+                    <i class="fas fa-exclamation-triangle"></i> <strong>Yang akan terjadi:</strong>
+                    <ul class="mb-0 mt-2">
+                        <li>DUDI Mandiri <strong>tidak akan dibuatkan akun</strong></li>
+                        <li>Pengajuan siswa akan <strong>ditolak untuk pilihan ini</strong></li>
+                        <li>Sistem otomatis pindah ke <strong>pilihan berikutnya</strong> (jika ada)</li>
+                        <li>Siswa bisa mengajukan DUDI lain</li>
+                    </ul>
+                </div>
+                <div class="form-group mt-3">
+                    <label class="form-label">Alasan DUDI tidak bersedia:</label>
+                    <textarea id="catatanTidakBersedia" class="form-control" rows="3" placeholder="Contoh: Kuota PKL sudah penuh, tidak menerima bidang IT, dll..." required></textarea>
+                </div>
+            </div>
+        `,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#dc3545",
+        cancelButtonColor: "#6c757d",
+        confirmButtonText: '<i class="fas fa-ban"></i> Ya, Tidak Bersedia',
+        cancelButtonText: "Batal",
+        reverseButtons: true,
+        width: "600px",
+        preConfirm: () => {
+            const catatan = document.getElementById(
+                "catatanTidakBersedia"
+            ).value;
+            if (!catatan) {
+                Swal.showValidationMessage(
+                    "Harap isi alasan DUDI tidak bersedia"
+                );
+            }
+            return { catatan: catatan };
+        },
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Show loading
+            Swal.fire({
+                title: "Memproses...",
+                html: "Sedang memproses penolakan",
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                },
+            });
+
+            // Submit form untuk reject pengajuan
+            const form = document.createElement("form");
+            form.method = "POST";
+            form.action = `/admin/pengajuan-pkl/${pengajuanId}/reject`;
+
+            const csrfToken = document
+                .querySelector('meta[name="csrf-token"]')
+                .getAttribute("content");
+            const csrfInput = document.createElement("input");
+            csrfInput.type = "hidden";
+            csrfInput.name = "_token";
+            csrfInput.value = csrfToken;
+
+            // Tambahkan catatan
+            const catatanInput = document.createElement("input");
+            catatanInput.type = "hidden";
+            catatanInput.name = "catatan";
+            catatanInput.value = `DUDI tidak bersedia: ${result.value.catatan}`;
+
+            form.appendChild(csrfInput);
+            form.appendChild(catatanInput);
+            document.body.appendChild(form);
+            form.submit();
+        }
+    });
+}
+
 // Confirm Delete
 function confirmDelete(id, nama) {
     Swal.fire({
@@ -551,4 +650,161 @@ function confirmDelete(id, nama) {
             form.submit();
         }
     });
+}
+
+// Show Upload Surat Modal
+function showUploadSuratModal(pengajuanId, namaSiswa, namaDudi) {
+    document.getElementById("modal_nama_siswa").textContent = namaSiswa;
+    document.getElementById("modal_nama_dudi").textContent = namaDudi;
+
+    const form = document.getElementById("formUploadSurat");
+    form.action = `/admin/pengajuan-pkl/${pengajuanId}/upload-surat`;
+
+    const modal = new bootstrap.Modal(
+        document.getElementById("uploadSuratModal")
+    );
+    modal.show();
+}
+
+// Confirm Approve After Response (setelah ada balasan dari DUDI)
+function confirmApproveAfterResponse(id, nama, namaDudi) {
+    Swal.fire({
+        title: "Approve Pengajuan PKL?",
+        html: `
+            <div class="text-start">
+                <p><strong>DUDI telah menyetujui siswa:</strong></p>
+                <h5 class="text-primary">${nama}</h5>
+                <p class="mt-2">Akan ditempatkan di:</p>
+                <h5 class="text-success">${namaDudi}</h5>
+                <hr>
+                <div class="alert alert-success small">
+                    <i class="fas fa-check-circle"></i> <strong>Konfirmasi:</strong>
+                    <ul class="mb-0 mt-2">
+                        <li>Surat balasan DUDI menyatakan <strong>MENERIMA</strong></li>
+                        <li>Siswa akan ditempatkan ke DUDI</li>
+                        <li>Status pengajuan akan diubah menjadi <strong>APPROVED</strong></li>
+                    </ul>
+                </div>
+            </div>
+        `,
+        icon: "success",
+        showCancelButton: true,
+        confirmButtonColor: "#28a745",
+        cancelButtonColor: "#6c757d",
+        confirmButtonText: '<i class="fas fa-check"></i> Ya, Approve!',
+        cancelButtonText: "Batal",
+        reverseButtons: true,
+        width: "550px",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            const form = document.createElement("form");
+            form.method = "POST";
+            form.action = `/admin/pengajuan-pkl/${id}/approve`;
+
+            const csrfToken = document
+                .querySelector('meta[name="csrf-token"]')
+                .getAttribute("content");
+            const csrfInput = document.createElement("input");
+            csrfInput.type = "hidden";
+            csrfInput.name = "_token";
+            csrfInput.value = csrfToken;
+
+            form.appendChild(csrfInput);
+            document.body.appendChild(form);
+            form.submit();
+        }
+    });
+}
+
+// Confirm Reject After Response (setelah DUDI menolak)
+function confirmRejectAfterResponse(id, nama, catatanDudi) {
+    Swal.fire({
+        title: "Tolak Pengajuan PKL?",
+        html: `
+            <div class="text-start">
+                <p><strong>DUDI telah menolak siswa:</strong></p>
+                <h5 class="text-danger">${nama}</h5>
+                <hr>
+                <div class="alert alert-danger small">
+                    <i class="fas fa-times-circle"></i> <strong>Catatan dari DUDI:</strong>
+                    <p class="mt-2 mb-0">${
+                        catatanDudi || "Tidak ada catatan"
+                    }</p>
+                </div>
+                <div class="alert alert-warning small">
+                    <i class="fas fa-info-circle"></i> Sistem akan otomatis memindahkan ke pilihan DUDI berikutnya (jika ada).
+                </div>
+            </div>
+        `,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#dc3545",
+        cancelButtonColor: "#6c757d",
+        confirmButtonText: '<i class="fas fa-times"></i> Ya, Tolak',
+        cancelButtonText: "Batal",
+        reverseButtons: true,
+        width: "550px",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            const form = document.createElement("form");
+            form.method = "POST";
+            form.action = `/admin/pengajuan-pkl/${id}/reject`;
+
+            const csrfToken = document
+                .querySelector('meta[name="csrf-token"]')
+                .getAttribute("content");
+            const csrfInput = document.createElement("input");
+            csrfInput.type = "hidden";
+            csrfInput.name = "_token";
+            csrfInput.value = csrfToken;
+
+            // Gunakan catatan dari DUDI
+            const catatanInput = document.createElement("input");
+            catatanInput.type = "hidden";
+            catatanInput.name = "catatan";
+            catatanInput.value = catatanDudi || "DUDI menolak";
+
+            form.appendChild(csrfInput);
+            form.appendChild(catatanInput);
+            document.body.appendChild(form);
+            form.submit();
+        }
+    });
+}
+
+// View Detail menggunakan data lokal (tanpa fetch ke server)
+function viewDetailLocal(data) {
+    const modal = new bootstrap.Modal(document.getElementById("detailModal"));
+
+    // Set data siswa
+    document.getElementById("detail_nama_siswa").textContent = data.nama;
+    document.getElementById("detail_nis").textContent = data.nis;
+    document.getElementById("detail_kelas").textContent = data.kelas;
+    document.getElementById("detail_jurusan").textContent = data.jurusan;
+
+    // Set data pengajuan
+    document.getElementById("detail_pilihan1").textContent =
+        data.pilihan1 || "-";
+    document.getElementById("detail_pilihan2").textContent =
+        data.pilihan2 || "-";
+    document.getElementById("detail_pilihan3").textContent =
+        data.pilihan3 || "-";
+    document.getElementById("detail_pilihan_aktif").textContent =
+        "Pilihan " + data.pilihanAktif;
+
+    // Set status dengan badge
+    const statusBadge =
+        data.status === "approved"
+            ? '<span class="badge bg-success">Approved</span>'
+            : data.status === "rejected"
+            ? '<span class="badge bg-danger">Rejected</span>'
+            : data.status === "diproses"
+            ? '<span class="badge bg-warning">Diproses</span>'
+            : '<span class="badge bg-secondary">Pending</span>';
+    document.getElementById("detail_status").innerHTML = statusBadge;
+
+    document.getElementById("detail_tanggal_pengajuan").textContent =
+        data.tanggal;
+
+    modal.show();
 }

@@ -4,14 +4,15 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration {
+return new class extends Migration
+{
     /**
      * Run the migrations.
      */
     public function up(): void
     {
-        Schema::table('tb_dudi_mandiri', function (Blueprint $table) {
-            $table->integer('id_dudi')->unsigned()->nullable()->after('id_siswa');
+        Schema::table('tb_dudi', function (Blueprint $table) {
+            //
         });
     }
 
@@ -20,8 +21,8 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::table('tb_dudi_mandiri', function (Blueprint $table) {
-            $table->dropColumn('id_dudi');
+        Schema::table('tb_dudi', function (Blueprint $table) {
+            //
         });
     }
 };

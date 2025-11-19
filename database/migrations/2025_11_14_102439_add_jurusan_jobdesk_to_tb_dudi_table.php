@@ -10,8 +10,9 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::table('tb_dudi_mandiri', function (Blueprint $table) {
-            $table->integer('id_dudi')->unsigned()->nullable()->after('id_siswa');
+        Schema::table('tb_dudi', function (Blueprint $table) {
+            // Change jurusan from varchar to json to support multiple jurusan
+            $table->json('jurusan_diterima')->nullable()->after('jobdesk');
         });
     }
 
@@ -20,8 +21,8 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::table('tb_dudi_mandiri', function (Blueprint $table) {
-            $table->dropColumn('id_dudi');
+        Schema::table('tb_dudi', function (Blueprint $table) {
+            $table->dropColumn('jurusan_diterima');
         });
     }
 };

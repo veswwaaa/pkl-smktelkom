@@ -10,8 +10,9 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::table('tb_dudi_mandiri', function (Blueprint $table) {
-            $table->integer('id_dudi')->unsigned()->nullable()->after('id_siswa');
+        Schema::table('tb_pengajuan_pkl', function (Blueprint $table) {
+            $table->string('cv_file')->nullable()->after('status');
+            $table->string('surat_balasan')->nullable()->after('cv_file');
         });
     }
 
@@ -20,8 +21,8 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::table('tb_dudi_mandiri', function (Blueprint $table) {
-            $table->dropColumn('id_dudi');
+        Schema::table('tb_pengajuan_pkl', function (Blueprint $table) {
+            $table->dropColumn(['cv_file', 'surat_balasan']);
         });
     }
 };

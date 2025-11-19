@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\tb_dudi;
 use App\Models\User;
+use App\Models\SuratDudi;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Session;
 
 class DudiController extends Controller
 {
@@ -303,5 +306,96 @@ class DudiController extends Controller
         $prefix = 'DUDI2025';
         $randomChars = strtoupper(substr(str_shuffle('abcdefghijklmnopqrstuvwxyz0123456789'), 0, 4));
         return $prefix . $randomChars;
+    }
+
+    /**
+     * Upload surat pengajuan untuk DUDI
+     */
+    public function uploadSurat(Request $request)
+    {
+        try {
+            $request->validate([
+                'id_dudi' => 'required|exists:tb_dudi,id',
+                'file_surat' => 'required|file|mimes:pdf,doc,docx|max:5120', // 5MB
+                'catatan_admin' => 'nullable|string'
+            ]);
+
+            // Get logged in user
+            $user = \App\Models\User::where('id', Session::get('loginId'))->first();
+
+            if (!$user || $user->role != 'admin') {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Unauthorized'
+                ], 403);
+            }
+
+            // Handle file upload
+            $file = $request->file('file_surat');
+            $fileName = 'surat_pengajuan_dudi_' . $request->id_dudi . '_' . time() . '.' . $file->getClientOriginalExtension();
+            $filePath = $file->storeAs('public/surat_dudi', $fileName);
+
+            // Cek apakah sudah ada surat untuk DUDI ini
+            $suratDudi = SuratDudi::where('id_dudi', $request->id_dudi)->first();
+
+            if ($suratDudi) {
+                // Update existing record
+                // Delete old file if exists
+                if ($suratDudi->file_surat_pengajuan && Storage::exists('public/surat_dudi/' . $suratDudi->file_surat_pengajuan)) {
+                    Storage::delete('public/surat_dudi/' . $suratDudi->file_surat_pengajuan);
+                }
+
+                $suratDudi->file_surat_pengajuan = $fileName;
+                $suratDudi->tanggal_upload_pengajuan = now();
+                $suratDudi->uploaded_by_admin = $user->id_admin;
+                $suratDudi->catatan_admin = $request->catatan_admin;
+                $suratDudi->save();
+            } else {
+                // Create new record
+                $suratDudi = SuratDudi::create([
+                    'id_dudi' => $request->id_dudi,
+                    'file_surat_pengajuan' => $fileName,
+                    'tanggal_upload_pengajuan' => now(),
+                    'uploaded_by_admin' => $user->id_admin,
+                    'catatan_admin' => $request->catatan_admin
+                ]);
+            }
+
+            // Get dudi name for logging
+            $dudi = tb_dudi::find($request->id_dudi);
+
+            // Log activity
+            logActivity(
+                'upload',
+                'Surat Pengajuan PKL Diupload',
+                "Surat pengajuan PKL untuk DUDI {$dudi->nama_dudi} berhasil diupload"
+            );
+
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Surat pengajuan berhasil diupload!'
+                ]);
+            }
+
+            return redirect('/admin/dudi')->with('success', 'Surat pengajuan berhasil diupload!');
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Validasi gagal: ' . implode(', ', $e->validator->errors()->all())
+                ], 422);
+            }
+            return redirect()->back()->withErrors($e->validator)->withInput();
+        } catch (\Exception $e) {
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Terjadi kesalahan: ' . $e->getMessage()
+                ], 500);
+            }
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 }

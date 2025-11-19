@@ -16,5 +16,10 @@ class tb_dudi extends Model
     'jurusan',
     'jobdesk',
     'jenis_dudi',
+    'jurusan_diterima',
+  ];
+
+  protected $casts = [
+    'jurusan_diterima' => 'array',
   ];
 }

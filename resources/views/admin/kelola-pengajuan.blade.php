@@ -64,6 +64,9 @@
             <a href="/admin/pengajuan-pkl" class="sidebar-item active" title="Pengajuan PKL">
                 <i class="fas fa-clipboard-list"></i>
             </a>
+            <a href="/admin/surat-dudi" class="sidebar-item" title="Surat DUDI">
+                <i class="fas fa-envelope"></i>
+            </a>
             <a href="#" class="sidebar-item" title="Laporan">
                 <i class="fas fa-chart-bar"></i>
             </a>
@@ -161,6 +164,23 @@
                                                 $isDudiMandiri = false;
                                                 $dudiMandiriHasAccount = false;
 
+                                                // Definisikan nama untuk semua pilihan
+                                                $pilihan1Nama = $item->dudiPilihan1
+                                                    ? $item->dudiPilihan1->nama_dudi
+                                                    : ($item->dudiMandiriPilihan1
+                                                        ? $item->dudiMandiriPilihan1->nama_dudi . ' (Mandiri)'
+                                                        : '-');
+                                                $pilihan2Nama = $item->dudiPilihan2
+                                                    ? $item->dudiPilihan2->nama_dudi
+                                                    : ($item->dudiMandiriPilihan2
+                                                        ? $item->dudiMandiriPilihan2->nama_dudi . ' (Mandiri)'
+                                                        : '-');
+                                                $pilihan3Nama = $item->dudiPilihan3
+                                                    ? $item->dudiPilihan3->nama_dudi
+                                                    : ($item->dudiMandiriPilihan3
+                                                        ? $item->dudiMandiriPilihan3->nama_dudi . ' (Mandiri)'
+                                                        : '-');
+
                                                 if ($pilihanAktif == '1') {
                                                     $dudi = $item->dudiPilihan1;
                                                     $dudiMandiri = $item->dudiMandiriPilihan1;
@@ -245,27 +265,38 @@
 
                                             @if ($item->status == 'pending' || $item->status == 'diproses')
                                                 @if ($isDudiMandiri && !$dudiMandiriHasAccount)
-                                                    {{-- DUDI Mandiri belum punya akun, tampilkan tombol Buat Akun DUDI --}}
+                                                    {{-- DUDI Mandiri belum punya akun, tampilkan tombol Buat Akun & Tidak Bersedia --}}
                                                     <button class="btn btn-sm btn-success"
-                                                        title="Buat Akun DUDI & Approve"
+                                                        title="DUDI bersedia jadi tempat PKL, buat akun"
                                                         onclick="confirmCreateDudiAccount({{ $dudiMandiri->id }}, '{{ $dudiMandiri->nama_dudi }}', {{ $item->id }}, '{{ $item->siswa->nama }}')">
-                                                        <i class="fas fa-user-plus"></i> Buat Akun
+                                                        <i class="fas fa-check-circle"></i> DUDI Bersedia
                                                     </button>
                                                     <button class="btn btn-sm btn-danger"
-                                                        title="Tolak (DUDI Tidak Setuju)"
-                                                        onclick="confirmRejectDudiMandiri({{ $item->id }}, '{{ $item->siswa->nama }}', '{{ $dudiMandiri->nama_dudi }}')">
-                                                        <i class="fas fa-times-circle"></i> Tolak
+                                                        title="DUDI tidak bersedia jadi tempat PKL"
+                                                        onclick="confirmDudiTidakBersedia({{ $item->id }}, '{{ $item->siswa->nama }}', '{{ $dudiMandiri->nama_dudi }}')">
+                                                        <i class="fas fa-times-circle"></i> Tidak Bersedia
+                                                    </button>
+                                                @elseif ($isDudiMandiri && $dudiMandiriHasAccount)
+                                                    {{-- DUDI Mandiri sudah punya akun - tampilkan tombol approve dan tolak --}}
+                                                    <button class="btn btn-sm btn-success"
+                                                        title="DUDI menyetujui siswa"
+                                                        onclick="confirmApprove({{ $item->id }}, '{{ $item->siswa->nama }}', '{{ $dudi->nama_dudi ?? '' }}')">
+                                                        <i class="fas fa-check"></i> Approve
+                                                    </button>
+                                                    <button class="btn btn-sm btn-danger" title="DUDI tidak setuju"
+                                                        onclick="confirmRejectDudiMandiri({{ $item->id }}, '{{ $item->siswa->nama }}', '{{ $dudi->nama_dudi ?? '' }}')">
+                                                        <i class="fas fa-times-circle"></i> DUDI Tolak
                                                     </button>
                                                 @else
-                                                    {{-- DUDI Sekolah atau DUDI Mandiri sudah punya akun --}}
+                                                    {{-- Tampilkan button approve/reject normal --}}
                                                     <button class="btn btn-sm btn-success"
                                                         title="Approve & Kirim ke DUDI"
                                                         onclick="confirmApprove({{ $item->id }}, '{{ $item->siswa->nama }}', '{{ $dudi->nama_dudi ?? '' }}')">
-                                                        <i class="fas fa-check"></i>
+                                                        <i class="fas fa-check"></i> Approve
                                                     </button>
                                                     <button class="btn btn-sm btn-warning" title="Reject"
                                                         onclick="confirmReject({{ $item->id }}, '{{ $item->siswa->nama }}')">
-                                                        <i class="fas fa-times"></i>
+                                                        <i class="fas fa-times"></i> Tolak
                                                     </button>
                                                 @endif
                                             @endif

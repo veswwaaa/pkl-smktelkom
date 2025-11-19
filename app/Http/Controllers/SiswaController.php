@@ -396,4 +396,51 @@ class SiswaController extends Controller
             return back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
     }
+
+    public function updateGrade(Request $request, $id)
+    {
+        try {
+            $request->validate([
+                'grade_kesiswaan' => 'nullable|in:tidak_ada,ringan,sedang,berat',
+                'grade_kurikulum' => 'nullable|in:A,B,C,D,E'
+            ]);
+
+            $siswa = tb_siswa::find($id);
+
+            if (!$siswa) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Data siswa tidak ditemukan'
+                ], 404);
+            }
+
+            // Update grade
+            $siswa->grade_kesiswaan = $request->grade_kesiswaan;
+            $siswa->grade_kurikulum = $request->grade_kurikulum;
+            $siswa->save();
+
+            logActivity(
+                'update',
+                'Grade Siswa Diperbarui',
+                "Grade siswa {$siswa->nama} (NIS: {$siswa->nis}) - Kesiswaan: {$request->grade_kesiswaan}, Kurikulum: {$request->grade_kurikulum}",
+                \Illuminate\Support\Facades\Session::get('loginId')
+            );
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Grade berhasil disimpan!'
+            ]);
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Data tidak valid: ' . implode(', ', $e->errors())
+            ], 422);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan: ' . $e->getMessage()
+            ], 500);
+        }
+    }
 }

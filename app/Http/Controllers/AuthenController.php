@@ -269,7 +269,13 @@ class AuthenController extends Controller
                 ->where('id_siswa', $data->id)
                 ->first();
 
-            return view('dashboardSiswa', compact('data', 'pengajuan'));
+            // Ambil semua DUDI sekolah yang sudah mengisi profil penerimaan PKL
+            $dudiTersedia = tb_dudi::where('jenis_dudi', 'sekolah')
+                ->whereNotNull('jurusan_diterima')
+                ->whereNotNull('jobdesk')
+                ->get();
+
+            return view('dashboardSiswa', compact('data', 'pengajuan', 'dudiTersedia'));
 
         } elseif ($role === 'admin') {
             // Ambil aktivitas terkini untuk dashboard admin
@@ -306,50 +312,8 @@ class AuthenController extends Controller
             return view('dashboardAdmin', compact('data', 'activities', 'totalSiswa', 'totalDudi', 'siswaGrowth', 'dudiGrowth', 'siswaDitempatkan', 'siswaMenunggu', 'persenDitempatkan'));
 
         } elseif ($role === 'dudi') {
-            // Ambil statistik lamaran untuk DUDI
-            $idDudi = $data->id;
-
-            // Total lamaran masuk
-            $totalLamaran = \App\Models\PengajuanPkl::where(function ($query) use ($idDudi) {
-                $query->where(function ($q) use ($idDudi) {
-                    $q->where('pilihan_aktif', '1')
-                        ->where('id_dudi_pilihan_1', $idDudi);
-                })
-                    ->orWhere(function ($q) use ($idDudi) {
-                        $q->where('pilihan_aktif', '2')
-                            ->where('id_dudi_pilihan_2', $idDudi);
-                    })
-                    ->orWhere(function ($q) use ($idDudi) {
-                        $q->where('pilihan_aktif', '3')
-                            ->where('id_dudi_pilihan_3', $idDudi);
-                    });
-            })->count();
-
-            // Lamaran pending
-            $lamaranPending = \App\Models\PengajuanPkl::where(function ($query) use ($idDudi) {
-                $query->where(function ($q) use ($idDudi) {
-                    $q->where('pilihan_aktif', '1')
-                        ->where('id_dudi_pilihan_1', $idDudi);
-                })
-                    ->orWhere(function ($q) use ($idDudi) {
-                        $q->where('pilihan_aktif', '2')
-                            ->where('id_dudi_pilihan_2', $idDudi);
-                    })
-                    ->orWhere(function ($q) use ($idDudi) {
-                        $q->where('pilihan_aktif', '3')
-                            ->where('id_dudi_pilihan_3', $idDudi);
-                    });
-            })
-                ->where('status', 'pending')
-                ->count();
-
-            // Siswa yang diterima (ditempatkan di DUDI ini)
-            $siswaDiterima = DB::table('tb_siswa')
-                ->where('id_dudi', $idDudi)
-                ->where('status_penempatan', 'ditempatkan')
-                ->count();
-
-            return view('dashboardDudi', compact('data', 'totalLamaran', 'lamaranPending', 'siswaDiterima'));
+            // Redirect DUDI ke dashboard khusus mereka
+            return redirect('/dudi/dashboard');
 
         } else {
             Session::flush();

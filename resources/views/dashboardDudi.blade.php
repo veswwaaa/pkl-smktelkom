@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Dashboard DUDI - {{ $data->nama_dudi }}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
@@ -60,6 +61,11 @@
                     <li>
                         <a href="/dudi/lamaran-pkl" data-bs-toggle="tooltip" title="Lamaran PKL">
                             <i class="fas fa-file-alt"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/dudi/surat-pkl" data-bs-toggle="tooltip" title="Surat PKL">
+                            <i class="fas fa-envelope"></i>
                         </a>
                     </li>
                 </ul>
@@ -139,21 +145,12 @@
                     </div>
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-md-6 mb-3">
+                            <div class="col-md-{{ $data->jenis_dudi == 'sekolah' ? '6' : '12' }} mb-3">
                                 <a href="/dudi/lamaran-pkl" class="btn btn-outline-primary btn-lg w-100 text-start">
                                     <i class="fas fa-file-alt fa-2x float-start me-3"></i>
                                     <div>
                                         <strong>Kelola Lamaran PKL</strong>
                                         <br><small>Terima atau tolak lamaran siswa</small>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <a href="#" class="btn btn-outline-secondary btn-lg w-100 text-start">
-                                    <i class="fas fa-users fa-2x float-start me-3"></i>
-                                    <div>
-                                        <strong>Siswa PKL Aktif</strong>
-                                        <br><small>Lihat daftar siswa yang PKL</small>
                                     </div>
                                 </a>
                             </div>
@@ -186,6 +183,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <!-- Initialize tooltips -->
     <script>
@@ -193,6 +191,25 @@
         var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
             return new bootstrap.Tooltip(tooltipTriggerEl);
         });
+
+        // Show success/error messages from session
+        @if (session('success'))
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil!',
+                text: '{{ session('success') }}',
+                timer: 3000,
+                showConfirmButton: false
+            });
+        @endif
+
+        @if (session('error'))
+            Swal.fire({
+                icon: 'error',
+                title: 'Gagal!',
+                text: '{{ session('error') }}'
+            });
+        @endif
     </script>
 
     <style>

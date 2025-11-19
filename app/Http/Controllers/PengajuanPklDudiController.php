@@ -6,6 +6,7 @@ use App\Models\PengajuanPkl;
 use App\Models\tb_siswa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
 
 class PengajuanPklDudiController extends Controller
 {

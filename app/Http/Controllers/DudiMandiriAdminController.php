@@ -133,39 +133,20 @@ class DudiMandiriAdminController extends Controller
                 $pengajuan->save();
             }
 
-            // 5. Auto-approve pengajuan PKL jika parameter pengajuan_id dikirim
-            $autoApprovedPengajuan = null;
+            // 5. TIDAK auto-approve lagi, hanya ubah status pengajuan ke 'diproses'
+            // Admin harus mengirim surat dulu, tunggu balasan, baru approve manual
+            $relatedPengajuan = null;
             if ($request->has('pengajuan_id') && $request->pengajuan_id) {
-                $autoApprovedPengajuan = PengajuanPkl::find($request->pengajuan_id);
-                if ($autoApprovedPengajuan) {
-                    // Update status pilihan yang aktif
-                    $pilihanAktif = $autoApprovedPengajuan->pilihan_aktif;
-
-                    if ($pilihanAktif == '1') {
-                        $autoApprovedPengajuan->status_pilihan_1 = 'approved';
-                        $autoApprovedPengajuan->tanggal_response_pilihan_1 = now();
-                    } elseif ($pilihanAktif == '2') {
-                        $autoApprovedPengajuan->status_pilihan_2 = 'approved';
-                        $autoApprovedPengajuan->tanggal_response_pilihan_2 = now();
-                    } else {
-                        $autoApprovedPengajuan->status_pilihan_3 = 'approved';
-                        $autoApprovedPengajuan->tanggal_response_pilihan_3 = now();
-                    }
-
-                    // Approve pengajuan overall
-                    $autoApprovedPengajuan->status = 'approved';
-                    $autoApprovedPengajuan->save();
-
-                    // Update siswa - assign ke DUDI
-                    $siswa = $autoApprovedPengajuan->siswa;
-                    $siswa->id_dudi = $dudi->id;
-                    $siswa->status_penempatan = 'ditempatkan';
-                    $siswa->save();
+                $relatedPengajuan = PengajuanPkl::find($request->pengajuan_id);
+                if ($relatedPengajuan && $relatedPengajuan->status == 'pending') {
+                    // Ubah status ke 'diproses' - menunggu surat dikirim dan balasan dari DUDI
+                    $relatedPengajuan->status = 'diproses';
+                    $relatedPengajuan->save();
 
                     logActivity(
                         'update',
-                        'Pengajuan PKL Disetujui (Auto)',
-                        "Pengajuan PKL dari siswa {$siswa->nama} (NIS: {$siswa->nis}) disetujui otomatis setelah pembuatan akun DUDI {$dudi->nama_dudi}. Siswa ditempatkan di DUDI tersebut.",
+                        'Pengajuan PKL Diproses',
+                        "Pengajuan PKL dari siswa {$relatedPengajuan->siswa->nama} (NIS: {$relatedPengajuan->siswa->nis}) diubah ke status 'diproses'. Akun DUDI {$dudi->nama_dudi} telah dibuat. Menunggu pengiriman surat pengajuan dan balasan dari DUDI.",
                         Session::get('loginId')
                     );
                 }
@@ -179,7 +160,7 @@ class DudiMandiriAdminController extends Controller
                 "DUDI Mandiri '{$dudiMandiri->nama_dudi}' dari siswa {$siswa->nama} (NIS: {$siswa->nis}) disetujui. " .
                 "Akun DUDI dibuat dengan username: {$username}, password: {$defaultPassword}. " .
                 "Total {$pengajuanList->count()} pengajuan PKL telah diupdate." .
-                ($autoApprovedPengajuan ? " Pengajuan PKL ID {$autoApprovedPengajuan->id} langsung diapprove." : ""),
+                ($relatedPengajuan ? " Pengajuan PKL ID {$relatedPengajuan->id} diubah ke status 'diproses'." : ""),
                 Session::get('loginId')
             );
 
@@ -213,7 +194,7 @@ class DudiMandiriAdminController extends Controller
                 "<i class='fas fa-check-circle'></i> <strong>Berhasil!</strong><br>" .
                 "• Akun DUDI <strong>{$dudiMandiri->nama_dudi}</strong> telah dibuat<br>" .
                 "• {$pengajuanList->count()} pengajuan PKL telah diupdate" .
-                ($autoApprovedPengajuan ? "<br>• Pengajuan PKL dari <strong>{$siswa->nama}</strong> telah diapprove dan dikirim ke DUDI" : "") .
+                ($relatedPengajuan ? "<br>• Pengajuan PKL dari <strong>{$siswa->nama}</strong> diubah ke status 'diproses'<br>• <strong>Langkah selanjutnya:</strong> Kirim surat pengajuan PKL beserta CV & portofolio siswa ke DUDI, lalu tunggu surat balasan sebelum meng-approve pengajuan" : "") .
                 "</div>";
 
             return back()->with('success', $successMessage);

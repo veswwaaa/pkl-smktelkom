@@ -40,7 +40,7 @@
                     <li>
                         <hr class="dropdown-divider">
                     </li>
-                    <li><a class="dropdown-item text-danger" href="logout"><i
+                    <li><a class="dropdown-item text-danger" href="/logout"><i
                                 class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
                 </ul>
             </div>
@@ -158,6 +158,8 @@
                         <th>Jenis Kelamin</th>
                         <th>Angkatan</th>
                         <th>Jurusan</th>
+                        <th>Grade Kesiswaan</th>
+                        <th>Grade Kurikulum</th>
                         <th>Status PKL</th>
                         <th>DUDI</th>
                         <th>Aksi</th>
@@ -173,6 +175,34 @@
                             <td>{{ $siswaItem->jenis_kelamin }}</td>
                             <td>{{ $siswaItem->angkatan }}</td>
                             <td><span class="badge bg-success">{{ $siswaItem->jurusan }}</span></td>
+                            <td>
+                                @if ($siswaItem->grade_kesiswaan == 'tidak_ada')
+                                    <span class="badge bg-primary">Tidak Ada</span>
+                                @elseif($siswaItem->grade_kesiswaan == 'ringan')
+                                    <span class="badge bg-success">Ringan</span>
+                                @elseif($siswaItem->grade_kesiswaan == 'sedang')
+                                    <span class="badge bg-warning">Sedang</span>
+                                @elseif($siswaItem->grade_kesiswaan == 'berat')
+                                    <span class="badge bg-danger">Berat</span>
+                                @else
+                                    <span class="text-muted">-</span>
+                                @endif
+                            </td>
+                            <td>
+                                @if ($siswaItem->grade_kurikulum == 'A')
+                                    <span class="badge bg-primary">A</span>
+                                @elseif($siswaItem->grade_kurikulum == 'B')
+                                    <span class="badge bg-success">B</span>
+                                @elseif($siswaItem->grade_kurikulum == 'C')
+                                    <span class="badge bg-warning">C</span>
+                                @elseif($siswaItem->grade_kurikulum == 'D')
+                                    <span class="badge" style="background-color: #ff9800;">D</span>
+                                @elseif($siswaItem->grade_kurikulum == 'E')
+                                    <span class="badge bg-danger">E</span>
+                                @else
+                                    <span class="text-muted">-</span>
+                                @endif
+                            </td>
                             <td>
                                 @if ($siswaItem->status_penempatan == 'ditempatkan')
                                     <span class="badge bg-success">
@@ -196,38 +226,70 @@
                                 @endif
                             </td>
                             <td>
-                                @if ($siswaItem->status_penempatan == 'belum')
-                                    <button class="btn btn-success btn-sm" title="Tempatkan ke DUDI"
-                                        onclick="openAssignModal({{ $siswaItem->id }}, '{{ $siswaItem->nama }}', '{{ $siswaItem->nis }}')">
-                                        <i class="fas fa-map-marker-alt"></i>
+                                <div class="btn-group">
+                                    @if ($siswaItem->status_penempatan == 'belum')
+                                        <button class="btn btn-success btn-sm" title="Tempatkan ke DUDI"
+                                            onclick="openAssignModal({{ $siswaItem->id }}, '{{ $siswaItem->nama }}', '{{ $siswaItem->nis }}')">
+                                            <i class="fas fa-map-marker-alt"></i>
+                                        </button>
+                                    @else
+                                        <button class="btn btn-info btn-sm" title="Lihat Detail PKL"
+                                            onclick="viewPklDetail({{ $siswaItem->id }}, '{{ $siswaItem->nama }}', '{{ $siswaItem->dudi ? $siswaItem->dudi->nama_dudi : '' }}', '{{ $siswaItem->tanggal_mulai_pkl }}', '{{ $siswaItem->tanggal_selesai_pkl }}')">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                    @endif
+
+                                    <button type="button"
+                                        class="btn btn-secondary btn-sm dropdown-toggle dropdown-toggle-split"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="fas fa-ellipsis-v"></i>
                                     </button>
-                                @else
-                                    <button class="btn btn-info btn-sm" title="Lihat Detail PKL"
-                                        onclick="viewPklDetail({{ $siswaItem->id }}, '{{ $siswaItem->nama }}', '{{ $siswaItem->dudi ? $siswaItem->dudi->nama_dudi : '' }}', '{{ $siswaItem->tanggal_mulai_pkl }}', '{{ $siswaItem->tanggal_selesai_pkl }}')">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
-                                    <button class="btn btn-primary btn-sm" title="Set Tanggal PKL"
-                                        onclick="openSetTanggalModal({{ $siswaItem->id }}, '{{ $siswaItem->nama }}', '{{ $siswaItem->tanggal_mulai_pkl }}', '{{ $siswaItem->tanggal_selesai_pkl }}')">
-                                        <i class="fas fa-calendar-alt"></i>
-                                    </button>
-                                    <button class="btn btn-danger btn-sm" title="Batalkan Penempatan"
-                                        onclick="confirmCancelAssignment({{ $siswaItem->id }}, '{{ $siswaItem->nama }}')">
-                                        <i class="fas fa-times-circle"></i>
-                                    </button>
-                                @endif
-                                <button class="btn btn-warning btn-sm" title="Edit"
-                                    onclick="editSiswa({{ $siswaItem->id }},'{{ $siswaItem->nis }}', '{{ $siswaItem->nama }}','{{ $siswaItem->kelas }}','{{ $siswaItem->jenis_kelamin }}','{{ $siswaItem->angkatan }}','{{ $siswaItem->jurusan }}')">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="btn btn-danger btn-sm" title="Delete"
-                                    onclick="confirmDelete({{ $siswaItem->id }}, '{{ $siswaItem->nama }}', '{{ $siswaItem->nis }}')">
-                                    <i class="fas fa-trash"></i>
-                                </button>
+                                    <ul class="dropdown-menu">
+                                        @if ($siswaItem->status_penempatan != 'belum')
+                                            <li>
+                                                <a class="dropdown-item" href="#"
+                                                    onclick="event.preventDefault(); openSetTanggalModal({{ $siswaItem->id }}, '{{ $siswaItem->nama }}', '{{ $siswaItem->tanggal_mulai_pkl }}', '{{ $siswaItem->tanggal_selesai_pkl }}')">
+                                                    <i class="fas fa-calendar-alt text-primary"></i> Set Tanggal PKL
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item" href="#"
+                                                    onclick="event.preventDefault(); confirmCancelAssignment({{ $siswaItem->id }}, '{{ $siswaItem->nama }}')">
+                                                    <i class="fas fa-times-circle text-danger"></i> Batalkan Penempatan
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <hr class="dropdown-divider">
+                                            </li>
+                                        @endif
+                                        <li>
+                                            <a class="dropdown-item" href="#"
+                                                onclick="event.preventDefault(); openGradeModal({{ $siswaItem->id }}, '{{ $siswaItem->nama }}', '{{ $siswaItem->nis }}', '{{ $siswaItem->grade_kesiswaan }}', '{{ $siswaItem->grade_kurikulum }}')">
+                                                <i class="fas fa-star text-warning"></i> Input Grade
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="#"
+                                                onclick="event.preventDefault(); editSiswa({{ $siswaItem->id }},'{{ $siswaItem->nis }}', '{{ $siswaItem->nama }}','{{ $siswaItem->kelas }}','{{ $siswaItem->jenis_kelamin }}','{{ $siswaItem->angkatan }}','{{ $siswaItem->jurusan }}')">
+                                                <i class="fas fa-edit text-success"></i> Edit Data
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <hr class="dropdown-divider">
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item text-danger" href="#"
+                                                onclick="event.preventDefault(); confirmDelete({{ $siswaItem->id }}, '{{ $siswaItem->nama }}', '{{ $siswaItem->nis }}')">
+                                                <i class="fas fa-trash"></i> Hapus
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
                             </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="10" class="text-center">
+                            <td colspan="12" class="text-center">
                                 <div class="py-4">
                                     <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
                                     <h5 class="text-muted">Belum ada data siswa</h5>
@@ -558,18 +620,18 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="tanggal_mulai_pkl" class="form-label">
+                            <label for="tempatkan_tanggal_mulai_pkl" class="form-label">
                                 <i class="fas fa-calendar-alt text-success"></i> Tanggal Mulai PKL
                             </label>
-                            <input type="date" class="form-control" id="tanggal_mulai_pkl"
+                            <input type="date" class="form-control" id="tempatkan_tanggal_mulai_pkl"
                                 name="tanggal_mulai_pkl" required>
                         </div>
 
                         <div class="mb-3">
-                            <label for="tanggal_selesai_pkl" class="form-label">
+                            <label for="tempatkan_tanggal_selesai_pkl" class="form-label">
                                 <i class="fas fa-calendar-check text-success"></i> Tanggal Selesai PKL
                             </label>
-                            <input type="date" class="form-control" id="tanggal_selesai_pkl"
+                            <input type="date" class="form-control" id="tempatkan_tanggal_selesai_pkl"
                                 name="tanggal_selesai_pkl" required>
                         </div>
 
@@ -592,14 +654,15 @@
     </div>
 
     {{-- Modal Detail PKL --}}
-    <div class="modal fade" id="pklDetailModal" tabindex="-1">
+    <div class="modal fade" id="pklDetailModal" tabindex="-1" aria-labelledby="pklDetailModalLabel">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header bg-info text-white">
-                    <h5 class="modal-title">
+                    <h5 class="modal-title" id="pklDetailModalLabel">
                         <i class="fas fa-info-circle"></i> Detail Penempatan PKL
                     </h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <table class="table table-borderless">
@@ -649,18 +712,18 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="tanggal_mulai_pkl" class="form-label">
+                            <label for="set_tanggal_mulai_pkl" class="form-label">
                                 <i class="fas fa-calendar-check text-success"></i> Tanggal Mulai PKL
                             </label>
-                            <input type="date" class="form-control" id="tanggal_mulai_pkl"
+                            <input type="date" class="form-control" id="set_tanggal_mulai_pkl"
                                 name="tanggal_mulai_pkl" required>
                         </div>
 
                         <div class="mb-3">
-                            <label for="tanggal_selesai_pkl" class="form-label">
+                            <label for="set_tanggal_selesai_pkl" class="form-label">
                                 <i class="fas fa-calendar-times text-danger"></i> Tanggal Selesai PKL
                             </label>
-                            <input type="date" class="form-control" id="tanggal_selesai_pkl"
+                            <input type="date" class="form-control" id="set_tanggal_selesai_pkl"
                                 name="tanggal_selesai_pkl" required>
                         </div>
 
@@ -686,11 +749,224 @@
 
     {{-- modal import dari excel --}}
 
+    {{-- Modal Input Grade --}}
+    <div class="modal fade" id="gradeModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-warning text-dark">
+                    <h5 class="modal-title">
+                        <i class="fas fa-star"></i> Input Grade Siswa
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form id="gradeForm" method="POST">
+                    @csrf
+                    <input type="hidden" id="gradeSiswaId" name="siswa_id">
+                    <div class="modal-body">
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle"></i>
+                            Input grade untuk: <strong id="gradeNamaSiswa"></strong> (NIS: <strong
+                                id="gradeNisSiswa"></strong>)
+                        </div>
+
+                        <!-- Tabs -->
+                        <ul class="nav nav-tabs mb-3" id="gradeTabs" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="kesiswaan-tab" data-bs-toggle="tab"
+                                    data-bs-target="#kesiswaan" type="button">
+                                    <i class="fas fa-user-check me-1"></i> Grade Kesiswaan
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="kurikulum-tab" data-bs-toggle="tab"
+                                    data-bs-target="#kurikulum" type="button">
+                                    <i class="fas fa-book me-1"></i> Grade Kurikulum
+                                </button>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content" id="gradeTabsContent">
+                            <!-- Tab Kesiswaan -->
+                            <div class="tab-pane fade show active" id="kesiswaan" role="tabpanel">
+                                <div class="mb-3">
+                                    <label for="grade_kesiswaan" class="form-label">
+                                        <i class="fas fa-star"></i> Grade Kesiswaan
+                                    </label>
+                                    <select class="form-select grade-select" id="grade_kesiswaan"
+                                        name="grade_kesiswaan">
+                                        <option value="">-- Pilih Grade --</option>
+                                        <option value="tidak_ada" data-color="primary">Tidak Ada</option>
+                                        <option value="ringan" data-color="success">Ringan</option>
+                                        <option value="sedang" data-color="warning">Sedang</option>
+                                        <option value="berat" data-color="danger">Berat</option>
+                                    </select>
+                                    <div class="mt-2">
+                                        <span class="badge bg-primary" id="badge-tidak_ada" style="display:none;">
+                                            <i class="fas fa-circle me-1"></i>Tidak Ada
+                                        </span>
+                                        <span class="badge bg-success" id="badge-ringan" style="display:none;">
+                                            <i class="fas fa-circle me-1"></i>Ringan
+                                        </span>
+                                        <span class="badge bg-warning" id="badge-sedang" style="display:none;">
+                                            <i class="fas fa-circle me-1"></i>Sedang
+                                        </span>
+                                        <span class="badge bg-danger" id="badge-berat" style="display:none;">
+                                            <i class="fas fa-circle me-1"></i>Berat
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Tab Kurikulum -->
+                            <div class="tab-pane fade" id="kurikulum" role="tabpanel">
+                                <div class="mb-3">
+                                    <label for="grade_kurikulum" class="form-label">
+                                        <i class="fas fa-graduation-cap"></i> Grade Kurikulum
+                                    </label>
+                                    <select class="form-select grade-select" id="grade_kurikulum"
+                                        name="grade_kurikulum">
+                                        <option value="">-- Pilih Grade --</option>
+                                        <option value="A" data-color="primary">A (Sangat Baik)</option>
+                                        <option value="B" data-color="success">B (Baik)</option>
+                                        <option value="C" data-color="warning">C (Cukup)</option>
+                                        <option value="D" data-color="orange">D (Kurang)</option>
+                                        <option value="E" data-color="danger">E (Sangat Kurang)</option>
+                                    </select>
+                                    <div class="mt-2">
+                                        <span class="badge bg-primary" id="badge-A" style="display:none;">
+                                            <i class="fas fa-star me-1"></i>Grade A
+                                        </span>
+                                        <span class="badge bg-success" id="badge-B" style="display:none;">
+                                            <i class="fas fa-star me-1"></i>Grade B
+                                        </span>
+                                        <span class="badge bg-warning" id="badge-C" style="display:none;">
+                                            <i class="fas fa-star me-1"></i>Grade C
+                                        </span>
+                                        <span class="badge" style="background-color: #ff9800; display:none;"
+                                            id="badge-D">
+                                            <i class="fas fa-star me-1"></i>Grade D
+                                        </span>
+                                        <span class="badge bg-danger" id="badge-E" style="display:none;">
+                                            <i class="fas fa-star me-1"></i>Grade E
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            <i class="fas fa-times"></i> Batal
+                        </button>
+                        <button type="submit" class="btn btn-warning">
+                            <i class="fas fa-save"></i> Simpan Grade
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 
 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('js/kelola-siswa.js') }}"></script>
+
+    <script>
+        // Function to open grade modal
+        function openGradeModal(id, nama, nis, gradeKesiswaan, gradeKurikulum) {
+            document.getElementById('gradeSiswaId').value = id;
+            document.getElementById('gradeNamaSiswa').textContent = nama;
+            document.getElementById('gradeNisSiswa').textContent = nis;
+
+            // Set current values
+            if (gradeKesiswaan && gradeKesiswaan !== 'null') {
+                document.getElementById('grade_kesiswaan').value = gradeKesiswaan;
+                showBadge('grade_kesiswaan', gradeKesiswaan);
+            }
+            if (gradeKurikulum && gradeKurikulum !== 'null') {
+                document.getElementById('grade_kurikulum').value = gradeKurikulum;
+                showBadge('grade_kurikulum', gradeKurikulum);
+            }
+
+            var gradeModal = new bootstrap.Modal(document.getElementById('gradeModal'));
+            gradeModal.show();
+        }
+
+        // Show badge based on selection
+        function showBadge(selectId, value) {
+            const allBadges = document.querySelectorAll('#' + selectId.replace('grade_', '') + ' .badge');
+            allBadges.forEach(badge => badge.style.display = 'none');
+
+            const badge = document.getElementById('badge-' + value);
+            if (badge) {
+                badge.style.display = 'inline-block';
+            }
+        }
+
+        // Handle grade select change
+        document.getElementById('grade_kesiswaan')?.addEventListener('change', function() {
+            showBadge('grade_kesiswaan', this.value);
+        });
+
+        document.getElementById('grade_kurikulum')?.addEventListener('change', function() {
+            showBadge('grade_kurikulum', this.value);
+        });
+
+        // Handle form submission
+        document.getElementById('gradeForm')?.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+            const siswaId = document.getElementById('gradeSiswaId').value;
+
+            Swal.fire({
+                title: 'Menyimpan Grade...',
+                text: 'Mohon tunggu',
+                allowOutsideClick: false,
+                showConfirmButton: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+
+            fetch(`/admin/siswa/${siswaId}/grade`, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                        'Accept': 'application/json'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Berhasil!',
+                            text: data.message,
+                            timer: 2000
+                        }).then(() => {
+                            window.location.reload();
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Gagal!',
+                            text: data.message
+                        });
+                    }
+                })
+                .catch(error => {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error!',
+                        text: 'Terjadi kesalahan: ' + error.message
+                    });
+                });
+        });
+    </script>
 
     <!-- Hidden Delete Forms -->
     @foreach ($siswa as $siswaItem)

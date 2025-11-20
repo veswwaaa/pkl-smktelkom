@@ -63,11 +63,18 @@
             <a href="/admin/pengajuan-pkl" class="sidebar-item" title="Pengajuan PKL">
                 <i class="fas fa-clipboard-list"></i>
             </a>
+            <a href="/admin/surat-permohonan"
+            class="sidebar-item {{ request()->is('admin/surat-permohonan*') ? 'active' : '' }}"
+            title="Surat Permohonan Data">
+            <i class="fas fa-file-invoice"></i>
+            </a>
+            <a href="/admin/surat-pengajuan"
+                class="sidebar-item {{ request()->is('admin/surat-pengajuan*') ? 'active' : '' }}"
+                title="Surat Pengajuan PKL">
+                <i class="fas fa-file-export"></i>
+            </a>
             <a href="/admin/surat-dudi" class="sidebar-item" title="Surat DUDI">
                 <i class="fas fa-envelope"></i>
-            </a>
-            <a href="#" class="sidebar-item" title="Reports">
-                <i class="fas fa-chart-bar"></i>
             </a>
         </div>
     </div>
@@ -254,7 +261,7 @@
     <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
-                <div class="modal-header bg-primary">
+                <div class="modal-header bg-danger">
                     <h5 class="modal-title text-white" id="addModalLabel">
                         <i class="fas fa-plus-circle me-2"></i>
                         Tambah Data DUDI Baru
@@ -322,7 +329,7 @@
                         <i class="fas fa-times me-1"></i>
                         Batal
                     </button>
-                    <button type="button" class="btn btn-primary" onclick="submitAdd()">
+                    <button type="button" class="btn btn-danger" onclick="submitAdd()">
                         <i class="fas fa-save me-1"></i>
                         Simpan Data
                     </button>

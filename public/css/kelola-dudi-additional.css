@@ -12,7 +12,9 @@
     font-weight: bold;
     font-size: 14px;
 }
-
+.me-2 {
+    margin-right: .5rem !important;
+}
 .btn-reset {
     background: #ffc107;
     border-color: #ffc107;
@@ -65,7 +67,7 @@
 }
 
 /* Action Buttons Spacing */
-.action-btn {
+ .action-btn {
     margin: 0 2px;
     min-width: 35px;
     min-height: 35px;
@@ -74,7 +76,6 @@
     justify-content: center;
 }
 
-/* Responsive untuk action buttons */
 @media (max-width: 1200px) {
     .action-btn {
         margin: 1px;
@@ -92,7 +93,7 @@
         font-size: 11px;
     }
 
-    /* Stack buttons vertically on smaller screens */
+
     td .action-btn {
         display: block;
         margin: 2px auto;

@@ -15,35 +15,33 @@
 <body>
     <!-- Top Navbar -->
     <nav class="top-navbar d-flex align-items-center justify-content-between">
-        <div class="navbar-brand">
-            <div class="telkom-logo">
-                <i class="fas fa-graduation-cap fa-2x text-danger"></i>
-            </div>
-            <div class="brand-text">
-                <h5 class="mb-0">SMK Telkom Banjarbaru</h5>
-                <small class="text-muted">Sistem Manajemen PKL</small>
-            </div>
+        <!-- Logo dan Brand -->
+        <div class="telkom-logo">
+            <img src="{{ asset('img/telkom-logo.png') }}" alt="Telkom Logo" height="40">
         </div>
 
+        <!-- Right side -->
         <div class="navbar-right">
+            <!-- Notification -->
             <button class="notification-btn">
                 <i class="fas fa-bell"></i>
                 <span class="notification-badge">3</span>
             </button>
 
+            <!-- Profile Dropdown -->
             <div class="dropdown">
-                <button class="profile-dropdown dropdown-toggle" data-bs-toggle="dropdown">
-                    <span class="profile-avatar">
-                        <i class="fas fa-user"></i>
-                    </span>
-                    <span>{{ $data->nama_admin ?? 'Admin' }}</span>
+                <button class="profile-dropdown" type="button" data-bs-toggle="dropdown">
+                    <div class="profile-avatar">A</div>
+                    <i class="fas fa-chevron-down text-muted"></i>
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end">
-                    <li><a class="dropdown-item" href="/dashboard"><i class="fas fa-home me-2"></i>Dashboard</a></li>
+                    <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>Profile</a></li>
+                    <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>Pengaturan</a></li>
                     <li>
                         <hr class="dropdown-divider">
                     </li>
-                    <li><a class="dropdown-item" href="/logout"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
+                    <li><a class="dropdown-item text-danger" href="/logout"><i
+                                class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
                 </ul>
             </div>
         </div>
@@ -64,11 +62,18 @@
             <a href="/admin/pengajuan-pkl" class="sidebar-item active" title="Pengajuan PKL">
                 <i class="fas fa-clipboard-list"></i>
             </a>
+            <a href="/admin/surat-permohonan"
+            class="sidebar-item {{ request()->is('admin/surat-permohonan*') ? 'active' : '' }}"
+            title="Surat Permohonan Data">
+            <i class="fas fa-file-invoice"></i>
+            </a>
+            <a href="/admin/surat-pengajuan"
+                class="sidebar-item {{ request()->is('admin/surat-pengajuan*') ? 'active' : '' }}"
+                title="Surat Pengajuan PKL">
+                <i class="fas fa-file-export"></i>
+            </a>
             <a href="/admin/surat-dudi" class="sidebar-item" title="Surat DUDI">
                 <i class="fas fa-envelope"></i>
-            </a>
-            <a href="#" class="sidebar-item" title="Laporan">
-                <i class="fas fa-chart-bar"></i>
             </a>
         </div>
     </div>
@@ -78,7 +83,7 @@
         <!-- Page Header -->
         <div class="page-header">
             <div>
-                <h3><i class="fas fa-clipboard-list text-primary me-2"></i>Kelola Pengajuan PKL</h3>
+                <h3><i class="fas fa-clipboard-list text-danger me-2"></i>Kelola Pengajuan PKL</h3>
                 <p class="text-muted mb-0">Kelola pengajuan PKL dari siswa</p>
             </div>
         </div>
@@ -121,7 +126,7 @@
 
                     <div class="col-md-2">
                         <label class="form-label">&nbsp;</label>
-                        <button type="submit" class="btn btn-primary w-100">
+                        <button type="submit" class="btn btn-danger w-100">
                             <i class="fas fa-search me-1"></i> Filter
                         </button>
                     </div>

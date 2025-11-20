@@ -61,14 +61,18 @@
             <a href="/admin/pengajuan-pkl" class="sidebar-item" title="Pengajuan PKL">
                 <i class="fas fa-clipboard-list"></i>
             </a>
-            <a href="#" class="sidebar-item" title="Reports">
-                <i class="fas fa-chart-bar"></i>
+            <a href="/admin/surat-permohonan"
+            class="sidebar-item {{ request()->is('admin/surat-permohonan*') ? 'active' : '' }}"
+            title="Surat Permohonan Data">
+            <i class="fas fa-file-invoice"></i>
             </a>
-            <a href="#" class="sidebar-item" title="Upload">
-                <i class="fas fa-upload"></i>
+            <a href="/admin/surat-pengajuan"
+                class="sidebar-item {{ request()->is('admin/surat-pengajuan*') ? 'active' : '' }}"
+                title="Surat Pengajuan PKL">
+                <i class="fas fa-file-export"></i>
             </a>
-            <a href="#" class="sidebar-item" title="Share">
-                <i class="fas fa-share-alt"></i>
+             <a href="/admin/surat-dudi" class="sidebar-item" title="Surat DUDI">
+                <i class="fas fa-envelope"></i>
             </a>
         </div>
     </div>
@@ -121,8 +125,8 @@
             </div>
 
             <!-- Total DUDI -->
-            <div class="stat-card border-green" onclick="window.location.href='/admin/dudi'" style="cursor: pointer;">
-                <div class="stat-icon icon-green">
+            <div class="stat-card border-red" onclick="window.location.href='/admin/dudi'" style="cursor: pointer;">
+                <div class="stat-icon icon-red">
                     <i class="fas fa-building"></i>
                 </div>
                 <div class="stat-number">{{ $totalDudi }}</div>
@@ -140,9 +144,9 @@
             </div>
 
             <!-- Siswa Ditempatkan -->
-            <div class="stat-card border-blue" onclick="window.location.href='/admin/siswa?status=ditempatkan'"
+            <div class="stat-card border-red" onclick="window.location.href='/admin/siswa?status=ditempatkan'"
                 style="cursor: pointer;">
-                <div class="stat-icon icon-blue">
+                <div class="stat-icon icon-red">
                     <i class="fas fa-user-check"></i>
                 </div>
                 <div class="stat-number">{{ $siswaDitempatkan }}</div>
@@ -154,9 +158,9 @@
             </div>
 
             <!-- Menunggu Penempatan -->
-            <div class="stat-card border-orange" onclick="window.location.href='/admin/siswa?status=belum'"
+            <div class="stat-card border-red" onclick="window.location.href='/admin/siswa?status=belum'"
                 style="cursor: pointer;">
-                <div class="stat-icon icon-orange">
+                <div class="stat-icon icon-red">
                     <i class="fas fa-clock"></i>
                 </div>
                 <div class="stat-number">{{ $siswaMenunggu }}</div>

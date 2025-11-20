@@ -47,9 +47,15 @@
         </div>
 
         <!-- Form Card -->
-        <div class="card shadow-sm">
-            <div class="card-header bg-warning text-dark">
-                <h5 class="mb-0"><i class="fas fa-upload me-2"></i>Form Upload Surat Permohonan</h5>
+        <div class="card">
+            <div class="data-table-card">
+            <div class="table-header">
+                <div class="table-header-content">
+                    <div class="table-title">
+                        <i class="fas fa-upload me-2"></i>
+                        <h5>Form Update Surat Permohonan</h5>
+                    </div>
+                </div>
             </div>
             <div class="card-body">
                 <form action="/admin/surat-permohonan/kirim" method="POST" enctype="multipart/form-data"
@@ -164,7 +170,7 @@
                         <a href="/admin/surat-dudi" class="btn btn-secondary">
                             <i class="fas fa-times me-2"></i>Batal
                         </a>
-                        <button type="submit" class="btn btn-warning text-dark">
+                        <button type="submit" class="btn btn-danger text-light">
                             <i class="fas fa-paper-plane me-2"></i>Kirim Surat Permohonan
                         </button>
                     </div>

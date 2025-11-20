@@ -296,6 +296,7 @@ body {
     transform: translateY(-2px);
 }
 
+
 /* Table Styles */
 .table-container {
     max-height: 500px;
@@ -389,7 +390,7 @@ body {
 }
 
 .modal-header.bg-primary {
-    background: linear-gradient(135deg, #007bff, #0056b3) !important;
+   background: linear-gradient(135deg, #e74141 0%, #fe6969 100%);
 }
 
 .modal-header.bg-warning {
@@ -415,7 +416,7 @@ body {
 .form-control {
     border: 2px solid #e9ecef;
     border-radius: 8px;
-    padding: 12px 15px;
+    padding: 6px 15px;
     transition: all 0.3s;
 }
 
@@ -460,6 +461,34 @@ body {
 .empty-state h6 {
     color: #333;
     margin-bottom: 10px;
+}
+
+.card {
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+}
+
+.card .card-body {
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+}
+
+/* Spesifik untuk halaman Kelola Pengajuan: tambahkan box-shadow
+   pada filter section (card.mb-4) dan area tabel agar terlihat mengambang */
+
+
+.main-content .card > .table-responsive {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+/* Tambahkan box-shadow pada card-body di dalam main-content (mis. filter section dan card tabel) */
+.main-content .card .card-body {
+    background: #ffffff;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
+    padding: 18px;
 }
 
 /* Responsive Design */

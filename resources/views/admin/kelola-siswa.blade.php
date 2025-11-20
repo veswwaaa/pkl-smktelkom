@@ -62,14 +62,18 @@
             <a href="/admin/pengajuan-pkl" class="sidebar-item" title="Pengajuan PKL">
                 <i class="fas fa-clipboard-list"></i>
             </a>
-            <a href="#" class="sidebar-item" title="Reports">
-                <i class="fas fa-chart-bar"></i>
+           <a href="/admin/surat-permohonan"
+            class="sidebar-item {{ request()->is('admin/surat-permohonan*') ? 'active' : '' }}"
+            title="Surat Permohonan Data">
+            <i class="fas fa-file-invoice"></i>
             </a>
-            <a href="#" class="sidebar-item" title="Upload">
-                <i class="fas fa-upload"></i>
+            <a href="/admin/surat-pengajuan"
+                class="sidebar-item {{ request()->is('admin/surat-pengajuan*') ? 'active' : '' }}"
+                title="Surat Pengajuan PKL">
+                <i class="fas fa-file-export"></i>
             </a>
-            <a href="#" class="sidebar-item" title="Share">
-                <i class="fas fa-share-alt"></i>
+            <a href="/admin/surat-dudi" class="sidebar-item" title="Surat DUDI">
+                <i class="fas fa-envelope"></i>
             </a>
         </div>
     </div>
@@ -125,23 +129,20 @@
         </div>
 
         {{-- add Button --}}
-        <div class="data-table-card">
+       <div class="data-table-card">
             <div class="table-header">
                 <div class="table-header-content">
                     <div class="table-title">
                         <i class="fas fa-table"></i>
                         <h5>Daftar Siswa</h5>
                     </div>
-                    <div>
-                        <button class="add-btn" data-bs-toggle="modal" data-bs-target="#addSiswaModal"
-                            style="display: inline-block">
-                            <i class="fas fa-plus"></i>
-                            Tambah Siswa
-                        </button>
-                        <button class="excel-btn" data-bs-toggle="modal" data-bs-target="#importSiswaModal">
-                            <i class="fas fa-file-excel"></i> Import Excel
-                        </button>
-                    </div>
+                    <button class="add-btn" data-bs-toggle="modal" data-bs-target="#addSiswaModal">
+                        <i class="fas fa-plus"></i>
+                        Tambah Siswa
+                    </button>
+                    <button class="excel-btn" data-bs-toggle="modal" data-bs-target="#importSiswaModal">
+                        <i class="fas fa-file-excel"></i> Import Excel
+                    </button>
                 </div>
             </div>
         </div>
@@ -307,7 +308,7 @@
     <div class="modal fade" id="addSiswaModal" tabindex="-1">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
-                <div class="modal-header bg-primary text-white">
+                <div class="modal-header bg-danger text-white">
                     <h5 class="modal-title">
                         <i class="fas fa-user-plus"></i> Tambah Siswa Baru
                     </h5>
@@ -320,7 +321,7 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="nis" class="form-label">
-                                        <i class="fas fa-id-card text-primary"></i> NIS
+                                        <i class="fas fa-id-card text-danger"></i> NIS
                                     </label>
                                     <input type="text" class="form-control" id="nis" name="nis"
                                         required placeholder="Masukkan NIS siswa">
@@ -329,7 +330,7 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="nama" class="form-label">
-                                        <i class="fas fa-user text-primary"></i> Nama Lengkap
+                                        <i class="fas fa-user text-danger"></i> Nama Lengkap
                                     </label>
                                     <input type="text" class="form-control" id="nama" name="nama"
                                         required placeholder="Masukkan nama lengkap">
@@ -341,7 +342,7 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="kelas" class="form-label">
-                                        <i class="fas fa-school text-primary"></i> Kelas
+                                        <i class="fas fa-school text-danger"></i> Kelas
                                     </label>
                                     <input type="text" class="form-control" id="kelas" name="kelas"
                                         required placeholder="Contoh: XII E">
@@ -350,7 +351,7 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="jenis_kelamin" class="form-label">
-                                        <i class="fas fa-venus-mars text-primary"></i> Jenis Kelamin
+                                        <i class="fas fa-venus-mars text-danger"></i> Jenis Kelamin
                                     </label>
                                     <select class="form-select" id="jenis_kelamin" name="jenis_kelamin" required>
                                         <option value="">Pilih Jenis Kelamin</option>
@@ -365,7 +366,7 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="angkatan" class="form-label">
-                                        <i class="fas fa-calendar text-primary"></i> Angkatan
+                                        <i class="fas fa-calendar text-danger"></i> Angkatan
                                     </label>
                                     <input type="text" class="form-control" id="angkatan" name="angkatan"
                                         required placeholder="Contoh: angkatan 26">
@@ -374,7 +375,7 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="jurusan" class="form-label">
-                                        <i class="fas fa-graduation-cap text-primary"></i> Jurusan
+                                        <i class="fas fa-graduation-cap text-danger"></i> Jurusan
                                     </label>
                                     {{-- buat ngedit option jurusannya --}}
                                     <select class="form-select" id="jurusan" name="jurusan" required>
@@ -401,7 +402,7 @@
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                             <i class="fas fa-times"></i> Batal
                         </button>
-                        <button type="submit" class="btn btn-primary">
+                        <button type="submit" class="btn btn-danger">
                             <i class="fas fa-save"></i> Simpan Siswa
                         </button>
                     </div>

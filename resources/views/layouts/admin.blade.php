@@ -18,7 +18,6 @@
         <div class="telkom-logo">
             <img src="{{ asset('img/telkom-logo.png') }}" alt="Telkom Logo" height="40"
                 onerror="this.style.display='none'">
-            <span class="ms-2 fw-bold">Admin Panel</span>
         </div>
         <div class="navbar-right">
             <button class="notification-btn">
@@ -57,20 +56,20 @@
                 class="sidebar-item {{ request()->is('admin/pengajuan-pkl*') ? 'active' : '' }}" title="Pengajuan PKL">
                 <i class="fas fa-clipboard-list"></i>
             </a>
+            <a href="/admin/surat-permohonan"
+            class="sidebar-item {{ request()->is('admin/surat-permohonan*') ? 'active' : '' }}"
+            title="Surat Permohonan Data">
+            <i class="fas fa-file-invoice"></i>
+            </a>
             <a href="/admin/surat-pengajuan"
                 class="sidebar-item {{ request()->is('admin/surat-pengajuan*') ? 'active' : '' }}"
                 title="Surat Pengajuan PKL">
                 <i class="fas fa-file-export"></i>
             </a>
-            <a href="/admin/surat-permohonan"
-                class="sidebar-item {{ request()->is('admin/surat-permohonan*') ? 'active' : '' }}"
-                title="Surat Permohonan Data">
-                <i class="fas fa-file-invoice"></i>
-            </a>
             <a href="/admin/surat-dudi"
                 class="sidebar-item {{ request()->is('admin/surat-dudi*') && !request()->is('admin/surat-pengajuan*') && !request()->is('admin/surat-permohonan*') ? 'active' : '' }}"
                 title="Surat Balasan DUDI">
-                <i class="fas fa-envelope-open-text"></i>
+                <i class="fas fa-envelope"></i>
             </a>
         </div>
     </div>

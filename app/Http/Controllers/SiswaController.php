@@ -419,6 +419,23 @@ class SiswaController extends Controller
             $siswa->grade_kurikulum = $request->grade_kurikulum;
             $siswa->save();
 
+            // Jika grade kurikulum = E, otomatis set pilihan_aktif ke "SMK Telkom Banjarbaru" dan auto-approve
+            if ($request->grade_kurikulum == 'E') {
+                $pengajuan = \App\Models\PengajuanPkl::where('id_siswa', $siswa->id)->first();
+                if ($pengajuan) {
+                    $pengajuan->pilihan_aktif = 'SMK Telkom Banjarbaru';
+                    $pengajuan->status = 'approved';
+                    $pengajuan->save();
+
+                    logActivity(
+                        'update',
+                        'Auto-Approve PKL Sekolah (Grade E)',
+                        "Siswa {$siswa->nama} mendapat grade E, otomatis di-approve untuk PKL di SMK Telkom Banjarbaru",
+                        \Illuminate\Support\Facades\Session::get('loginId')
+                    );
+                }
+            }
+
             logActivity(
                 'update',
                 'Grade Siswa Diperbarui',
@@ -428,7 +445,7 @@ class SiswaController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => 'Grade berhasil disimpan!'
+                'message' => 'Grade berhasil disimpan!' . ($request->grade_kurikulum == 'E' ? ' Siswa otomatis di-approve untuk PKL di sekolah.' : '')
             ]);
 
         } catch (\Illuminate\Validation\ValidationException $e) {

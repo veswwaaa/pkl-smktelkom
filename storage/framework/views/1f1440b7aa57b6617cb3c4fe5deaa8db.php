@@ -1,8 +1,8 @@
-@extends('layouts.admin')
 
-@section('title', 'Surat DUDI')
 
-@section('content')
+<?php $__env->startSection('title', 'Surat DUDI'); ?>
+
+<?php $__env->startSection('content'); ?>
     <div class="page-header">
         <div class="page-title">
             <div>
@@ -20,33 +20,22 @@
     </div>
 
     <div class="container-fluid">
-        @if (session('success'))
+        <?php if(session('success')): ?>
             <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <i class="fas fa-check-circle me-2"></i>{{ session('success') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
-        @endif
-        @if (session('error'))
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <i class="fas fa-exclamation-circle me-2"></i>{{ session('error') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
-        @endif
+                <i class="fas fa-check-circle me-2"></i><?php echo e(session('success')); ?>
 
-        {{-- <div class="row mb-4">
-            <div class="col-md-6">
-                <a href="/admin/surat-pengajuan" class="btn btn-primary btn-lg w-100">
-                    <i class="fas fa-paper-plane me-2"></i>Upload Surat Pengajuan PKL
-                    <br><small>Kirim daftar siswa PKL ke DUDI</small>
-                </a>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
-            <div class="col-md-6">
-                <a href="/admin/surat-permohonan" class="btn btn-warning btn-lg w-100 text-dark">
-                    <i class="fas fa-file-upload me-2"></i>Upload Surat Permohonan Data
-                    <br><small>Minta data jurusan/jobdesk dari DUDI</small>
-                </a>
+        <?php endif; ?>
+        <?php if(session('error')): ?>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="fas fa-exclamation-circle me-2"></i><?php echo e(session('error')); ?>
+
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
-        </div> --}}
+        <?php endif; ?>
+
+        
 
         <div class="alert alert-info">
             <i class="fas fa-info-circle me-2"></i>
@@ -102,84 +91,86 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @forelse ($suratList as $index => $surat)
+                                    <?php $__empty_1 = true; $__currentLoopData = $suratList; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $surat): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                                         <tr>
-                                            <td>{{ $index + 1 }}</td>
+                                            <td><?php echo e($index + 1); ?></td>
                                             <td>
-                                                <strong>{{ $surat->dudi->nama_dudi }}</strong><br>
-                                                <small class="text-muted">{{ $surat->dudi->alamat }}</small>
+                                                <strong><?php echo e($surat->dudi->nama_dudi); ?></strong><br>
+                                                <small class="text-muted"><?php echo e($surat->dudi->alamat); ?></small>
                                             </td>
                                             <td>
-                                                @if ($surat->file_surat_pengajuan)
-                                                    @if ($surat->file_pengajuan_exists)
+                                                <?php if($surat->file_surat_pengajuan): ?>
+                                                    <?php if($surat->file_pengajuan_exists): ?>
                                                         <span class="badge bg-success">
                                                             <i class="fas fa-check-circle me-1"></i>Terkirim
                                                         </span><br>
                                                         <small class="text-muted">
-                                                            @if ($surat->tanggal_upload_pengajuan)
-                                                                {{ $surat->tanggal_upload_pengajuan->format('d M Y H:i') }}
-                                                            @else
+                                                            <?php if($surat->tanggal_upload_pengajuan): ?>
+                                                                <?php echo e($surat->tanggal_upload_pengajuan->format('d M Y H:i')); ?>
+
+                                                            <?php else: ?>
                                                                 -
-                                                            @endif
+                                                            <?php endif; ?>
                                                         </small>
-                                                    @else
+                                                    <?php else: ?>
                                                         <span class="badge bg-danger">
                                                             <i class="fas fa-exclamation-triangle me-1"></i>File Hilang
                                                         </span>
-                                                    @endif
-                                                @else
+                                                    <?php endif; ?>
+                                                <?php else: ?>
                                                     <span class="badge bg-secondary">Belum Upload</span>
-                                                @endif
+                                                <?php endif; ?>
                                             </td>
                                             <td>
-                                                @if ($surat->status_balasan_pengajuan)
-                                                    @if ($surat->status_balasan_pengajuan == 'diterima')
+                                                <?php if($surat->status_balasan_pengajuan): ?>
+                                                    <?php if($surat->status_balasan_pengajuan == 'diterima'): ?>
                                                         <span class="badge bg-success">
                                                             <i class="fas fa-check-circle me-1"></i>Diterima
                                                         </span>
-                                                    @elseif($surat->status_balasan_pengajuan == 'ditolak')
+                                                    <?php elseif($surat->status_balasan_pengajuan == 'ditolak'): ?>
                                                         <span class="badge bg-danger">
                                                             <i class="fas fa-times-circle me-1"></i>Ditolak
                                                         </span>
-                                                    @endif
+                                                    <?php endif; ?>
                                                     <br>
                                                     <small class="text-muted">
-                                                        @if ($surat->tanggal_upload_balasan_pengajuan)
-                                                            {{ $surat->tanggal_upload_balasan_pengajuan->format('d M Y H:i') }}
-                                                        @else
+                                                        <?php if($surat->tanggal_upload_balasan_pengajuan): ?>
+                                                            <?php echo e($surat->tanggal_upload_balasan_pengajuan->format('d M Y H:i')); ?>
+
+                                                        <?php else: ?>
                                                             -
-                                                        @endif
+                                                        <?php endif; ?>
                                                     </small>
-                                                @else
+                                                <?php else: ?>
                                                     <span class="badge bg-warning text-dark">
                                                         <i class="fas fa-clock me-1"></i>Menunggu Balasan
                                                     </span>
-                                                @endif
+                                                <?php endif; ?>
                                             </td>
                                             <td>
-                                                @if ($surat->file_balasan_pengajuan)
-                                                    @if ($surat->file_balasan_pengajuan_exists)
-                                                        <a href="/admin/surat-dudi/{{ $surat->id }}/download?type=balasan-pengajuan"
+                                                <?php if($surat->file_balasan_pengajuan): ?>
+                                                    <?php if($surat->file_balasan_pengajuan_exists): ?>
+                                                        <a href="/admin/surat-dudi/<?php echo e($surat->id); ?>/download?type=balasan-pengajuan"
                                                             class="btn btn-sm btn-primary">
                                                             <i class="fas fa-download me-1"></i>Download
                                                         </a>
-                                                    @else
+                                                    <?php else: ?>
                                                         <span class="badge bg-danger">
                                                             <i class="fas fa-exclamation-triangle me-1"></i>File Hilang
                                                         </span>
-                                                    @endif
-                                                @else
+                                                    <?php endif; ?>
+                                                <?php else: ?>
                                                     <span class="text-muted">-</span>
-                                                @endif
+                                                <?php endif; ?>
                                             </td>
                                             <td>
-                                                @if ($surat->catatan_balasan_pengajuan)
+                                                <?php if($surat->catatan_balasan_pengajuan): ?>
                                                     <button class="btn btn-sm btn-info" data-bs-toggle="modal"
-                                                        data-bs-target="#catatanPengajuanModal{{ $surat->id }}">
+                                                        data-bs-target="#catatanPengajuanModal<?php echo e($surat->id); ?>">
                                                         <i class="fas fa-eye me-1"></i>Lihat
                                                     </button>
 
-                                                    <div class="modal fade" id="catatanPengajuanModal{{ $surat->id }}"
+                                                    <div class="modal fade" id="catatanPengajuanModal<?php echo e($surat->id); ?>"
                                                         tabindex="-1">
                                                         <div class="modal-dialog">
                                                             <div class="modal-content">
@@ -192,10 +183,11 @@
                                                                         data-bs-dismiss="modal"></button>
                                                                 </div>
                                                                 <div class="modal-body">
-                                                                    <p><strong>DUDI:</strong> {{ $surat->dudi->nama_dudi }}
+                                                                    <p><strong>DUDI:</strong> <?php echo e($surat->dudi->nama_dudi); ?>
+
                                                                     </p>
                                                                     <hr>
-                                                                    <p>{{ $surat->catatan_balasan_pengajuan }}</p>
+                                                                    <p><?php echo e($surat->catatan_balasan_pengajuan); ?></p>
                                                                 </div>
                                                                 <div class="modal-footer">
                                                                     <button type="button" class="btn btn-secondary"
@@ -204,26 +196,26 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                @else
+                                                <?php else: ?>
                                                     <span class="text-muted">-</span>
-                                                @endif
+                                                <?php endif; ?>
                                             </td>
                                             <td>
                                                 <button type="button" class="btn btn-sm btn-danger"
-                                                    onclick="confirmDelete({{ $surat->id }}, '{{ $surat->dudi->nama_dudi }}')"
+                                                    onclick="confirmDelete(<?php echo e($surat->id); ?>, '<?php echo e($surat->dudi->nama_dudi); ?>')"
                                                     title="Hapus Surat">
                                                     <i class="fas fa-trash"></i>
                                                 </button>
                                             </td>
                                         </tr>
-                                    @empty
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                                         <tr>
                                             <td colspan="7" class="text-center py-4">
                                                 <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
                                                 <h5 class="text-muted">Belum ada surat pengajuan yang dikirim ke DUDI</h5>
                                             </td>
                                         </tr>
-                                    @endforelse
+                                    <?php endif; ?>
                                 </tbody>
                             </table>
                         </div>
@@ -263,85 +255,87 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @forelse ($suratList as $index => $surat)
+                                    <?php $__empty_1 = true; $__currentLoopData = $suratList; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $surat): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                                         <tr>
-                                            <td>{{ $index + 1 }}</td>
+                                            <td><?php echo e($index + 1); ?></td>
                                             <td>
-                                                <strong>{{ $surat->dudi->nama_dudi }}</strong><br>
-                                                <small class="text-muted">{{ $surat->dudi->alamat }}</small>
+                                                <strong><?php echo e($surat->dudi->nama_dudi); ?></strong><br>
+                                                <small class="text-muted"><?php echo e($surat->dudi->alamat); ?></small>
                                             </td>
                                             <td>
-                                                @if ($surat->file_surat_permohonan)
-                                                    @if ($surat->file_permohonan_exists)
+                                                <?php if($surat->file_surat_permohonan): ?>
+                                                    <?php if($surat->file_permohonan_exists): ?>
                                                         <span class="badge bg-success">
                                                             <i class="fas fa-check-circle me-1"></i>Terkirim
                                                         </span><br>
                                                         <small class="text-muted">
-                                                            @if ($surat->tanggal_upload_permohonan)
-                                                                {{ $surat->tanggal_upload_permohonan->format('d M Y H:i') }}
-                                                            @else
+                                                            <?php if($surat->tanggal_upload_permohonan): ?>
+                                                                <?php echo e($surat->tanggal_upload_permohonan->format('d M Y H:i')); ?>
+
+                                                            <?php else: ?>
                                                                 -
-                                                            @endif
+                                                            <?php endif; ?>
                                                         </small>
-                                                    @else
+                                                    <?php else: ?>
                                                         <span class="badge bg-danger">
                                                             <i class="fas fa-exclamation-triangle me-1"></i>File Hilang
                                                         </span>
-                                                    @endif
-                                                @else
+                                                    <?php endif; ?>
+                                                <?php else: ?>
                                                     <span class="badge bg-secondary">Belum Upload</span>
-                                                @endif
+                                                <?php endif; ?>
                                             </td>
                                             <td>
-                                                @if ($surat->status_balasan_permohonan)
-                                                    @if ($surat->status_balasan_permohonan == 'diterima')
+                                                <?php if($surat->status_balasan_permohonan): ?>
+                                                    <?php if($surat->status_balasan_permohonan == 'diterima'): ?>
                                                         <span class="badge bg-success">
                                                             <i class="fas fa-check-circle me-1"></i>Diterima
                                                         </span>
-                                                    @elseif($surat->status_balasan_permohonan == 'ditolak')
+                                                    <?php elseif($surat->status_balasan_permohonan == 'ditolak'): ?>
                                                         <span class="badge bg-danger">
                                                             <i class="fas fa-times-circle me-1"></i>Ditolak
                                                         </span>
-                                                    @endif
+                                                    <?php endif; ?>
                                                     <br>
                                                     <small class="text-muted">
-                                                        @if ($surat->tanggal_upload_balasan_permohonan)
-                                                            {{ $surat->tanggal_upload_balasan_permohonan->format('d M Y H:i') }}
-                                                        @else
+                                                        <?php if($surat->tanggal_upload_balasan_permohonan): ?>
+                                                            <?php echo e($surat->tanggal_upload_balasan_permohonan->format('d M Y H:i')); ?>
+
+                                                        <?php else: ?>
                                                             -
-                                                        @endif
+                                                        <?php endif; ?>
                                                     </small>
-                                                @else
+                                                <?php else: ?>
                                                     <span class="badge bg-warning text-dark">
                                                         <i class="fas fa-clock me-1"></i>Menunggu Balasan
                                                     </span>
-                                                @endif
+                                                <?php endif; ?>
                                             </td>
                                             <td>
-                                                @if ($surat->file_balasan_permohonan)
-                                                    @if ($surat->file_balasan_permohonan_exists)
-                                                        <a href="/admin/surat-dudi/{{ $surat->id }}/download?type=balasan-permohonan"
+                                                <?php if($surat->file_balasan_permohonan): ?>
+                                                    <?php if($surat->file_balasan_permohonan_exists): ?>
+                                                        <a href="/admin/surat-dudi/<?php echo e($surat->id); ?>/download?type=balasan-permohonan"
                                                             class="btn btn-sm btn-primary">
                                                             <i class="fas fa-download me-1"></i>Download
                                                         </a>
-                                                    @else
+                                                    <?php else: ?>
                                                         <span class="badge bg-danger">
                                                             <i class="fas fa-exclamation-triangle me-1"></i>File Hilang
                                                         </span>
-                                                    @endif
-                                                @else
+                                                    <?php endif; ?>
+                                                <?php else: ?>
                                                     <span class="text-muted">-</span>
-                                                @endif
+                                                <?php endif; ?>
                                             </td>
                                             <td>
-                                                @if ($surat->catatan_balasan_permohonan)
+                                                <?php if($surat->catatan_balasan_permohonan): ?>
                                                     <button class="btn btn-sm btn-info" data-bs-toggle="modal"
-                                                        data-bs-target="#catatanPermohonanModal{{ $surat->id }}">
+                                                        data-bs-target="#catatanPermohonanModal<?php echo e($surat->id); ?>">
                                                         <i class="fas fa-eye me-1"></i>Lihat
                                                     </button>
 
                                                     <div class="modal fade"
-                                                        id="catatanPermohonanModal{{ $surat->id }}" tabindex="-1">
+                                                        id="catatanPermohonanModal<?php echo e($surat->id); ?>" tabindex="-1">
                                                         <div class="modal-dialog">
                                                             <div class="modal-content">
                                                                 <div class="modal-header bg-info text-white">
@@ -353,10 +347,11 @@
                                                                         data-bs-dismiss="modal"></button>
                                                                 </div>
                                                                 <div class="modal-body">
-                                                                    <p><strong>DUDI:</strong> {{ $surat->dudi->nama_dudi }}
+                                                                    <p><strong>DUDI:</strong> <?php echo e($surat->dudi->nama_dudi); ?>
+
                                                                     </p>
                                                                     <hr>
-                                                                    <p>{{ $surat->catatan_balasan_permohonan }}</p>
+                                                                    <p><?php echo e($surat->catatan_balasan_permohonan); ?></p>
                                                                 </div>
                                                                 <div class="modal-footer">
                                                                     <button type="button" class="btn btn-secondary"
@@ -365,26 +360,26 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                @else
+                                                <?php else: ?>
                                                     <span class="text-muted">-</span>
-                                                @endif
+                                                <?php endif; ?>
                                             </td>
                                             <td>
                                                 <button type="button" class="btn btn-sm btn-danger"
-                                                    onclick="confirmDelete({{ $surat->id }}, '{{ $surat->dudi->nama_dudi }}')"
+                                                    onclick="confirmDelete(<?php echo e($surat->id); ?>, '<?php echo e($surat->dudi->nama_dudi); ?>')"
                                                     title="Hapus Surat">
                                                     <i class="fas fa-trash"></i>
                                                 </button>
                                             </td>
                                         </tr>
-                                    @empty
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                                         <tr>
                                             <td colspan="7" class="text-center py-4">
                                                 <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
                                                 <h5 class="text-muted">Belum ada surat permohonan yang dikirim ke DUDI</h5>
                                             </td>
                                         </tr>
-                                    @endforelse
+                                    <?php endif; ?>
                                 </tbody>
                             </table>
                         </div>
@@ -395,12 +390,12 @@
     </div>
 
     <form id="deleteForm" method="POST" style="display: none;">
-        @csrf
-        @method('DELETE')
+        <?php echo csrf_field(); ?>
+        <?php echo method_field('DELETE'); ?>
     </form>
-@endsection
+<?php $__env->stopSection(); ?>
 
-@push('scripts')
+<?php $__env->startPush('scripts'); ?>
     <script>
         document.getElementById('searchPengajuan').addEventListener('keyup', function() {
             const searchValue = this.value.toLowerCase();
@@ -448,22 +443,24 @@
             });
         }
 
-        @if (session('success'))
+        <?php if(session('success')): ?>
             Swal.fire({
                 icon: 'success',
                 title: 'Berhasil!',
-                text: '{{ session('success') }}',
+                text: '<?php echo e(session('success')); ?>',
                 timer: 3000,
                 showConfirmButton: false
             });
-        @endif
+        <?php endif; ?>
 
-        @if (session('error'))
+        <?php if(session('error')): ?>
             Swal.fire({
                 icon: 'error',
                 title: 'Gagal!',
-                text: '{{ session('error') }}'
+                text: '<?php echo e(session('error')); ?>'
             });
-        @endif
+        <?php endif; ?>
     </script>
-@endpush
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('layouts.admin', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\laragon\www\pkl-smktelkom\resources\views/admin/surat-dudi.blade.php ENDPATH**/ ?>

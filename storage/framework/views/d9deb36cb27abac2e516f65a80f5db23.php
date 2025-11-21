@@ -96,19 +96,21 @@
 
     <!-- Nomor Surat -->
     <div class="nomor-surat">
-        Nomor: {{ $nomor_surat ?? '___/PERM-PKL/SMK-TELKOM/' . date('Y') }}
+        Nomor: <?php echo e($nomor_surat ?? '___/PERM-PKL/SMK-TELKOM/' . date('Y')); ?>
+
     </div>
 
     <!-- Tanggal -->
     <p style="margin: 20px 0;">
-        Purwokerto, {{ \Carbon\Carbon::parse($tanggal)->locale('id')->isoFormat('D MMMM Y') }}
+        Purwokerto, <?php echo e(\Carbon\Carbon::parse($tanggal)->locale('id')->isoFormat('D MMMM Y')); ?>
+
     </p>
 
     <!-- Kepada -->
     <p>
         Kepada Yth,<br>
-        <strong>{{ $dudi->nama_dudi }}</strong><br>
-        {{ $dudi->alamat ?? 'Alamat tidak tersedia' }}<br>
+        <strong><?php echo e($dudi->nama_dudi); ?></strong><br>
+        <?php echo e($dudi->alamat ?? 'Alamat tidak tersedia'); ?><br>
         di Tempat
     </p>
 
@@ -123,9 +125,9 @@
 
         <p>
             Dalam rangka mempersiapkan Program Praktek Kerja Lapangan (PKL) siswa SMK Telkom Purwokerto tahun ajaran
-            {{ date('Y') }}/{{ date('Y') + 1 }},
+            <?php echo e(date('Y')); ?>/<?php echo e(date('Y') + 1); ?>,
             dengan ini kami memohon kepada Bapak/Ibu untuk dapat memberikan informasi mengenai profil penerimaan PKL di
-            {{ $dudi->nama_dudi }}.
+            <?php echo e($dudi->nama_dudi); ?>.
         </p>
 
         <div class="box-request">
@@ -152,12 +154,13 @@
             </ul>
         </div>
 
-        @if ($catatan)
+        <?php if($catatan): ?>
             <p>
                 <strong>Catatan Tambahan:</strong><br>
-                {{ $catatan }}
+                <?php echo e($catatan); ?>
+
             </p>
-        @endif
+        <?php endif; ?>
 
         <p>
             Data yang Bapak/Ibu berikan akan sangat membantu kami dalam proses penempatan siswa PKL sesuai dengan
@@ -184,8 +187,9 @@
         <p><strong>Kepala Sekolah</strong></p>
         <div class="ttd-space"></div>
         <p>
-            <strong><u>{{ $kepala_sekolah ?? 'Drs. H. Bambang Sutopo, M.Pd' }}</u></strong><br>
-            NIP. {{ $nip_kepala_sekolah ?? '196505121990031007' }}
+            <strong><u><?php echo e($kepala_sekolah ?? 'Drs. H. Bambang Sutopo, M.Pd'); ?></u></strong><br>
+            NIP. <?php echo e($nip_kepala_sekolah ?? '196505121990031007'); ?>
+
         </p>
     </div>
 
@@ -196,3 +200,4 @@
 </body>
 
 </html>
+<?php /**PATH C:\laragon\www\pkl-smktelkom\resources\views/pdf/surat-permohonan.blade.php ENDPATH**/ ?>

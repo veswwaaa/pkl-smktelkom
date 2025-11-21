@@ -11,23 +11,27 @@ class SuratDudi extends Model
     protected $fillable = [
         'id_dudi',
         'file_surat_pengajuan',
+        'nomor_surat_pengajuan',
         'tanggal_upload_pengajuan',
         'uploaded_by_admin',
-        'file_surat_balasan',
-        'tanggal_upload_balasan',
+        'file_balasan_pengajuan',
+        'tanggal_upload_balasan_pengajuan',
+        'status_balasan_pengajuan',
         'catatan_admin_pengajuan',
-        'catatan_dudi_pengajuan',
+        'catatan_balasan_pengajuan',
         'file_surat_permohonan',
+        'nomor_surat_permohonan',
         'tanggal_upload_permohonan',
         'file_balasan_permohonan',
         'tanggal_upload_balasan_permohonan',
+        'status_balasan_permohonan',
         'catatan_admin_permohonan',
-        'catatan_dudi_permohonan'
+        'catatan_balasan_permohonan'
     ];
 
     protected $casts = [
         'tanggal_upload_pengajuan' => 'datetime',
-        'tanggal_upload_balasan' => 'datetime',
+        'tanggal_upload_balasan_pengajuan' => 'datetime',
         'tanggal_upload_permohonan' => 'datetime',
         'tanggal_upload_balasan_permohonan' => 'datetime',
     ];

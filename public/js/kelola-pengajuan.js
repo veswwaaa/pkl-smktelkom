@@ -18,6 +18,8 @@ function viewDetail(id) {
 
                 // Debug - cek data
                 console.log("Data lengkap:", p);
+                console.log("Data Siswa:", siswa);
+                console.log("Grade Kurikulum:", siswa.grade_kurikulum);
                 console.log("DUDI Pilihan 1:", p.dudi_pilihan1);
                 console.log("DUDI Pilihan 2:", p.dudi_pilihan2);
                 console.log("DUDI Pilihan 3:", p.dudi_pilihan3);
@@ -188,11 +190,31 @@ function viewDetail(id) {
                                                     : " (Tidak diisi)"
                                             }
                                         </option>
+                                        ${
+                                            siswa.grade_kurikulum === "D" ||
+                                            siswa.grade_kurikulum === "E" ||
+                                            p.pilihan_aktif ===
+                                                "SMK Telkom Banjarbaru"
+                                                ? `<option value="SMK Telkom Banjarbaru" ${
+                                                      p.pilihan_aktif ===
+                                                      "SMK Telkom Banjarbaru"
+                                                          ? "selected"
+                                                          : ""
+                                                  }>PKL di Sekolah (SMK Telkom Banjarbaru)</option>`
+                                                : ""
+                                        }
                                     </select>
                                     <button type="submit" class="btn btn-primary">
                                         <i class="fas fa-sync-alt"></i> Ubah
                                     </button>
                                 </div>
+                                ${
+                                    siswa.grade_kurikulum === "D"
+                                        ? '<small class="text-warning"><i class="fas fa-exclamation-triangle"></i> Grade D: Pilihan PKL di sekolah tersedia atas keputusan admin</small>'
+                                        : siswa.grade_kurikulum === "E"
+                                        ? '<small class="text-danger"><i class="fas fa-exclamation-circle"></i> Grade E: Siswa HARUS PKL di sekolah (otomatis)</small>'
+                                        : ""
+                                }
                             </form>
                         </div>
                     </div>
@@ -221,10 +243,18 @@ function changePilihan(event, id) {
 
     const selectElement = document.getElementById(`selectPilihan-${id}`);
     const pilihanAktif = selectElement.value;
+    const selectedText =
+        selectElement.options[selectElement.selectedIndex].text;
+
+    const isPklSekolah = pilihanAktif === "SMK Telkom Banjarbaru";
+
+    const confirmMessage = isPklSekolah
+        ? `Siswa akan ditempatkan PKL di <strong>SMK Telkom Banjarbaru</strong>.<br><br><small class="text-success"><i class="fas fa-check-circle"></i> Status akan otomatis di-approve</small>`
+        : `Pilihan aktif akan diubah ke <strong>${selectedText}</strong>`;
 
     Swal.fire({
         title: "Ubah Pilihan Aktif?",
-        text: `Pilihan aktif akan diubah ke Pilihan ${pilihanAktif}`,
+        html: confirmMessage,
         icon: "question",
         showCancelButton: true,
         confirmButtonColor: "#0d6efd",
@@ -262,7 +292,7 @@ function changePilihan(event, id) {
                     Swal.fire({
                         icon: "success",
                         title: "Berhasil!",
-                        text: "Pilihan aktif berhasil diubah",
+                        html: data.message || "Pilihan aktif berhasil diubah",
                         timer: 2000,
                         showConfirmButton: false,
                     }).then(() => {

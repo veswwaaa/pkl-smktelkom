@@ -92,8 +92,8 @@ class SuratDudiController extends Controller
             if ($surat->file_surat_pengajuan) {
                 $filePengajuanExists = Storage::exists('public/surat_dudi/' . $surat->file_surat_pengajuan);
             }
-            if ($surat->file_surat_balasan) {
-                $fileBalasanPengajuanExists = Storage::exists('public/surat_dudi/' . $surat->file_surat_balasan);
+            if ($surat->file_balasan_pengajuan) {
+                $fileBalasanPengajuanExists = Storage::exists('public/surat_dudi/' . $surat->file_balasan_pengajuan);
             }
         }
 
@@ -217,13 +217,14 @@ class SuratDudiController extends Controller
 
             if ($jenisSurat == 'pengajuan') {
                 // Delete old file if exists
-                if ($surat->file_surat_balasan && Storage::exists('public/surat_dudi/' . $surat->file_surat_balasan)) {
-                    Storage::delete('public/surat_dudi/' . $surat->file_surat_balasan);
+                if ($surat->file_balasan_pengajuan && Storage::exists('public/surat_dudi/' . $surat->file_balasan_pengajuan)) {
+                    Storage::delete('public/surat_dudi/' . $surat->file_balasan_pengajuan);
                 }
 
-                $surat->file_surat_balasan = $fileName;
-                $surat->tanggal_upload_balasan = now();
-                $surat->catatan_dudi_pengajuan = $request->catatan_dudi;
+                $surat->file_balasan_pengajuan = $fileName;
+                $surat->tanggal_upload_balasan_pengajuan = now();
+                $surat->catatan_balasan_pengajuan = $request->catatan_dudi;
+                $surat->status_balasan_pengajuan = 'terkirim';
             } else {
                 // Delete old file if exists
                 if ($surat->file_balasan_permohonan && Storage::exists('public/surat_dudi/' . $surat->file_balasan_permohonan)) {
@@ -232,7 +233,8 @@ class SuratDudiController extends Controller
 
                 $surat->file_balasan_permohonan = $fileName;
                 $surat->tanggal_upload_balasan_permohonan = now();
-                $surat->catatan_dudi_permohonan = $request->catatan_dudi;
+                $surat->catatan_balasan_permohonan = $request->catatan_dudi;
+                $surat->status_balasan_permohonan = 'terkirim';
             }
 
             $surat->save();
@@ -278,17 +280,25 @@ class SuratDudiController extends Controller
 
         // Ambil semua surat yang sudah ada balasan
         $suratList = SuratDudi::with(['dudi', 'admin'])
-            ->whereNotNull('file_surat_pengajuan')
-            ->orderBy('tanggal_upload_pengajuan', 'desc')
+            ->orderBy('created_at', 'desc')
             ->get();
 
         // Check file existence for each surat
         foreach ($suratList as $surat) {
+            // Pengajuan
             $surat->file_pengajuan_exists = $surat->file_surat_pengajuan
                 ? Storage::exists('public/surat_dudi/' . $surat->file_surat_pengajuan)
                 : false;
-            $surat->file_balasan_exists = $surat->file_surat_balasan
-                ? Storage::exists('public/surat_dudi/' . $surat->file_surat_balasan)
+            $surat->file_balasan_pengajuan_exists = $surat->file_balasan_pengajuan
+                ? Storage::exists('public/surat_dudi/' . $surat->file_balasan_pengajuan)
+                : false;
+
+            // Permohonan
+            $surat->file_permohonan_exists = $surat->file_surat_permohonan
+                ? Storage::exists('public/surat_dudi/' . $surat->file_surat_permohonan)
+                : false;
+            $surat->file_balasan_permohonan_exists = $surat->file_balasan_permohonan
+                ? Storage::exists('public/surat_dudi/' . $surat->file_balasan_permohonan)
                 : false;
         }
 
@@ -332,14 +342,25 @@ class SuratDudiController extends Controller
         }
 
         // Determine which file to download based on request
-        $jenisSurat = request('jenis', 'pengajuan'); // pengajuan or permohonan
-        $fileType = request('type', 'surat'); // surat or balasan
+        $fileType = request('type', 'surat-pengajuan'); // surat-pengajuan, balasan-pengajuan, surat-permohonan, balasan-permohonan
 
-        // Select the correct file based on jenis and type
-        if ($jenisSurat == 'pengajuan') {
-            $fileName = $fileType == 'balasan' ? $surat->file_surat_balasan : $surat->file_surat_pengajuan;
-        } else {
-            $fileName = $fileType == 'balasan' ? $surat->file_balasan_permohonan : $surat->file_surat_permohonan;
+        // Select the correct file based on type
+        $fileName = null;
+        switch ($fileType) {
+            case 'surat-pengajuan':
+                $fileName = $surat->file_surat_pengajuan;
+                break;
+            case 'balasan-pengajuan':
+                $fileName = $surat->file_balasan_pengajuan;
+                break;
+            case 'surat-permohonan':
+                $fileName = $surat->file_surat_permohonan;
+                break;
+            case 'balasan-permohonan':
+                $fileName = $surat->file_balasan_permohonan;
+                break;
+            default:
+                return back()->with('error', 'Tipe file tidak valid.');
         }
 
         if (!$fileName || !Storage::exists('public/surat_dudi/' . $fileName)) {
@@ -420,6 +441,7 @@ class SuratDudiController extends Controller
                 'id_dudi' => 'required|exists:tb_dudi,id',
                 'siswa_ids' => 'required|array|min:1',
                 'siswa_ids.*' => 'exists:tb_siswa,id',
+                'nomor_surat' => 'required|string|max:100',
                 'use_template' => 'nullable|boolean',
                 'template_file' => 'nullable|file|mimes:pdf,doc,docx|max:5120', // 5MB
                 'catatan' => 'nullable|string'
@@ -427,6 +449,7 @@ class SuratDudiController extends Controller
                 'id_dudi.required' => 'Pilih DUDI tujuan',
                 'siswa_ids.required' => 'Pilih minimal 1 siswa',
                 'siswa_ids.min' => 'Pilih minimal 1 siswa',
+                'nomor_surat.required' => 'Nomor surat harus diisi',
                 'template_file.mimes' => 'Template harus berformat PDF, DOC, atau DOCX',
                 'template_file.max' => 'Ukuran file maksimal 5MB'
             ]);
@@ -450,7 +473,7 @@ class SuratDudiController extends Controller
                     'tanggal' => now(),
                     'catatan' => $request->catatan,
                     'periode_pkl' => 'Januari - Maret ' . (date('Y') + 1),
-                    'nomor_surat' => str_pad($dudi->id, 3, '0', STR_PAD_LEFT) . '/PKL/SMK-TELKOM/' . date('Y')
+                    'nomor_surat' => $request->nomor_surat
                 ];
 
                 $pdf = Pdf::loadView('pdf.surat-pengajuan', $pdfData);
@@ -470,6 +493,7 @@ class SuratDudiController extends Controller
                 }
 
                 $surat->file_surat_pengajuan = $fileName;
+                $surat->nomor_surat_pengajuan = $request->nomor_surat;
                 $surat->tanggal_upload_pengajuan = now();
                 $surat->catatan_admin_pengajuan = $request->catatan;
                 $surat->uploaded_by_admin = $user->id_admin;
@@ -480,6 +504,7 @@ class SuratDudiController extends Controller
                 $surat->id_dudi = $dudi->id;
                 $surat->uploaded_by_admin = $user->id_admin;
                 $surat->file_surat_pengajuan = $fileName;
+                $surat->nomor_surat_pengajuan = $request->nomor_surat;
                 $surat->tanggal_upload_pengajuan = now();
                 $surat->catatan_admin_pengajuan = $request->catatan;
                 $surat->save();
@@ -533,11 +558,13 @@ class SuratDudiController extends Controller
 
             $request->validate([
                 'id_dudi' => 'required|exists:tb_dudi,id',
+                'nomor_surat' => 'required|string|max:100',
                 'use_template' => 'nullable|boolean',
                 'template_file' => 'nullable|file|mimes:pdf,doc,docx|max:5120',
                 'catatan' => 'nullable|string'
             ], [
                 'id_dudi.required' => 'Pilih DUDI tujuan',
+                'nomor_surat.required' => 'Nomor surat harus diisi',
                 'template_file.mimes' => 'Template harus berformat PDF, DOC, atau DOCX',
                 'template_file.max' => 'Ukuran file maksimal 5MB'
             ]);
@@ -556,7 +583,7 @@ class SuratDudiController extends Controller
                     'dudi' => $dudi,
                     'tanggal' => now(),
                     'catatan' => $request->catatan,
-                    'nomor_surat' => str_pad($dudi->id, 3, '0', STR_PAD_LEFT) . '/PERM-PKL/SMK-TELKOM/' . date('Y')
+                    'nomor_surat' => $request->nomor_surat
                 ];
 
                 $pdf = Pdf::loadView('pdf.surat-permohonan', $pdfData);
@@ -576,6 +603,7 @@ class SuratDudiController extends Controller
                 }
 
                 $surat->file_surat_permohonan = $fileName;
+                $surat->nomor_surat_permohonan = $request->nomor_surat;
                 $surat->tanggal_upload_permohonan = now();
                 $surat->catatan_admin_permohonan = $request->catatan;
                 $surat->uploaded_by_admin = $user->id_admin;
@@ -586,6 +614,7 @@ class SuratDudiController extends Controller
                 $surat->id_dudi = $dudi->id;
                 $surat->uploaded_by_admin = $user->id_admin;
                 $surat->file_surat_permohonan = $fileName;
+                $surat->nomor_surat_permohonan = $request->nomor_surat;
                 $surat->tanggal_upload_permohonan = now();
                 $surat->catatan_admin_permohonan = $request->catatan;
                 $surat->save();

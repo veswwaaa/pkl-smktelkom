@@ -205,7 +205,7 @@
                     </div>
 
                     @if ($surat->file_surat_pengajuan && $filePengajuanExists)
-                        <a href="/dudi/surat-pkl/{{ $surat->id }}/download?jenis=pengajuan&type=surat"
+                        <a href="/dudi/surat-pkl/{{ $surat->id }}/download?type=surat-pengajuan"
                             class="btn btn-primary">
                             <i class="fas fa-download me-2"></i>Download Surat Pengajuan
                         </a>
@@ -226,27 +226,27 @@
                     <h5 class="mb-0"><i class="fas fa-upload me-2"></i>Upload Surat Balasan ke Admin</h5>
                 </div>
                 <div class="card-body">
-                    @if ($surat->file_surat_balasan)
+                    @if ($surat->file_balasan_pengajuan)
                         <!-- Sudah kirim balasan -->
                         <div class="alert alert-success">
                             <i class="fas fa-check-circle me-2"></i>
                             <strong>Balasan sudah dikirim pada:</strong>
-                            {{ $surat->tanggal_upload_balasan ? $surat->tanggal_upload_balasan->format('d M Y H:i') : '-' }}
+                            {{ $surat->tanggal_upload_balasan_pengajuan ? $surat->tanggal_upload_balasan_pengajuan->format('d M Y H:i') : '-' }}
                         </div>
 
                         <div class="row mb-3">
                             <div class="col-md-12">
                                 <p class="mb-2"><strong>Catatan:</strong></p>
-                                <p>{{ $surat->catatan_dudi_pengajuan ?? 'Tidak ada catatan' }}</p>
+                                <p>{{ $surat->catatan_balasan_pengajuan ?? 'Tidak ada catatan' }}</p>
                             </div>
                         </div>
 
-                        @if ($surat->file_surat_balasan && $fileBalasanPengajuanExists)
-                            <a href="/dudi/surat-pkl/{{ $surat->id }}/download?jenis=pengajuan&type=balasan"
+                        @if ($surat->file_balasan_pengajuan && $fileBalasanPengajuanExists)
+                            <a href="/dudi/surat-pkl/{{ $surat->id }}/download?type=balasan-pengajuan"
                                 class="btn btn-secondary mb-3">
                                 <i class="fas fa-file-pdf me-2"></i>Lihat Surat Balasan
                             </a>
-                        @elseif ($surat->file_surat_balasan && !$fileBalasanPengajuanExists)
+                        @elseif ($surat->file_balasan_pengajuan && !$fileBalasanPengajuanExists)
                             <div class="alert alert-warning mb-3">
                                 <i class="fas fa-exclamation-triangle me-2"></i>
                                 File tidak tersedia di server.

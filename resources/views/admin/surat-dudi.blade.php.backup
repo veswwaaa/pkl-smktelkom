@@ -3,6 +3,7 @@
 @section('title', 'Surat DUDI')
 
 @section('content')
+    <!-- Page Header -->
     <div class="page-header">
         <div class="page-title">
             <div>
@@ -20,6 +21,7 @@
     </div>
 
     <div class="container-fluid">
+        <!-- Alert Messages -->
         @if (session('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 <i class="fas fa-check-circle me-2"></i>{{ session('success') }}
@@ -33,7 +35,8 @@
             </div>
         @endif
 
-        {{-- <div class="row mb-4">
+        <!-- Action Buttons -->
+        <div class="row mb-4">
             <div class="col-md-6">
                 <a href="/admin/surat-pengajuan" class="btn btn-primary btn-lg w-100">
                     <i class="fas fa-paper-plane me-2"></i>Upload Surat Pengajuan PKL
@@ -46,14 +49,16 @@
                     <br><small>Minta data jurusan/jobdesk dari DUDI</small>
                 </a>
             </div>
-        </div> --}}
+        </div>
 
+        <!-- Info Card -->
         <div class="alert alert-info">
             <i class="fas fa-info-circle me-2"></i>
             <strong>Informasi:</strong> Halaman ini menampilkan semua surat yang telah dikirim ke DUDI dan balasan dari
             DUDI.
         </div>
 
+        <!-- Tabs -->
         <ul class="nav nav-tabs mb-3" id="suratTabs" role="tablist">
             <li class="nav-item" role="presentation">
                 <button class="nav-link active" id="pengajuan-tab" data-bs-toggle="tab" data-bs-target="#pengajuan"
@@ -70,9 +75,11 @@
         </ul>
 
         <div class="tab-content" id="suratTabContent">
+            <!-- Tab Pengajuan -->
             <div class="tab-pane fade show active" id="pengajuan" role="tabpanel">
                 <div class="card shadow-sm">
                     <div class="card-body">
+                        <!-- Search Box -->
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <div class="input-group">
@@ -116,16 +123,13 @@
                                                             <i class="fas fa-check-circle me-1"></i>Terkirim
                                                         </span><br>
                                                         <small class="text-muted">
-                                                            @if ($surat->tanggal_upload_pengajuan)
-                                                                {{ $surat->tanggal_upload_pengajuan->format('d M Y H:i') }}
-                                                            @else
-                                                                -
-                                                            @endif
+                                                            {{ $surat->tanggal_upload_pengajuan?->format('d M Y H:i') ?? '-' }}
                                                         </small>
                                                     @else
                                                         <span class="badge bg-danger">
                                                             <i class="fas fa-exclamation-triangle me-1"></i>File Hilang
-                                                        </span>
+                                                        </span><br>
+                                                        <small class="text-muted">Upload ulang diperlukan</small>
                                                     @endif
                                                 @else
                                                     <span class="badge bg-secondary">Belum Upload</span>
@@ -144,11 +148,7 @@
                                                     @endif
                                                     <br>
                                                     <small class="text-muted">
-                                                        @if ($surat->tanggal_upload_balasan_pengajuan)
-                                                            {{ $surat->tanggal_upload_balasan_pengajuan->format('d M Y H:i') }}
-                                                        @else
-                                                            -
-                                                        @endif
+                                                        {{ $surat->tanggal_upload_balasan_pengajuan?->format('d M Y H:i') ?? '-' }}
                                                     </small>
                                                 @else
                                                     <span class="badge bg-warning text-dark">
@@ -179,6 +179,7 @@
                                                         <i class="fas fa-eye me-1"></i>Lihat
                                                     </button>
 
+                                                    <!-- Modal Catatan -->
                                                     <div class="modal fade" id="catatanPengajuanModal{{ $surat->id }}"
                                                         tabindex="-1">
                                                         <div class="modal-dialog">
@@ -231,9 +232,11 @@
                 </div>
             </div>
 
+            <!-- Tab Permohonan -->
             <div class="tab-pane fade" id="permohonan" role="tabpanel">
                 <div class="card shadow-sm">
                     <div class="card-body">
+                        <!-- Search Box -->
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <div class="input-group">
@@ -277,16 +280,13 @@
                                                             <i class="fas fa-check-circle me-1"></i>Terkirim
                                                         </span><br>
                                                         <small class="text-muted">
-                                                            @if ($surat->tanggal_upload_permohonan)
-                                                                {{ $surat->tanggal_upload_permohonan->format('d M Y H:i') }}
-                                                            @else
-                                                                -
-                                                            @endif
+                                                            {{ $surat->tanggal_upload_permohonan?->format('d M Y H:i') ?? '-' }}
                                                         </small>
                                                     @else
                                                         <span class="badge bg-danger">
                                                             <i class="fas fa-exclamation-triangle me-1"></i>File Hilang
-                                                        </span>
+                                                        </span><br>
+                                                        <small class="text-muted">Upload ulang diperlukan</small>
                                                     @endif
                                                 @else
                                                     <span class="badge bg-secondary">Belum Upload</span>
@@ -305,11 +305,7 @@
                                                     @endif
                                                     <br>
                                                     <small class="text-muted">
-                                                        @if ($surat->tanggal_upload_balasan_permohonan)
-                                                            {{ $surat->tanggal_upload_balasan_permohonan->format('d M Y H:i') }}
-                                                        @else
-                                                            -
-                                                        @endif
+                                                        {{ $surat->tanggal_upload_balasan_permohonan?->format('d M Y H:i') ?? '-' }}
                                                     </small>
                                                 @else
                                                     <span class="badge bg-warning text-dark">
@@ -340,6 +336,7 @@
                                                         <i class="fas fa-eye me-1"></i>Lihat
                                                     </button>
 
+                                                    <!-- Modal Catatan -->
                                                     <div class="modal fade"
                                                         id="catatanPermohonanModal{{ $surat->id }}" tabindex="-1">
                                                         <div class="modal-dialog">
@@ -393,7 +390,37 @@
             </div>
         </div>
     </div>
+    </div>
+@else
+    <span class="text-muted">-</span>
+    @endif
+    </td>
+    <td>
+        <button type="button" class="btn btn-sm btn-danger"
+            onclick="confirmDelete({{ $surat->id }}, '{{ $surat->dudi->nama_dudi }}')" title="Hapus Surat">
+            <i class="fas fa-trash"></i>
+        </button>
+    </td>
+    </tr>
+@empty
+    <tr>
+        <td colspan="7" class="text-center py-4">
+            <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
+            <h5 class="text-muted">Belum ada surat yang dikirim ke DUDI</h5>
+        </td>
+    </tr>
+    @endforelse
+    </tbody>
+    </tbody>
+    </table>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
 
+    <!-- Delete Form (hidden) -->
     <form id="deleteForm" method="POST" style="display: none;">
         @csrf
         @method('DELETE')
@@ -402,6 +429,7 @@
 
 @push('scripts')
     <script>
+        // Search functionality for Pengajuan
         document.getElementById('searchPengajuan').addEventListener('keyup', function() {
             const searchValue = this.value.toLowerCase();
             const tableRows = document.querySelectorAll('#tablePengajuan tbody tr');
@@ -415,6 +443,7 @@
             });
         });
 
+        // Search functionality for Permohonan
         document.getElementById('searchPermohonan').addEventListener('keyup', function() {
             const searchValue = this.value.toLowerCase();
             const tableRows = document.querySelectorAll('#tablePermohonan tbody tr');
@@ -431,8 +460,7 @@
         function confirmDelete(id, namaDudi) {
             Swal.fire({
                 title: 'Hapus Surat?',
-                html: 'Apakah Anda yakin ingin menghapus surat untuk DUDI <strong>' + namaDudi +
-                    '</strong>?<br><small class="text-muted">File surat pengajuan dan balasan akan dihapus permanen.</small>',
+                html: `Apakah Anda yakin ingin menghapus surat untuk DUDI <strong>${namaDudi}</strong>?<br><small class="text-muted">File surat pengajuan dan balasan akan dihapus permanen.</small>`,
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#dc3545',
@@ -442,12 +470,13 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     const form = document.getElementById('deleteForm');
-                    form.action = '/admin/surat-dudi/' + id;
+                    form.action = `/admin/surat-dudi/${id}`;
                     form.submit();
                 }
             });
         }
 
+        // Show success/error messages
         @if (session('success'))
             Swal.fire({
                 icon: 'success',

@@ -117,10 +117,10 @@ class PengajuanPklAdminController extends Controller
     public function changePilihan(Request $request, $id)
     {
         $request->validate([
-            'pilihan_aktif' => 'required|in:1,2,3'
+            'pilihan_aktif' => 'required|string|max:100'
         ]);
 
-        $pengajuan = PengajuanPkl::find($id);
+        $pengajuan = PengajuanPkl::with('siswa')->find($id);
 
         if (!$pengajuan) {
             if ($request->expectsJson()) {
@@ -132,26 +132,43 @@ class PengajuanPklAdminController extends Controller
             return back()->with('error', 'Pengajuan tidak ditemukan.');
         }
 
-        $pengajuan->pilihan_aktif = $request->pilihan_aktif;
+        $oldPilihan = $pengajuan->pilihan_aktif;
+        $newPilihan = $request->pilihan_aktif;
+
+        $pengajuan->pilihan_aktif = $newPilihan;
+
+        // Jika diubah ke SMK Telkom Banjarbaru, otomatis approve
+        if ($newPilihan === 'SMK Telkom Banjarbaru') {
+            $pengajuan->status = 'approved';
+
+            logActivity(
+                'update',
+                'Siswa Ditempatkan PKL di Sekolah',
+                "Siswa {$pengajuan->siswa->nama} (NIS: {$pengajuan->siswa->nis}) ditempatkan untuk PKL di SMK Telkom Banjarbaru (Grade {$pengajuan->siswa->grade_kurikulum})",
+                Session::get('loginId')
+            );
+        }
+
         $pengajuan->save();
 
         $siswa = $pengajuan->siswa;
+        $pilihanText = ($newPilihan === 'SMK Telkom Banjarbaru') ? 'SMK Telkom Banjarbaru (PKL di Sekolah)' : "pilihan {$newPilihan}";
 
         logActivity(
             'update',
             'Pilihan PKL Diubah',
-            "Pilihan aktif PKL siswa {$siswa->nama} (NIS: {$siswa->nis}) diubah ke pilihan {$request->pilihan_aktif}",
+            "Pilihan aktif PKL siswa {$siswa->nama} (NIS: {$siswa->nis}) diubah dari {$oldPilihan} ke {$pilihanText}",
             Session::get('loginId')
         );
 
         if ($request->expectsJson()) {
             return response()->json([
                 'success' => true,
-                'message' => 'Pilihan aktif berhasil diubah.'
+                'message' => 'Pilihan aktif berhasil diubah.' . ($newPilihan === 'SMK Telkom Banjarbaru' ? ' Status otomatis di-approve.' : '')
             ]);
         }
 
-        return back()->with('success', 'Pilihan aktif berhasil diubah.');
+        return back()->with('success', 'Pilihan aktif berhasil diubah.' . ($newPilihan === 'SMK Telkom Banjarbaru' ? ' Status otomatis di-approve.' : ''));
     }
 
     // Approve pengajuan dan assign ke DUDI

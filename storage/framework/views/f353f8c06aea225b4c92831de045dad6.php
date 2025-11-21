@@ -7,9 +7,9 @@
     <title>Kelola Pengajuan PKL - SMK Telkom Banjarbaru</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="{{ asset('css/kelola-dudi.css') }}" rel="stylesheet">
+    <link href="<?php echo e(asset('css/kelola-dudi.css')); ?>" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
 </head>
 
 <body>
@@ -17,7 +17,7 @@
     <nav class="top-navbar d-flex align-items-center justify-content-between">
         <!-- Logo dan Brand -->
         <div class="telkom-logo">
-            <img src="{{ asset('img/telkom-logo.png') }}" alt="Telkom Logo" height="40">
+            <img src="<?php echo e(asset('img/telkom-logo.png')); ?>" alt="Telkom Logo" height="40">
         </div>
 
         <!-- Right side -->
@@ -63,12 +63,12 @@
                 <i class="fas fa-clipboard-list"></i>
             </a>
             <a href="/admin/surat-permohonan"
-                class="sidebar-item {{ request()->is('admin/surat-permohonan*') ? 'active' : '' }}"
+                class="sidebar-item <?php echo e(request()->is('admin/surat-permohonan*') ? 'active' : ''); ?>"
                 title="Surat Permohonan Data">
                 <i class="fas fa-file-invoice"></i>
             </a>
             <a href="/admin/surat-pengajuan"
-                class="sidebar-item {{ request()->is('admin/surat-pengajuan*') ? 'active' : '' }}"
+                class="sidebar-item <?php echo e(request()->is('admin/surat-pengajuan*') ? 'active' : ''); ?>"
                 title="Surat Pengajuan PKL">
                 <i class="fas fa-file-export"></i>
             </a>
@@ -96,13 +96,13 @@
                         <label class="form-label">Status</label>
                         <select name="status" class="form-select">
                             <option value="">Semua Status</option>
-                            <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending
+                            <option value="pending" <?php echo e(request('status') == 'pending' ? 'selected' : ''); ?>>Pending
                             </option>
-                            <option value="diproses" {{ request('status') == 'diproses' ? 'selected' : '' }}>Diproses
+                            <option value="diproses" <?php echo e(request('status') == 'diproses' ? 'selected' : ''); ?>>Diproses
                             </option>
-                            <option value="approved" {{ request('status') == 'approved' ? 'selected' : '' }}>Approved
+                            <option value="approved" <?php echo e(request('status') == 'approved' ? 'selected' : ''); ?>>Approved
                             </option>
-                            <option value="rejected" {{ request('status') == 'rejected' ? 'selected' : '' }}>Rejected
+                            <option value="rejected" <?php echo e(request('status') == 'rejected' ? 'selected' : ''); ?>>Rejected
                             </option>
                         </select>
                     </div>
@@ -111,17 +111,17 @@
                         <label class="form-label">Kelas</label>
                         <select name="kelas" class="form-select">
                             <option value="">Semua Kelas</option>
-                            @foreach (['XIIA', 'XIIB', 'XIIC', 'XIID', 'XIIE', 'XIIF', 'XIIG'] as $kelas)
-                                <option value="{{ $kelas }}" {{ request('kelas') == $kelas ? 'selected' : '' }}>
-                                    {{ $kelas }}</option>
-                            @endforeach
+                            <?php $__currentLoopData = ['XIIA', 'XIIB', 'XIIC', 'XIID', 'XIIE', 'XIIF', 'XIIG']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $kelas): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <option value="<?php echo e($kelas); ?>" <?php echo e(request('kelas') == $kelas ? 'selected' : ''); ?>>
+                                    <?php echo e($kelas); ?></option>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </select>
                     </div>
 
                     <div class="col-md-4">
                         <label class="form-label">Cari (Nama/NIS)</label>
                         <input type="text" name="search" class="form-control" placeholder="Ketik nama atau NIS..."
-                            value="{{ request('search') }}">
+                            value="<?php echo e(request('search')); ?>">
                     </div>
 
                     <div class="col-md-2">
@@ -153,16 +153,16 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse ($pengajuan as $index => $item)
-                                @if ($item->siswa)
+                            <?php $__empty_1 = true; $__currentLoopData = $pengajuan; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                                <?php if($item->siswa): ?>
                                     <tr>
-                                        <td>{{ $pengajuan->firstItem() + $index }}</td>
-                                        <td>{{ $item->siswa->nis }}</td>
-                                        <td>{{ $item->siswa->nama }}</td>
-                                        <td>{{ $item->siswa->kelas }}</td>
-                                        <td><span class="badge bg-info">{{ $item->siswa->jurusan }}</span></td>
+                                        <td><?php echo e($pengajuan->firstItem() + $index); ?></td>
+                                        <td><?php echo e($item->siswa->nis); ?></td>
+                                        <td><?php echo e($item->siswa->nama); ?></td>
+                                        <td><?php echo e($item->siswa->kelas); ?></td>
+                                        <td><span class="badge bg-info"><?php echo e($item->siswa->jurusan); ?></span></td>
                                         <td>
-                                            @php
+                                            <?php
                                                 $pilihanAktif = $item->pilihan_aktif;
                                                 $dudi = null;
                                                 $dudiMandiri = null;
@@ -231,108 +231,108 @@
                                                         }
                                                     }
                                                 }
-                                            @endphp
+                                            ?>
 
-                                            @if ($isPklDiSekolah)
+                                            <?php if($isPklDiSekolah): ?>
                                                 <strong>SMK Telkom Banjarbaru</strong>
                                                 <span class="badge bg-info text-white ms-1"
                                                     style="font-size: 0.65rem;">
                                                     <i class="fas fa-school"></i> PKL di Sekolah
                                                 </span>
-                                            @else
-                                                <strong>{{ $dudi->nama_dudi ?? '-' }}</strong>
-                                                @if ($isDudiMandiri)
+                                            <?php else: ?>
+                                                <strong><?php echo e($dudi->nama_dudi ?? '-'); ?></strong>
+                                                <?php if($isDudiMandiri): ?>
                                                     <span class="badge bg-warning text-dark ms-1"
                                                         style="font-size: 0.65rem;">Mandiri</span>
-                                                    @if (!$dudiMandiriHasAccount)
+                                                    <?php if(!$dudiMandiriHasAccount): ?>
                                                         <br><small class="text-danger" style="font-size: 0.75rem;">
                                                             <i class="fas fa-exclamation-circle"></i> Akun DUDI belum
                                                             dibuat
                                                         </small>
-                                                    @else
+                                                    <?php else: ?>
                                                         <br><small class="text-success" style="font-size: 0.75rem;">
                                                             <i class="fas fa-check-circle"></i> Akun sudah dibuat
                                                         </small>
-                                                    @endif
-                                                @endif
-                                            @endif
+                                                    <?php endif; ?>
+                                                <?php endif; ?>
+                                            <?php endif; ?>
                                             <br>
-                                            @if (!$isPklDiSekolah)
+                                            <?php if(!$isPklDiSekolah): ?>
                                                 <small class="badge bg-primary" style="font-size: 0.7rem;">Pilihan
-                                                    {{ $pilihanAktif }}</small>
-                                            @endif
+                                                    <?php echo e($pilihanAktif); ?></small>
+                                            <?php endif; ?>
                                         </td>
-                                        <td>{{ date('d M Y', strtotime($item->tanggal_pengajuan)) }}</td>
+                                        <td><?php echo e(date('d M Y', strtotime($item->tanggal_pengajuan))); ?></td>
                                         <td>
-                                            @if ($item->status == 'pending')
+                                            <?php if($item->status == 'pending'): ?>
                                                 <span class="badge bg-warning">Pending</span>
-                                            @elseif($item->status == 'diproses')
+                                            <?php elseif($item->status == 'diproses'): ?>
                                                 <span class="badge bg-info">Diproses</span>
-                                            @elseif($item->status == 'approved')
+                                            <?php elseif($item->status == 'approved'): ?>
                                                 <span class="badge bg-success">Approved</span>
-                                            @else
+                                            <?php else: ?>
                                                 <span class="badge bg-danger">Rejected</span>
-                                            @endif
+                                            <?php endif; ?>
                                         </td>
                                         <td>
                                             <button class="btn btn-sm btn-info" title="Lihat Detail"
-                                                onclick="viewDetail({{ $item->id }})">
+                                                onclick="viewDetail(<?php echo e($item->id); ?>)">
                                                 <i class="fas fa-eye"></i>
                                             </button>
 
-                                            @if ($item->status == 'pending' || $item->status == 'diproses')
-                                                @if ($isDudiMandiri && !$dudiMandiriHasAccount)
-                                                    {{-- DUDI Mandiri belum punya akun, tampilkan tombol Buat Akun & Tidak Bersedia --}}
+                                            <?php if($item->status == 'pending' || $item->status == 'diproses'): ?>
+                                                <?php if($isDudiMandiri && !$dudiMandiriHasAccount): ?>
+                                                    
                                                     <button class="btn btn-sm btn-success"
                                                         title="DUDI bersedia jadi tempat PKL, buat akun"
-                                                        onclick="confirmCreateDudiAccount({{ $dudiMandiri->id }}, '{{ $dudiMandiri->nama_dudi }}', {{ $item->id }}, '{{ $item->siswa->nama }}')">
+                                                        onclick="confirmCreateDudiAccount(<?php echo e($dudiMandiri->id); ?>, '<?php echo e($dudiMandiri->nama_dudi); ?>', <?php echo e($item->id); ?>, '<?php echo e($item->siswa->nama); ?>')">
                                                         <i class="fas fa-check-circle"></i> DUDI Bersedia
                                                     </button>
                                                     <button class="btn btn-sm btn-danger"
                                                         title="DUDI tidak bersedia jadi tempat PKL"
-                                                        onclick="confirmDudiTidakBersedia({{ $item->id }}, '{{ $item->siswa->nama }}', '{{ $dudiMandiri->nama_dudi }}')">
+                                                        onclick="confirmDudiTidakBersedia(<?php echo e($item->id); ?>, '<?php echo e($item->siswa->nama); ?>', '<?php echo e($dudiMandiri->nama_dudi); ?>')">
                                                         <i class="fas fa-times-circle"></i> Tidak Bersedia
                                                     </button>
-                                                @elseif ($isDudiMandiri && $dudiMandiriHasAccount)
-                                                    {{-- DUDI Mandiri sudah punya akun - tampilkan tombol approve dan tolak --}}
+                                                <?php elseif($isDudiMandiri && $dudiMandiriHasAccount): ?>
+                                                    
                                                     <button class="btn btn-sm btn-success"
                                                         title="DUDI menyetujui siswa"
-                                                        onclick="confirmApprove({{ $item->id }}, '{{ $item->siswa->nama }}', '{{ $dudi->nama_dudi ?? '' }}')">
+                                                        onclick="confirmApprove(<?php echo e($item->id); ?>, '<?php echo e($item->siswa->nama); ?>', '<?php echo e($dudi->nama_dudi ?? ''); ?>')">
                                                         <i class="fas fa-check"></i> Approve
                                                     </button>
                                                     <button class="btn btn-sm btn-danger" title="DUDI tidak setuju"
-                                                        onclick="confirmRejectDudiMandiri({{ $item->id }}, '{{ $item->siswa->nama }}', '{{ $dudi->nama_dudi ?? '' }}')">
+                                                        onclick="confirmRejectDudiMandiri(<?php echo e($item->id); ?>, '<?php echo e($item->siswa->nama); ?>', '<?php echo e($dudi->nama_dudi ?? ''); ?>')">
                                                         <i class="fas fa-times-circle"></i> DUDI Tolak
                                                     </button>
-                                                @else
-                                                    {{-- Tampilkan button approve/reject normal --}}
+                                                <?php else: ?>
+                                                    
                                                     <button class="btn btn-sm btn-success"
                                                         title="Approve & Kirim ke DUDI"
-                                                        onclick="confirmApprove({{ $item->id }}, '{{ $item->siswa->nama }}', '{{ $dudi->nama_dudi ?? '' }}')">
+                                                        onclick="confirmApprove(<?php echo e($item->id); ?>, '<?php echo e($item->siswa->nama); ?>', '<?php echo e($dudi->nama_dudi ?? ''); ?>')">
                                                         <i class="fas fa-check"></i> Approve
                                                     </button>
                                                     <button class="btn btn-sm btn-warning" title="Reject"
-                                                        onclick="confirmReject({{ $item->id }}, '{{ $item->siswa->nama }}')">
+                                                        onclick="confirmReject(<?php echo e($item->id); ?>, '<?php echo e($item->siswa->nama); ?>')">
                                                         <i class="fas fa-times"></i> Tolak
                                                     </button>
-                                                @endif
-                                            @endif
+                                                <?php endif; ?>
+                                            <?php endif; ?>
 
                                             <button class="btn btn-sm btn-danger" title="Hapus"
-                                                onclick="confirmDelete({{ $item->id }}, '{{ $item->siswa->nama }}')">
+                                                onclick="confirmDelete(<?php echo e($item->id); ?>, '<?php echo e($item->siswa->nama); ?>')">
                                                 <i class="fas fa-trash"></i>
                                             </button>
                                         </td>
                                     </tr>
-                                @endif
-                            @empty
+                                <?php endif; ?>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                                 <tr>
                                     <td colspan="9" class="text-center py-4">
                                         <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
                                         <h5 class="text-muted">Belum ada pengajuan PKL</h5>
                                     </td>
                                 </tr>
-                            @endforelse
+                            <?php endif; ?>
                         </tbody>
                     </table>
                 </div>
@@ -340,11 +340,12 @@
                 <!-- Pagination -->
                 <div class="d-flex justify-content-between align-items-center mt-3">
                     <div>
-                        Menampilkan {{ $pengajuan->firstItem() ?? 0 }} - {{ $pengajuan->lastItem() ?? 0 }} dari
-                        {{ $pengajuan->total() }} data
+                        Menampilkan <?php echo e($pengajuan->firstItem() ?? 0); ?> - <?php echo e($pengajuan->lastItem() ?? 0); ?> dari
+                        <?php echo e($pengajuan->total()); ?> data
                     </div>
                     <div>
-                        {{ $pengajuan->links() }}
+                        <?php echo e($pengajuan->links()); ?>
+
                     </div>
                 </div>
             </div>
@@ -375,29 +376,30 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="{{ asset('js/kelola-pengajuan.js') }}"></script>
+    <script src="<?php echo e(asset('js/kelola-pengajuan.js')); ?>"></script>
 
     <!-- SweetAlert Notifications -->
     <script>
-        @if (session('success'))
+        <?php if(session('success')): ?>
             Swal.fire({
                 icon: 'success',
                 title: 'Berhasil!',
-                html: '{!! session('success') !!}',
+                html: '<?php echo session('success'); ?>',
                 timer: 5000,
                 showConfirmButton: true
             });
-        @endif
+        <?php endif; ?>
 
-        @if (session('error'))
+        <?php if(session('error')): ?>
             Swal.fire({
                 icon: 'error',
                 title: 'Gagal!',
-                text: '{{ session('error') }}',
+                text: '<?php echo e(session('error')); ?>',
                 confirmButtonColor: '#e53e3e'
             });
-        @endif
+        <?php endif; ?>
     </script>
 </body>
 
 </html>
+<?php /**PATH C:\laragon\www\pkl-smktelkom\resources\views/admin/kelola-pengajuan.blade.php ENDPATH**/ ?>

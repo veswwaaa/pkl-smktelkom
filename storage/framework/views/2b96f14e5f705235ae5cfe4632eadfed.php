@@ -1,8 +1,6 @@
-@extends('layouts.admin')
+<?php $__env->startSection('title', 'Upload Surat Pengajuan PKL'); ?>
 
-@section('title', 'Upload Surat Pengajuan PKL')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
     <!-- Page Header -->
     <div class="page-header">
         <div class="page-title">
@@ -22,18 +20,20 @@
 
     <div class="container-fluid">
         <!-- Alert Messages -->
-        @if (session('success'))
+        <?php if(session('success')): ?>
             <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <i class="fas fa-check-circle me-2"></i>{{ session('success') }}
+                <i class="fas fa-check-circle me-2"></i><?php echo e(session('success')); ?>
+
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
-        @endif
-        @if (session('error'))
+        <?php endif; ?>
+        <?php if(session('error')): ?>
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <i class="fas fa-exclamation-circle me-2"></i>{{ session('error') }}
+                <i class="fas fa-exclamation-circle me-2"></i><?php echo e(session('error')); ?>
+
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
-        @endif
+        <?php endif; ?>
 
         <!-- Info Card -->
         <div class="alert alert-info">
@@ -56,7 +56,7 @@
                 <div class="card-body">
                     <form action="/admin/surat-pengajuan/kirim" method="POST" enctype="multipart/form-data"
                         id="formSuratPengajuan">
-                        @csrf
+                        <?php echo csrf_field(); ?>
 
                         <!-- Pilih DUDI -->
                         <div class="mb-4">
@@ -65,16 +65,17 @@
                             </label>
                             <select class="form-select" id="id_dudi" name="id_dudi" required>
                                 <option value="">-- Pilih DUDI --</option>
-                                @foreach ($dudis as $dudi)
-                                    <option value="{{ $dudi->id }}">
-                                        {{ $dudi->nama_dudi }}
-                                        @if ($dudi->jenis_dudi == 'mandiri')
+                                <?php $__currentLoopData = $dudis; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $dudi): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <option value="<?php echo e($dudi->id); ?>">
+                                        <?php echo e($dudi->nama_dudi); ?>
+
+                                        <?php if($dudi->jenis_dudi == 'mandiri'): ?>
                                             (Mandiri)
-                                        @else
+                                        <?php else: ?>
                                             (Sekolah)
-                                        @endif
+                                        <?php endif; ?>
                                     </option>
-                                @endforeach
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             </select>
                             <small class="text-muted">Pilih DUDI terlebih dahulu untuk melihat siswa yang mendaftar</small>
                         </div>
@@ -84,12 +85,26 @@
                             <label for="nomor_surat" class="form-label">
                                 <strong>Nomor Surat <span class="text-danger">*</span></strong>
                             </label>
-                            <input type="text" class="form-control @error('nomor_surat') is-invalid @enderror"
+                            <input type="text" class="form-control <?php $__errorArgs = ['nomor_surat'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
                                 id="nomor_surat" name="nomor_surat" required placeholder="Masukkan nomor surat"
-                                value="{{ old('nomor_surat') }}">
-                            @error('nomor_surat')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
+                                value="<?php echo e(old('nomor_surat')); ?>">
+                            <?php $__errorArgs = ['nomor_surat'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                <div class="invalid-feedback"><?php echo e($message); ?></div>
+                            <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                             <small class="text-muted">Nomor surat akan ditampilkan di template PDF</small>
                         </div>
 
@@ -349,4 +364,6 @@
                 }
             });
         </script>
-    @endsection
+    <?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.admin', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\laragon\www\pkl-smktelkom\resources\views/admin/surat-pengajuan.blade.php ENDPATH**/ ?>

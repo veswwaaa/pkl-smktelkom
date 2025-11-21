@@ -4,11 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Surat Permohonan - {{ $dudi->nama_dudi }}</title>
+    <title>Surat Permohonan - <?php echo e($dudi->nama_dudi); ?></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
     <style>
         body {
             background: #f5f5f5;
@@ -181,12 +181,13 @@
                     <i class="fas fa-bell"></i>
                 </div>
                 <div class="profile-badge">
-                    {{ strtoupper(substr($dudi->nama_dudi, 0, 1)) }}
+                    <?php echo e(strtoupper(substr($dudi->nama_dudi, 0, 1))); ?>
+
                 </div>
             </div>
         </div>
 
-        @if ($surat && $surat->file_surat_permohonan)
+        <?php if($surat && $surat->file_surat_permohonan): ?>
             <!-- Download Surat Permohonan -->
             <div class="card">
                 <div class="card-header bg-info text-white">
@@ -196,28 +197,29 @@
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <p class="mb-2"><strong>Tanggal Dikirim:</strong></p>
-                            <p>{{ $surat->tanggal_upload_permohonan ? $surat->tanggal_upload_permohonan->format('d M Y H:i') : '-' }}
+                            <p><?php echo e($surat->tanggal_upload_permohonan ? $surat->tanggal_upload_permohonan->format('d M Y H:i') : '-'); ?>
+
                             </p>
                         </div>
                         <div class="col-md-6">
                             <p class="mb-2"><strong>Catatan dari Admin:</strong></p>
-                            <p>{{ $surat->catatan_admin_permohonan ?? 'Tidak ada catatan' }}</p>
+                            <p><?php echo e($surat->catatan_admin_permohonan ?? 'Tidak ada catatan'); ?></p>
                         </div>
                     </div>
 
-                    @if ($surat->file_surat_permohonan && $filePermohonanExists)
-                        <a href="/dudi/surat-pkl/{{ $surat->id }}/download?type=surat-permohonan"
+                    <?php if($surat->file_surat_permohonan && $filePermohonanExists): ?>
+                        <a href="/dudi/surat-pkl/<?php echo e($surat->id); ?>/download?type=surat-permohonan"
                             class="btn btn-info text-white">
                             <i class="fas fa-download me-2"></i>Download Surat Permohonan
                         </a>
-                    @elseif ($surat->file_surat_permohonan && !$filePermohonanExists)
+                    <?php elseif($surat->file_surat_permohonan && !$filePermohonanExists): ?>
                         <div class="alert alert-warning mb-0">
                             <i class="fas fa-exclamation-triangle me-2"></i>
                             File tidak tersedia di server. Hubungi admin untuk upload ulang.
                         </div>
-                    @else
+                    <?php else: ?>
                         <button class="btn btn-secondary" disabled>Tidak ada file permohonan</button>
-                    @endif
+                    <?php endif; ?>
                 </div>
             </div>
 
@@ -227,41 +229,42 @@
                     <h5 class="mb-0"><i class="fas fa-upload me-2"></i>Upload Surat Balasan ke Admin</h5>
                 </div>
                 <div class="card-body">
-                    @if ($surat->file_balasan_permohonan)
+                    <?php if($surat->file_balasan_permohonan): ?>
                         <!-- Sudah kirim balasan -->
                         <div class="alert alert-success">
                             <i class="fas fa-check-circle me-2"></i>
                             <strong>Balasan sudah dikirim pada:</strong>
-                            {{ $surat->tanggal_upload_balasan_permohonan ? $surat->tanggal_upload_balasan_permohonan->format('d M Y H:i') : '-' }}
+                            <?php echo e($surat->tanggal_upload_balasan_permohonan ? $surat->tanggal_upload_balasan_permohonan->format('d M Y H:i') : '-'); ?>
+
                         </div>
 
                         <div class="row mb-3">
                             <div class="col-md-12">
                                 <p class="mb-2"><strong>Catatan:</strong></p>
-                                <p>{{ $surat->catatan_balasan_permohonan ?? 'Tidak ada catatan' }}</p>
+                                <p><?php echo e($surat->catatan_balasan_permohonan ?? 'Tidak ada catatan'); ?></p>
                             </div>
                         </div>
 
-                        @if ($surat->file_balasan_permohonan && $fileBalasanPermohonanExists)
-                            <a href="/dudi/surat-pkl/{{ $surat->id }}/download?type=balasan-permohonan"
+                        <?php if($surat->file_balasan_permohonan && $fileBalasanPermohonanExists): ?>
+                            <a href="/dudi/surat-pkl/<?php echo e($surat->id); ?>/download?type=balasan-permohonan"
                                 class="btn btn-secondary mb-3">
                                 <i class="fas fa-file-pdf me-2"></i>Lihat Surat Balasan
                             </a>
-                        @elseif ($surat->file_balasan_permohonan && !$fileBalasanPermohonanExists)
+                        <?php elseif($surat->file_balasan_permohonan && !$fileBalasanPermohonanExists): ?>
                             <div class="alert alert-warning mb-3">
                                 <i class="fas fa-exclamation-triangle me-2"></i>
                                 File tidak tersedia di server.
                             </div>
-                        @endif
+                        <?php endif; ?>
 
                         <div class="alert alert-info">
                             <i class="fas fa-info-circle me-2"></i>
                             Jika ingin mengirim balasan baru, upload file baru di bawah ini.
                         </div>
-                    @endif
+                    <?php endif; ?>
 
                     <form id="formBalasanPermohonan" enctype="multipart/form-data">
-                        @csrf
+                        <?php echo csrf_field(); ?>
                         <input type="hidden" name="jenis_surat" value="permohonan">
 
                         <div class="row">
@@ -280,7 +283,7 @@
                                     <i class="fas fa-sticky-note me-1"></i>Catatan (Opsional)
                                 </label>
                                 <textarea class="form-control" id="catatan_permohonan" name="catatan_dudi" rows="3"
-                                    placeholder="Tambahkan catatan untuk admin...">{{ $surat->catatan_dudi_permohonan ?? '' }}</textarea>
+                                    placeholder="Tambahkan catatan untuk admin..."><?php echo e($surat->catatan_dudi_permohonan ?? ''); ?></textarea>
                             </div>
                         </div>
 
@@ -290,7 +293,7 @@
                     </form>
                 </div>
             </div>
-        @else
+        <?php else: ?>
             <!-- Belum ada surat permohonan -->
             <div class="card">
                 <div class="card-body text-center py-5">
@@ -299,7 +302,7 @@
                     <p class="text-muted">Admin belum mengirim surat permohonan untuk DUDI Anda.</p>
                 </div>
             </div>
-        @endif
+        <?php endif; ?>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
@@ -388,23 +391,24 @@
                 });
         });
 
-        @if (session('success'))
+        <?php if(session('success')): ?>
             Swal.fire({
                 icon: 'success',
                 title: 'Berhasil!',
-                text: '{{ session('success') }}',
+                text: '<?php echo e(session('success')); ?>',
                 timer: 3000
             });
-        @endif
+        <?php endif; ?>
 
-        @if (session('error'))
+        <?php if(session('error')): ?>
             Swal.fire({
                 icon: 'error',
                 title: 'Gagal!',
-                text: '{{ session('error') }}'
+                text: '<?php echo e(session('error')); ?>'
             });
-        @endif
+        <?php endif; ?>
     </script>
 </body>
 
 </html>
+<?php /**PATH C:\laragon\www\pkl-smktelkom\resources\views/dudi/surat-permohonan.blade.php ENDPATH**/ ?>

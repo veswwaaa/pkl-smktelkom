@@ -12,12 +12,12 @@ return new class extends Migration {
     {
         Schema::table('tb_surat_dudi', function (Blueprint $table) {
             // Kolom untuk surat permohonan
-            $table->string('file_surat_permohonan')->nullable()->after('catatan_dudi_pengajuan');
+            $table->string('file_surat_permohonan')->nullable()->after('catatan_dudi');
             $table->timestamp('tanggal_upload_permohonan')->nullable()->after('file_surat_permohonan');
             $table->string('file_balasan_permohonan')->nullable()->after('tanggal_upload_permohonan');
             $table->timestamp('tanggal_upload_balasan_permohonan')->nullable()->after('file_balasan_permohonan');
             $table->text('catatan_admin_permohonan')->nullable()->after('tanggal_upload_balasan_permohonan');
-            $table->text('catatan_dudi_permohonan')->nullable()->after('catatan_admin_permohonan');
+            $table->text('catatan_balasan_permohonan')->nullable()->after('catatan_admin_permohonan');
         });
     }
 
@@ -33,7 +33,7 @@ return new class extends Migration {
                 'file_balasan_permohonan',
                 'tanggal_upload_balasan_permohonan',
                 'catatan_admin_permohonan',
-                'catatan_dudi_permohonan'
+                'catatan_balasan_permohonan'
             ]);
         });
     }

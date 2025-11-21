@@ -7,31 +7,32 @@
     <title>Status Pengajuan PKL - SMK Telkom</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="{{ asset('css/dashboard-siswa-new.css') }}">
+    <link rel="stylesheet" href="<?php echo e(asset('css/dashboard-siswa-new.css')); ?>">
 </head>
 
 <body>
     <!-- Top Navbar -->
     <nav class="top-navbar">
         <div class="telkom-logo">
-            <img src="{{ asset('img/telkom-logo.png') }}" alt="Telkom Schools" onerror="this.style.display='none'">
+            <img src="<?php echo e(asset('img/telkom-logo.png')); ?>" alt="Telkom Schools" onerror="this.style.display='none'">
             <h5>Telkom Schools</h5>
         </div>
 
         <div class="navbar-right">
             <button class="notification-btn" onclick="window.location.href='/siswa/pengajuan-pkl'">
                 <i class="fas fa-bell"></i>
-                @if ($pengajuan && $pengajuan->status == 'pending')
+                <?php if($pengajuan && $pengajuan->status == 'pending'): ?>
                     <span class="notification-badge">1</span>
-                @endif
+                <?php endif; ?>
             </button>
             <div class="dropdown">
                 <div class="user-avatar" data-bs-toggle="dropdown">
-                    {{ substr($siswa->nama, 0, 1) }}
+                    <?php echo e(substr($siswa->nama, 0, 1)); ?>
+
                 </div>
                 <ul class="dropdown-menu dropdown-menu-end">
                     <li>
-                        <h6 class="dropdown-header">{{ $siswa->nama }}</h6>
+                        <h6 class="dropdown-header"><?php echo e($siswa->nama); ?></h6>
                     </li>
                     <li>
                         <hr class="dropdown-divider">
@@ -82,46 +83,47 @@
             </div>
         </div>
 
-        @if ($pengajuan)
+        <?php if($pengajuan): ?>
             <!-- Status Umum -->
             <div class="card mb-4">
                 <div
                     class="card-header 
-                    @if ($pengajuan->status == 'approved') bg-success
-                    @elseif($pengajuan->status == 'rejected') bg-danger
-                    @else bg-warning @endif text-white">
+                    <?php if($pengajuan->status == 'approved'): ?> bg-success
+                    <?php elseif($pengajuan->status == 'rejected'): ?> bg-danger
+                    <?php else: ?> bg-warning <?php endif; ?> text-white">
                     <h5 class="mb-0">
                         <i class="fas fa-info-circle me-2"></i>Status Pengajuan:
-                        <strong>{{ ucfirst($pengajuan->status) }}</strong>
+                        <strong><?php echo e(ucfirst($pengajuan->status)); ?></strong>
                     </h5>
                 </div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-6">
                             <p><strong>Tanggal Pengajuan:</strong></p>
-                            <p>{{ $pengajuan->tanggal_pengajuan ? \Carbon\Carbon::parse($pengajuan->tanggal_pengajuan)->format('d F Y H:i') : '-' }}
+                            <p><?php echo e($pengajuan->tanggal_pengajuan ? \Carbon\Carbon::parse($pengajuan->tanggal_pengajuan)->format('d F Y H:i') : '-'); ?>
+
                             </p>
                         </div>
                         <div class="col-md-6">
                             <p><strong>Pilihan Aktif:</strong></p>
-                            @if ($pengajuan->pilihan_aktif == 'SMK Telkom Banjarbaru')
+                            <?php if($pengajuan->pilihan_aktif == 'SMK Telkom Banjarbaru'): ?>
                                 <p>
                                     <span class="badge bg-info fs-6">
                                         <i class="fas fa-school me-1"></i>PKL di Sekolah - SMK Telkom Banjarbaru
                                     </span>
                                 </p>
-                            @else
-                                <p>Pilihan {{ $pengajuan->pilihan_aktif ?? '-' }}</p>
-                            @endif
+                            <?php else: ?>
+                                <p>Pilihan <?php echo e($pengajuan->pilihan_aktif ?? '-'); ?></p>
+                            <?php endif; ?>
                         </div>
                     </div>
-                    @if ($pengajuan->pilihan_aktif == 'SMK Telkom Banjarbaru')
+                    <?php if($pengajuan->pilihan_aktif == 'SMK Telkom Banjarbaru'): ?>
                         <div class="alert alert-info mt-3">
                             <i class="fas fa-info-circle me-2"></i>
                             <strong>Informasi PKL di Sekolah:</strong> Anda ditempatkan untuk melaksanakan PKL di SMK
                             Telkom Banjarbaru berdasarkan keputusan kurikulum.
                         </div>
-                    @endif
+                    <?php endif; ?>
                 </div>
             </div>
 
@@ -135,47 +137,51 @@
                         <div class="col-md-6">
                             <p><strong>DUDI:</strong></p>
                             <h6>
-                                @if ($pengajuan->id_dudi_pilihan_1)
-                                    {{ $pengajuan->dudiPilihan1->nama_dudi ?? '-' }}
-                                @elseif($pengajuan->id_dudi_mandiri_pilihan_1)
-                                    {{ $pengajuan->dudiMandiriPilihan1->nama_dudi ?? '-' }}
+                                <?php if($pengajuan->id_dudi_pilihan_1): ?>
+                                    <?php echo e($pengajuan->dudiPilihan1->nama_dudi ?? '-'); ?>
+
+                                <?php elseif($pengajuan->id_dudi_mandiri_pilihan_1): ?>
+                                    <?php echo e($pengajuan->dudiMandiriPilihan1->nama_dudi ?? '-'); ?>
+
                                     <span class="badge bg-info">Mandiri</span>
-                                @else
+                                <?php else: ?>
                                     -
-                                @endif
+                                <?php endif; ?>
                             </h6>
                         </div>
                         <div class="col-md-6">
                             <p><strong>Status:</strong></p>
-                            @if ($pengajuan->status_pilihan_1 == 'approved')
+                            <?php if($pengajuan->status_pilihan_1 == 'approved'): ?>
                                 <span class="badge bg-success fs-6">
                                     <i class="fas fa-check-circle me-1"></i>Diterima
                                 </span>
-                            @elseif($pengajuan->status_pilihan_1 == 'rejected')
+                            <?php elseif($pengajuan->status_pilihan_1 == 'rejected'): ?>
                                 <span class="badge bg-danger fs-6">
                                     <i class="fas fa-times-circle me-1"></i>Ditolak
                                 </span>
-                            @else
+                            <?php else: ?>
                                 <span class="badge bg-warning fs-6">
                                     <i class="fas fa-clock me-1"></i>Menunggu
                                 </span>
-                            @endif
+                            <?php endif; ?>
                         </div>
                     </div>
-                    @if ($pengajuan->tanggal_response_pilihan_1)
+                    <?php if($pengajuan->tanggal_response_pilihan_1): ?>
                         <div class="row mt-3">
                             <div class="col-md-12">
                                 <p><strong>Tanggal Response:</strong></p>
-                                <p>{{ \Carbon\Carbon::parse($pengajuan->tanggal_response_pilihan_1)->format('d F Y H:i') }}
+                                <p><?php echo e(\Carbon\Carbon::parse($pengajuan->tanggal_response_pilihan_1)->format('d F Y H:i')); ?>
+
                                 </p>
                             </div>
                         </div>
-                    @endif
-                    @if ($pengajuan->catatan_pilihan_1)
+                    <?php endif; ?>
+                    <?php if($pengajuan->catatan_pilihan_1): ?>
                         <div class="alert alert-info mt-3">
-                            <strong>Catatan:</strong> {{ $pengajuan->catatan_pilihan_1 }}
+                            <strong>Catatan:</strong> <?php echo e($pengajuan->catatan_pilihan_1); ?>
+
                         </div>
-                    @endif
+                    <?php endif; ?>
                 </div>
             </div>
 
@@ -189,47 +195,51 @@
                         <div class="col-md-6">
                             <p><strong>DUDI:</strong></p>
                             <h6>
-                                @if ($pengajuan->id_dudi_pilihan_2)
-                                    {{ $pengajuan->dudiPilihan2->nama_dudi ?? '-' }}
-                                @elseif($pengajuan->id_dudi_mandiri_pilihan_2)
-                                    {{ $pengajuan->dudiMandiriPilihan2->nama_dudi ?? '-' }}
+                                <?php if($pengajuan->id_dudi_pilihan_2): ?>
+                                    <?php echo e($pengajuan->dudiPilihan2->nama_dudi ?? '-'); ?>
+
+                                <?php elseif($pengajuan->id_dudi_mandiri_pilihan_2): ?>
+                                    <?php echo e($pengajuan->dudiMandiriPilihan2->nama_dudi ?? '-'); ?>
+
                                     <span class="badge bg-info">Mandiri</span>
-                                @else
+                                <?php else: ?>
                                     -
-                                @endif
+                                <?php endif; ?>
                             </h6>
                         </div>
                         <div class="col-md-6">
                             <p><strong>Status:</strong></p>
-                            @if ($pengajuan->status_pilihan_2 == 'approved')
+                            <?php if($pengajuan->status_pilihan_2 == 'approved'): ?>
                                 <span class="badge bg-success fs-6">
                                     <i class="fas fa-check-circle me-1"></i>Diterima
                                 </span>
-                            @elseif($pengajuan->status_pilihan_2 == 'rejected')
+                            <?php elseif($pengajuan->status_pilihan_2 == 'rejected'): ?>
                                 <span class="badge bg-danger fs-6">
                                     <i class="fas fa-times-circle me-1"></i>Ditolak
                                 </span>
-                            @else
+                            <?php else: ?>
                                 <span class="badge bg-warning fs-6">
                                     <i class="fas fa-clock me-1"></i>Menunggu
                                 </span>
-                            @endif
+                            <?php endif; ?>
                         </div>
                     </div>
-                    @if ($pengajuan->tanggal_response_pilihan_2)
+                    <?php if($pengajuan->tanggal_response_pilihan_2): ?>
                         <div class="row mt-3">
                             <div class="col-md-12">
                                 <p><strong>Tanggal Response:</strong></p>
-                                <p>{{ \Carbon\Carbon::parse($pengajuan->tanggal_response_pilihan_2)->format('d F Y H:i') }}
+                                <p><?php echo e(\Carbon\Carbon::parse($pengajuan->tanggal_response_pilihan_2)->format('d F Y H:i')); ?>
+
                                 </p>
                             </div>
                         </div>
-                    @endif
-                    @if ($pengajuan->catatan_pilihan_2)
+                    <?php endif; ?>
+                    <?php if($pengajuan->catatan_pilihan_2): ?>
                         <div class="alert alert-info mt-3">
-                            <strong>Catatan:</strong> {{ $pengajuan->catatan_pilihan_2 }}
+                            <strong>Catatan:</strong> <?php echo e($pengajuan->catatan_pilihan_2); ?>
+
                         </div>
-                    @endif
+                    <?php endif; ?>
                 </div>
             </div>
 
@@ -243,50 +253,54 @@
                         <div class="col-md-6">
                             <p><strong>DUDI:</strong></p>
                             <h6>
-                                @if ($pengajuan->id_dudi_pilihan_3)
-                                    {{ $pengajuan->dudiPilihan3->nama_dudi ?? '-' }}
-                                @elseif($pengajuan->id_dudi_mandiri_pilihan_3)
-                                    {{ $pengajuan->dudiMandiriPilihan3->nama_dudi ?? '-' }}
+                                <?php if($pengajuan->id_dudi_pilihan_3): ?>
+                                    <?php echo e($pengajuan->dudiPilihan3->nama_dudi ?? '-'); ?>
+
+                                <?php elseif($pengajuan->id_dudi_mandiri_pilihan_3): ?>
+                                    <?php echo e($pengajuan->dudiMandiriPilihan3->nama_dudi ?? '-'); ?>
+
                                     <span class="badge bg-info">Mandiri</span>
-                                @else
+                                <?php else: ?>
                                     -
-                                @endif
+                                <?php endif; ?>
                             </h6>
                         </div>
                         <div class="col-md-6">
                             <p><strong>Status:</strong></p>
-                            @if ($pengajuan->status_pilihan_3 == 'approved')
+                            <?php if($pengajuan->status_pilihan_3 == 'approved'): ?>
                                 <span class="badge bg-success fs-6">
                                     <i class="fas fa-check-circle me-1"></i>Diterima
                                 </span>
-                            @elseif($pengajuan->status_pilihan_3 == 'rejected')
+                            <?php elseif($pengajuan->status_pilihan_3 == 'rejected'): ?>
                                 <span class="badge bg-danger fs-6">
                                     <i class="fas fa-times-circle me-1"></i>Ditolak
                                 </span>
-                            @else
+                            <?php else: ?>
                                 <span class="badge bg-warning fs-6">
                                     <i class="fas fa-clock me-1"></i>Menunggu
                                 </span>
-                            @endif
+                            <?php endif; ?>
                         </div>
                     </div>
-                    @if ($pengajuan->tanggal_response_pilihan_3)
+                    <?php if($pengajuan->tanggal_response_pilihan_3): ?>
                         <div class="row mt-3">
                             <div class="col-md-12">
                                 <p><strong>Tanggal Response:</strong></p>
-                                <p>{{ \Carbon\Carbon::parse($pengajuan->tanggal_response_pilihan_3)->format('d F Y H:i') }}
+                                <p><?php echo e(\Carbon\Carbon::parse($pengajuan->tanggal_response_pilihan_3)->format('d F Y H:i')); ?>
+
                                 </p>
                             </div>
                         </div>
-                    @endif
-                    @if ($pengajuan->catatan_pilihan_3)
+                    <?php endif; ?>
+                    <?php if($pengajuan->catatan_pilihan_3): ?>
                         <div class="alert alert-info mt-3">
-                            <strong>Catatan:</strong> {{ $pengajuan->catatan_pilihan_3 }}
+                            <strong>Catatan:</strong> <?php echo e($pengajuan->catatan_pilihan_3); ?>
+
                         </div>
-                    @endif
+                    <?php endif; ?>
                 </div>
             </div>
-        @else
+        <?php else: ?>
             <div class="card">
                 <div class="card-body text-center py-5">
                     <i class="fas fa-inbox fa-4x text-muted mb-3"></i>
@@ -297,7 +311,7 @@
                     </a>
                 </div>
             </div>
-        @endif
+        <?php endif; ?>
 
         <!-- Back Button -->
         <div class="mt-4">
@@ -311,3 +325,4 @@
 </body>
 
 </html>
+<?php /**PATH C:\laragon\www\pkl-smktelkom\resources\views/siswa/status-pengajuan.blade.php ENDPATH**/ ?>

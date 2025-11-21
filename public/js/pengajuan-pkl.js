@@ -43,7 +43,7 @@ if (formPengajuanPkl) {
                 text: "Harap pilih semua DUDI (Pilihan 1, 2, dan 3)",
                 confirmButtonColor: "#dc3545",
             });
-            return false;
+            return false;   
         }
 
         // Check for duplicate selections

@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use App\Models\tb_siswa;
 use App\Models\PengajuanPkl;
-use App\Helpers\ActivityHelper;
 
 class UploadDokumenController extends Controller
 {
@@ -91,11 +90,11 @@ class UploadDokumenController extends Controller
             $pengajuan->save();
 
             // Log activity
-            ActivityHelper::log(
-                'siswa',
-                $siswa->id,
-                'upload',
-                'Upload ' . $displayName . ' - NIS: ' . $siswa->nis
+            logActivity(
+                'update',
+                'Upload ' . $displayName,
+                'Siswa ' . $siswa->nama . ' (NIS: ' . $siswa->nis . ') berhasil mengupload ' . $displayName,
+                Session::get('loginId')
             );
 
             return response()->json([

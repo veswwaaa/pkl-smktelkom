@@ -409,7 +409,7 @@ class DudiController extends Controller
             $request->validate([
                 'id_dudi' => 'required|exists:tb_dudi,id',
                 'jurusan_diterima' => 'required|array|min:1',
-                'jurusan_diterima.*' => 'in:RPL,TKJ,MM,DKV,TJKT',
+                'jurusan_diterima.*' => 'in:RPL,TKJ,ANM,DKV,TJKT',
                 'jobdesk' => 'required|string|min:10',
             ], [
                 'jurusan_diterima.required' => 'Pilih minimal 1 jurusan yang diterima',

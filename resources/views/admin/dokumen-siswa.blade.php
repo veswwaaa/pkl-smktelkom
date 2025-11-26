@@ -4,6 +4,46 @@
 
 @push('styles')
     <link rel="stylesheet" href="{{ asset('css/shared-components.css') }}">
+    <style>
+        /* Status Badges dengan Warna Jelas */
+        .status-badge {
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .status-badge.belum {
+            background-color: #ffc107;
+            color: #000;
+        }
+
+        .status-badge.sudah {
+            background-color: #28a745;
+            color: #fff;
+        }
+
+        .status-badge.terkirim {
+            background-color: #17a2b8;
+            color: #fff;
+        }
+
+        /* Progress Bar */
+        .progress-bar-container {
+            height: 8px;
+            background-color: #e9ecef;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 5px;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ee1c25, #c41820);
+            transition: width 0.3s ease;
+        }
+    </style>
 @endpush
 
 @section('content')
@@ -92,7 +132,8 @@
                                     <td>{{ $dokumen->siswa->nama }}</td>
                                     <td>{{ $dokumen->siswa->kelas }}</td>
                                     <td>
-                                        <span class="status-badge {{ $dokumen->status_cv_portofolio }}">
+                                        <span
+                                            class="badge bg-{{ $dokumen->status_cv_portofolio == 'sudah' ? 'success' : 'warning' }}">
                                             {{ $dokumen->status_cv_portofolio == 'sudah' ? 'Sudah' : 'Belum' }}
                                         </span>
                                         @if ($dokumen->status_cv_portofolio == 'sudah')
@@ -102,7 +143,8 @@
                                         @endif
                                     </td>
                                     <td>
-                                        <span class="status-badge {{ $dokumen->status_surat_pernyataan }}">
+                                        <span
+                                            class="badge bg-{{ $dokumen->status_surat_pernyataan == 'terkirim' ? 'info' : 'secondary' }}">
                                             {{ $dokumen->status_surat_pernyataan == 'terkirim' ? 'Terkirim' : 'Belum' }}
                                         </span>
                                         @if ($dokumen->status_surat_pernyataan == 'terkirim')
@@ -112,7 +154,8 @@
                                         @endif
                                     </td>
                                     <td>
-                                        <span class="status-badge {{ $dokumen->status_eviden }}">
+                                        <span
+                                            class="badge bg-{{ $dokumen->status_eviden == 'sudah' ? 'success' : 'warning' }}">
                                             {{ $dokumen->status_eviden == 'sudah' ? 'Sudah' : 'Belum' }}
                                         </span>
                                         @if ($dokumen->status_eviden == 'sudah')
@@ -122,7 +165,8 @@
                                         @endif
                                     </td>
                                     <td>
-                                        <span class="status-badge {{ $dokumen->status_surat_tugas }}">
+                                        <span
+                                            class="badge bg-{{ $dokumen->status_surat_tugas == 'terkirim' ? 'info' : 'secondary' }}">
                                             {{ $dokumen->status_surat_tugas == 'terkirim' ? 'Terkirim' : 'Belum' }}
                                         </span>
                                         @if ($dokumen->status_surat_tugas == 'terkirim')
@@ -146,11 +190,16 @@
                                             if ($dokumen->status_surat_tugas == 'terkirim') {
                                                 $progress += 25;
                                             }
+                                            $progressColor =
+                                                $progress == 100 ? 'success' : ($progress >= 50 ? 'info' : 'warning');
                                         @endphp
-                                        <div class="progress-bar-container">
-                                            <div class="progress-bar-fill" style="width: {{ $progress }}%"></div>
+                                        <div class="progress" style="height: 10px;">
+                                            <div class="progress-bar bg-{{ $progressColor }}" role="progressbar"
+                                                style="width: {{ $progress }}%" aria-valuenow="{{ $progress }}"
+                                                aria-valuemin="0" aria-valuemax="100">
+                                            </div>
                                         </div>
-                                        <small class="text-muted">{{ $progress }}%</small>
+                                        <small class="text-muted d-block text-center mt-1">{{ $progress }}%</small>
                                     </td>
                                     <td>
                                         <button class="btn btn-sm btn-primary btn-action"
@@ -239,22 +288,22 @@
                         <i class="fas fa-file-upload me-2"></i>CV & Portofolio
                     </h6>
                     ${data.status_cv_portofolio === 'sudah' ? `
-                                            <div class="alert alert-success mb-3">
-                                                <i class="fas fa-check-circle me-2"></i>
-                                                Diupload pada ${new Date(data.tanggal_upload_cv_portofolio).toLocaleDateString('id-ID', {day: '2-digit', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit'})}
-                                            </div>
-                                            <a href="/admin/dokumen-siswa/${data.id}/download/cv" class="btn btn-sm btn-primary me-2" target="_blank">
-                                                <i class="fas fa-download me-1"></i> Download CV
-                                            </a>
-                                            <a href="/admin/dokumen-siswa/${data.id}/download/portofolio" class="btn btn-sm btn-primary" target="_blank">
-                                                <i class="fas fa-download me-1"></i> Download Portofolio
-                                            </a>
-                                        ` : `
-                                            <div class="alert alert-warning">
-                                                <i class="fas fa-exclamation-triangle me-2"></i>
-                                                Siswa belum mengupload CV dan Portofolio
-                                            </div>
-                                        `}
+                                                            <div class="alert alert-success mb-3">
+                                                                <i class="fas fa-check-circle me-2"></i>
+                                                                Diupload pada ${new Date(data.tanggal_upload_cv_portofolio).toLocaleDateString('id-ID', {day: '2-digit', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit'})}
+                                                            </div>
+                                                            <a href="/admin/dokumen-siswa/${data.id}/download/cv" class="btn btn-sm btn-primary me-2" target="_blank">
+                                                                <i class="fas fa-download me-1"></i> Download CV
+                                                            </a>
+                                                            <a href="/admin/dokumen-siswa/${data.id}/download/portofolio" class="btn btn-sm btn-primary" target="_blank">
+                                                                <i class="fas fa-download me-1"></i> Download Portofolio
+                                                            </a>
+                                                        ` : `
+                                                            <div class="alert alert-warning">
+                                                                <i class="fas fa-exclamation-triangle me-2"></i>
+                                                                Siswa belum mengupload CV dan Portofolio
+                                                            </div>
+                                                        `}
                 </div>
 
                 <div class="mb-4">
@@ -262,22 +311,22 @@
                         <i class="fas fa-envelope me-2"></i>Surat Pernyataan
                     </h6>
                     ${data.status_surat_pernyataan === 'terkirim' ? `
-                                            <div class="alert alert-info mb-3">
-                                                <i class="fas fa-check-circle me-2"></i>
-                                                Terkirim pada ${new Date(data.tanggal_kirim_surat_pernyataan).toLocaleDateString('id-ID', {day: '2-digit', month: 'long', year: 'numeric'})}
-                                            </div>
-                                            <a href="/admin/dokumen-siswa/${data.id}/download/surat_pernyataan" class="btn btn-sm btn-primary" target="_blank">
-                                                <i class="fas fa-download me-1"></i> Download Surat Pernyataan
-                                            </a>
-                                        ` : `
-                                            <div class="alert alert-warning">
-                                                <i class="fas fa-exclamation-triangle me-2"></i>
-                                                Surat pernyataan belum dikirim ke siswa
-                                            </div>
-                                            <button class="btn btn-sm btn-success" onclick="kirimSuratPernyataan(${data.id})" ${data.status_cv_portofolio !== 'sudah' ? 'disabled' : ''}>
-                                                <i class="fas fa-paper-plane me-1"></i> Kirim Surat Pernyataan
-                                            </button>
-                                        `}
+                                                            <div class="alert alert-info mb-3">
+                                                                <i class="fas fa-check-circle me-2"></i>
+                                                                Terkirim pada ${new Date(data.tanggal_kirim_surat_pernyataan).toLocaleDateString('id-ID', {day: '2-digit', month: 'long', year: 'numeric'})}
+                                                            </div>
+                                                            <a href="/admin/dokumen-siswa/${data.id}/download/surat_pernyataan" class="btn btn-sm btn-primary" target="_blank">
+                                                                <i class="fas fa-download me-1"></i> Download Surat Pernyataan
+                                                            </a>
+                                                        ` : `
+                                                            <div class="alert alert-warning">
+                                                                <i class="fas fa-exclamation-triangle me-2"></i>
+                                                                Surat pernyataan belum dikirim ke siswa
+                                                            </div>
+                                                            <button class="btn btn-sm btn-success" onclick="kirimSuratPernyataan(${data.id})" ${data.status_cv_portofolio !== 'sudah' ? 'disabled' : ''}>
+                                                                <i class="fas fa-paper-plane me-1"></i> Kirim Surat Pernyataan
+                                                            </button>
+                                                        `}
                 </div>
 
                 <div class="mb-4">
@@ -285,26 +334,26 @@
                         <i class="fas fa-camera me-2"></i>Eviden (Jawaban + Foto)
                     </h6>
                     ${data.status_eviden === 'sudah' ? `
-                                            <div class="alert alert-success mb-3">
-                                                <i class="fas fa-check-circle me-2"></i>
-                                                Diupload pada ${new Date(data.tanggal_upload_eviden).toLocaleDateString('id-ID', {day: '2-digit', month: 'long', year: 'numeric'})}
-                                            </div>
-                                            <div class="mb-3">
-                                                <strong>Jawaban Siswa:</strong>
-                                                <p class="text-muted mt-2">${data.jawaban_surat_pernyataan || '-'}</p>
-                                            </div>
-                                            <a href="/admin/dokumen-siswa/${data.id}/download/surat_pernyataan_siswa" class="btn btn-sm btn-primary me-2 mb-2" target="_blank">
-                                                <i class="fas fa-download me-1"></i> Download Surat Pernyataan Siswa
-                                            </a>
-                                            <a href="/admin/dokumen-siswa/${data.id}/download/foto_ortu" class="btn btn-sm btn-primary mb-2" target="_blank">
-                                                <i class="fas fa-download me-1"></i> Download Foto dengan Ortu
-                                            </a>
-                                        ` : `
-                                            <div class="alert alert-warning">
-                                                <i class="fas fa-exclamation-triangle me-2"></i>
-                                                Siswa belum mengupload eviden
-                                            </div>
-                                        `}
+                                                            <div class="alert alert-success mb-3">
+                                                                <i class="fas fa-check-circle me-2"></i>
+                                                                Diupload pada ${new Date(data.tanggal_upload_eviden).toLocaleDateString('id-ID', {day: '2-digit', month: 'long', year: 'numeric'})}
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <strong>Jawaban Siswa:</strong>
+                                                                <p class="text-muted mt-2">${data.jawaban_surat_pernyataan || '-'}</p>
+                                                            </div>
+                                                            <a href="/admin/dokumen-siswa/${data.id}/download/surat_pernyataan_siswa" class="btn btn-sm btn-primary me-2 mb-2" target="_blank">
+                                                                <i class="fas fa-download me-1"></i> Download Surat Pernyataan Siswa
+                                                            </a>
+                                                            <a href="/admin/dokumen-siswa/${data.id}/download/foto_ortu" class="btn btn-sm btn-primary mb-2" target="_blank">
+                                                                <i class="fas fa-download me-1"></i> Download Foto dengan Ortu
+                                                            </a>
+                                                        ` : `
+                                                            <div class="alert alert-warning">
+                                                                <i class="fas fa-exclamation-triangle me-2"></i>
+                                                                Siswa belum mengupload eviden
+                                                            </div>
+                                                        `}
                 </div>
 
                 <div class="mb-4">
@@ -312,22 +361,22 @@
                         <i class="fas fa-file-signature me-2"></i>Surat Tugas
                     </h6>
                     ${data.status_surat_tugas === 'terkirim' ? `
-                                            <div class="alert alert-info mb-3">
-                                                <i class="fas fa-check-circle me-2"></i>
-                                                Terkirim pada ${new Date(data.tanggal_kirim_surat_tugas).toLocaleDateString('id-ID', {day: '2-digit', month: 'long', year: 'numeric'})}
-                                            </div>
-                                            <a href="/admin/dokumen-siswa/${data.id}/download/surat_tugas" class="btn btn-sm btn-primary" target="_blank">
-                                                <i class="fas fa-download me-1"></i> Download Surat Tugas
-                                            </a>
-                                        ` : `
-                                            <div class="alert alert-warning">
-                                                <i class="fas fa-exclamation-triangle me-2"></i>
-                                                Surat tugas belum dikirim ke siswa
-                                            </div>
-                                            <button class="btn btn-sm btn-success" onclick="kirimSuratTugas(${data.id})" ${data.status_eviden !== 'sudah' ? 'disabled' : ''}>
-                                                <i class="fas fa-paper-plane me-1"></i> Kirim Surat Tugas
-                                            </button>
-                                        `}
+                                                            <div class="alert alert-info mb-3">
+                                                                <i class="fas fa-check-circle me-2"></i>
+                                                                Terkirim pada ${new Date(data.tanggal_kirim_surat_tugas).toLocaleDateString('id-ID', {day: '2-digit', month: 'long', year: 'numeric'})}
+                                                            </div>
+                                                            <a href="/admin/dokumen-siswa/${data.id}/download/surat_tugas" class="btn btn-sm btn-primary" target="_blank">
+                                                                <i class="fas fa-download me-1"></i> Download Surat Tugas
+                                                            </a>
+                                                        ` : `
+                                                            <div class="alert alert-warning">
+                                                                <i class="fas fa-exclamation-triangle me-2"></i>
+                                                                Surat tugas belum dikirim ke siswa
+                                                            </div>
+                                                            <button class="btn btn-sm btn-success" onclick="kirimSuratTugas(${data.id})" ${data.status_eviden !== 'sudah' ? 'disabled' : ''}>
+                                                                <i class="fas fa-paper-plane me-1"></i> Kirim Surat Tugas
+                                                            </button>
+                                                        `}
                 </div>
             `;
 

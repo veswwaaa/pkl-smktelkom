@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\tb_siswa;
+use App\Models\tb_dudi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
@@ -20,11 +21,6 @@ class InfoPklSiswaController extends Controller
 
         if (!$siswa) {
             return redirect('/dashboard')->with('error', 'Data siswa tidak ditemukan.');
-        }
-
-        // Cek apakah siswa sudah ditempatkan
-        if ($siswa->status_penempatan != 'ditempatkan' && $siswa->status_penempatan != 'selesai') {
-            return redirect('/dashboard')->with('error', 'Anda belum ditempatkan di DUDI manapun.');
         }
 
         return view('siswa.info-pkl', compact('siswa'));

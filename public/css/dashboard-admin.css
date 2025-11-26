@@ -223,8 +223,8 @@ body {
 /* Dashboard Cards */
 .stats-row {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 30px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px;
     margin-bottom: 30px;
 }
 
@@ -439,7 +439,6 @@ body {
     font-weight: 600;
     color: #333;
 }
-
 
 /* Notes List Container - Scrollable with max 4 items visible */
 #notesList {

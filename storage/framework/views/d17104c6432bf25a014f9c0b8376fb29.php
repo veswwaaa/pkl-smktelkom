@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,6 +12,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
 </head>
+
 <body>
     <!-- Top Navbar -->
     <nav class="top-navbar d-flex align-items-center justify-content-between">
@@ -29,8 +31,11 @@
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end">
                     <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>Profile</a></li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item text-danger" href="/logout"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li><a class="dropdown-item text-danger" href="/logout"><i
+                                class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
                 </ul>
             </div>
         </div>
@@ -55,19 +60,19 @@
                 <i class="fas fa-clipboard-list"></i>
             </a>
             <a href="/admin/surat-permohonan"
-            class="sidebar-item <?php echo e(request()->is('admin/surat-permohonan*') ? 'active' : ''); ?>"
-            title="Surat Permohonan Data">
-            <i class="fas fa-file-invoice"></i>
+                class="sidebar-item <?php echo e(request()->is('admin/surat-permohonan*') ? 'active' : ''); ?>"
+                title="Surat Permohonan Data">
+                <i class="fas fa-file-invoice"></i>
             </a>
             <a href="/admin/surat-pengajuan"
                 class="sidebar-item <?php echo e(request()->is('admin/surat-pengajuan*') ? 'active' : ''); ?>"
                 title="Surat Pengajuan PKL">
                 <i class="fas fa-file-export"></i>
             </a>
-             <a href="/admin/surat-dudi" class="sidebar-item" title="Surat DUDI">
+            <a href="/admin/surat-dudi" class="sidebar-item" title="Surat DUDI">
                 <i class="fas fa-envelope"></i>
             </a>
-             <a href="/admin/dokumen-siswa"
+            <a href="/admin/dokumen-siswa"
                 class="sidebar-item <?php echo e(request()->is('admin/dokumen-siswa*') ? 'active' : ''); ?>" title="Dokumen Siswa">
                 <i class="fas fa-folder-open"></i>
             </a>
@@ -206,7 +211,8 @@
                                     <div class="empty-state">
                                         <i class="fas fa-inbox"></i>
                                         <h6>Belum ada data Wali Kelas</h6>
-                                        <p>Silakan tambah data Wali Kelas baru dengan mengklik tombol "Tambah Wali Kelas"</p>
+                                        <p>Silakan tambah data Wali Kelas baru dengan mengklik tombol "Tambah Wali
+                                            Kelas"</p>
                                     </div>
                                 </td>
                             </tr>
@@ -232,7 +238,8 @@
                     <div class="alert alert-info">
                         <i class="fas fa-info-circle me-2"></i>
                         <strong>Username:</strong> NIP wali kelas<br>
-                        <strong>Password default:</strong> dummy@NIP (contoh: dummy@197001012000012001)
+                        <strong>Password default:</strong> dummy@@NIP (contoh:
+                        dummy@@197001012000012001)
                     </div>
                     <form id="addForm">
                         <?php echo csrf_field(); ?>
@@ -243,7 +250,8 @@
                                         <i class="fas fa-id-card me-1"></i>
                                         NIP <span class="text-danger">*</span>
                                     </label>
-                                    <input type="text" class="form-control" id="nip" name="nip" required>
+                                    <input type="text" class="form-control" id="nip" name="nip"
+                                        required>
                                     <small class="text-muted">NIP akan digunakan sebagai username</small>
                                 </div>
                             </div>
@@ -253,7 +261,8 @@
                                         <i class="fas fa-user me-1"></i>
                                         Nama Lengkap <span class="text-danger">*</span>
                                     </label>
-                                    <input type="text" class="form-control" id="nama_admin" name="nama_admin" required>
+                                    <input type="text" class="form-control" id="nama_admin" name="nama_admin"
+                                        required>
                                 </div>
                             </div>
                         </div>
@@ -279,7 +288,8 @@
                                         <i class="fas fa-phone me-1"></i>
                                         Nomor Telepon <span class="text-danger">*</span>
                                     </label>
-                                    <input type="text" class="form-control" id="no_telpon" name="no_telpon" required>
+                                    <input type="text" class="form-control" id="no_telpon" name="no_telpon"
+                                        required>
                                 </div>
                             </div>
                         </div>
@@ -332,7 +342,8 @@
                                         <i class="fas fa-id-card me-1"></i>
                                         NIP <span class="text-danger">*</span>
                                     </label>
-                                    <input type="text" class="form-control" id="edit_nip" name="nip" required>
+                                    <input type="text" class="form-control" id="edit_nip" name="nip"
+                                        required>
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -341,7 +352,8 @@
                                         <i class="fas fa-user me-1"></i>
                                         Nama Lengkap <span class="text-danger">*</span>
                                     </label>
-                                    <input type="text" class="form-control" id="edit_nama_admin" name="nama_admin" required>
+                                    <input type="text" class="form-control" id="edit_nama_admin"
+                                        name="nama_admin" required>
                                 </div>
                             </div>
                         </div>
@@ -366,7 +378,8 @@
                                         <i class="fas fa-phone me-1"></i>
                                         Nomor Telepon <span class="text-danger">*</span>
                                     </label>
-                                    <input type="text" class="form-control" id="edit_no_telpon" name="no_telpon" required>
+                                    <input type="text" class="form-control" id="edit_no_telpon" name="no_telpon"
+                                        required>
                                 </div>
                             </div>
                         </div>
@@ -498,39 +511,39 @@
             });
 
             fetch('/admin/wali-kelas', {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'X-CSRF-TOKEN': csrfToken,
-                    'X-Requested-With': 'XMLHttpRequest',
-                    'Accept': 'application/json'
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-CSRF-TOKEN': csrfToken,
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Accept': 'application/json'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Berhasil!',
+                            html: `${data.message}<br><small class="text-muted">Password default: ${data.default_password}</small>`,
+                            showConfirmButton: false,
+                            timer: 2000
+                        }).then(() => {
+                            bootstrap.Modal.getInstance(document.getElementById('addModal')).hide();
+                            location.reload();
+                        });
+                    } else {
+                        throw new Error(data.message);
+                    }
+                })
+                .catch(error => {
                     Swal.fire({
-                        icon: 'success',
-                        title: 'Berhasil!',
-                        html: `${data.message}<br><small class="text-muted">Password default: ${data.default_password}</small>`,
-                        showConfirmButton: false,
-                        timer: 2000
-                    }).then(() => {
-                        bootstrap.Modal.getInstance(document.getElementById('addModal')).hide();
-                        location.reload();
+                        icon: 'error',
+                        title: 'Gagal!',
+                        text: error.message || 'Terjadi kesalahan',
+                        confirmButtonColor: '#e53e3e'
                     });
-                } else {
-                    throw new Error(data.message);
-                }
-            })
-            .catch(error => {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Gagal!',
-                    text: error.message || 'Terjadi kesalahan',
-                    confirmButtonColor: '#e53e3e'
                 });
-            });
         }
 
         function editWaliKelas(id, nip, nama, no_telpon, alamat, kelas) {
@@ -555,39 +568,39 @@
             });
 
             fetch(`/admin/wali-kelas/${currentEditId}`, {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'X-CSRF-TOKEN': csrfToken,
-                    'X-Requested-With': 'XMLHttpRequest',
-                    'Accept': 'application/json'
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-CSRF-TOKEN': csrfToken,
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Accept': 'application/json'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Berhasil!',
+                            text: data.message,
+                            showConfirmButton: false,
+                            timer: 1500
+                        }).then(() => {
+                            bootstrap.Modal.getInstance(document.getElementById('editModal')).hide();
+                            location.reload();
+                        });
+                    } else {
+                        throw new Error(data.message);
+                    }
+                })
+                .catch(error => {
                     Swal.fire({
-                        icon: 'success',
-                        title: 'Berhasil!',
-                        text: data.message,
-                        showConfirmButton: false,
-                        timer: 1500
-                    }).then(() => {
-                        bootstrap.Modal.getInstance(document.getElementById('editModal')).hide();
-                        location.reload();
+                        icon: 'error',
+                        title: 'Gagal!',
+                        text: error.message,
+                        confirmButtonColor: '#e53e3e'
                     });
-                } else {
-                    throw new Error(data.message);
-                }
-            })
-            .catch(error => {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Gagal!',
-                    text: error.message,
-                    confirmButtonColor: '#e53e3e'
                 });
-            });
         }
 
         function resetPasswordWaliKelas(id, nama, nip) {
@@ -607,34 +620,34 @@
             });
 
             fetch(`/admin/wali-kelas/${currentResetId}/reset-password`, {
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': csrfToken,
-                    'X-Requested-With': 'XMLHttpRequest',
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    bootstrap.Modal.getInstance(document.getElementById('resetPasswordModal')).hide();
-                    document.getElementById('result_wali_kelas_name').textContent = data.wali_kelas_name;
-                    document.getElementById('new_password_display').value = data.new_password;
-                    Swal.close();
-                    new bootstrap.Modal(document.getElementById('resetPasswordResultModal')).show();
-                } else {
-                    throw new Error(data.message);
-                }
-            })
-            .catch(error => {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Gagal!',
-                    text: error.message,
-                    confirmButtonColor: '#e53e3e'
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': csrfToken,
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        bootstrap.Modal.getInstance(document.getElementById('resetPasswordModal')).hide();
+                        document.getElementById('result_wali_kelas_name').textContent = data.wali_kelas_name;
+                        document.getElementById('new_password_display').value = data.new_password;
+                        Swal.close();
+                        new bootstrap.Modal(document.getElementById('resetPasswordResultModal')).show();
+                    } else {
+                        throw new Error(data.message);
+                    }
+                })
+                .catch(error => {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Gagal!',
+                        text: error.message,
+                        confirmButtonColor: '#e53e3e'
+                    });
                 });
-            });
         }
 
         function deleteWaliKelas(id, nama) {
@@ -658,35 +671,35 @@
                     });
 
                     fetch(`/admin/wali-kelas/${id}`, {
-                        method: 'DELETE',
-                        headers: {
-                            'X-CSRF-TOKEN': csrfToken,
-                            'X-Requested-With': 'XMLHttpRequest',
-                            'Accept': 'application/json'
-                        }
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
+                            method: 'DELETE',
+                            headers: {
+                                'X-CSRF-TOKEN': csrfToken,
+                                'X-Requested-With': 'XMLHttpRequest',
+                                'Accept': 'application/json'
+                            }
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Terhapus!',
+                                    text: data.message,
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                }).then(() => location.reload());
+                            } else {
+                                throw new Error(data.message);
+                            }
+                        })
+                        .catch(error => {
                             Swal.fire({
-                                icon: 'success',
-                                title: 'Terhapus!',
-                                text: data.message,
-                                showConfirmButton: false,
-                                timer: 1500
-                            }).then(() => location.reload());
-                        } else {
-                            throw new Error(data.message);
-                        }
-                    })
-                    .catch(error => {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Gagal!',
-                            text: error.message,
-                            confirmButtonColor: '#e53e3e'
+                                icon: 'error',
+                                title: 'Gagal!',
+                                text: error.message,
+                                confirmButtonColor: '#e53e3e'
+                            });
                         });
-                    });
                 }
             });
         }
@@ -706,5 +719,6 @@
         }
     </script>
 </body>
+
 </html>
-<?php /**PATH D:\laragon\www\pkl-smktelkom\resources\views/admin/kelola-wali-kelas.blade.php ENDPATH**/ ?>
+<?php /**PATH C:\laragon\www\pkl-smktelkom\resources\views/admin/kelola-wali-kelas.blade.php ENDPATH**/ ?>

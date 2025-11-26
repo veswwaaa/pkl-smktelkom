@@ -29,6 +29,10 @@
                     <i class="fas fa-chevron-down text-muted"></i>
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>Profile</a></li>
+                    <li></li>
+                        <hr class="dropdown-divider">
+                    </li>
                     <li><a class="dropdown-item text-danger" href="/logout"><i
                                 class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
                 </ul>
@@ -51,6 +55,9 @@
             <a href="/admin/siswa" class="sidebar-item <?php echo e(request()->is('admin/siswa*') ? 'active' : ''); ?>"
                 title="Kelola Siswa">
                 <i class="fas fa-users"></i>
+            </a>
+             <a href="/admin/wali-kelas" class="sidebar-item" title="Kelola Wali Kelas">
+                <i class="fas fa-chalkboard-teacher"></i>
             </a>
             <a href="/admin/pengajuan-pkl"
                 class="sidebar-item <?php echo e(request()->is('admin/pengajuan-pkl*') ? 'active' : ''); ?>" title="Pengajuan PKL">

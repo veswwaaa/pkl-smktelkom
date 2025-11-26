@@ -51,7 +51,6 @@
             <a href="#" class="sidebar-item active" title="Dashboard">
                 <i class="fas fa-th-large"></i>
             </a>
-          
         </div>
     </div>
 
@@ -257,4 +256,4 @@
 </body>
 
 </html>
-<?php /**PATH D:\laragon\www\pkl-smktelkom\resources\views/dashboardWaliKelas.blade.php ENDPATH**/ ?>
+<?php /**PATH C:\laragon\www\pkl-smktelkom\resources\views/dashboardWaliKelas.blade.php ENDPATH**/ ?>

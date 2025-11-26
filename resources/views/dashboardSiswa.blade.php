@@ -39,7 +39,8 @@
                      <li>
                          <hr class="dropdown-divider">
                      </li>
-                     <li><a class="dropdown-item" href="#" onclick="confirmLogout(event)"><i class="fas fa-sign-out-alt me-2"></i>Logout</a>
+                     <li><a class="dropdown-item" href="#" onclick="confirmLogout(event)"><i
+                                 class="fas fa-sign-out-alt me-2"></i>Logout</a>
                      </li>
                  </ul>
              </div>
@@ -69,29 +70,29 @@
 
      <!-- Main Content -->
      <div class="main-content">
-        <!-- Welcome Header -->
-        <div class="welcome-header">
-            <div class="d-flex justify-content-between align-items-start">
-                <div>
-                    <h1>Selamat Datang Di Dashboard PKL</h1>
-                    <p>Kelola program Praktik Kerja Lapangan SMK Telkom Banjarbaru dengan mudah dan efisien</p>
-                </div>
-                <div class="user-avatars">
-                    <div class="user-avatar avatar-orange">
-                        <i class="fas fa-user"></i>
-                    </div>
-                    <div class="user-avatar avatar-green">
-                        <i class="fas fa-users"></i>
-                    </div>
-                    <div class="user-avatar avatar-gray">
-                        <i class="fas fa-user"></i>
-                    </div>
-                    <div class="user-avatar avatar-blue">
-                        <i class="fas fa-user"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
+         <!-- Welcome Header -->
+         <div class="welcome-header">
+             <div class="d-flex justify-content-between align-items-start">
+                 <div>
+                     <h1>Selamat Datang Di Dashboard PKL</h1>
+                     <p>Kelola program Praktik Kerja Lapangan SMK Telkom Banjarbaru dengan mudah dan efisien</p>
+                 </div>
+                 <div class="user-avatars">
+                     <div class="user-avatar avatar-orange">
+                         <i class="fas fa-user"></i>
+                     </div>
+                     <div class="user-avatar avatar-green">
+                         <i class="fas fa-users"></i>
+                     </div>
+                     <div class="user-avatar avatar-gray">
+                         <i class="fas fa-user"></i>
+                     </div>
+                     <div class="user-avatar avatar-blue">
+                         <i class="fas fa-user"></i>
+                     </div>
+                 </div>
+             </div>
+         </div>
 
          <!-- Pilihan PKL yang Tersedia -->
          <div class="d-flex justify-content-between align-items-center mb-3">
@@ -104,7 +105,10 @@
          <div class="row">
              @forelse($dudiTersedia as $dudi)
                  <div class="col-md-4">
-                     <div class="dudi-card">
+                     <div class="dudi-card"
+                         onmouseover="this.style.transform='translateY(-8px)'; this.style.boxShadow='0 8px 20px rgba(0, 0, 0, 0.15)';"
+                         onmouseout="this.style.transform=''; this.style.boxShadow='';"
+                         style="transition: all 0.3s ease;">
                          <div class="dudi-logo">
                              <i class="fas fa-building"></i>
                          </div>
@@ -128,46 +132,46 @@
                              @endif
                          </div>
 
-                        @if ($dudi->jurusan_diterima && count($dudi->jurusan_diterima) > 0)
-                            <div class="jurusan-badges">
-                                @foreach ($dudi->jurusan_diterima as $jurusan)
-                                    @php
-                                        $badgeColor = '';
-                                        switch($jurusan) {
-                                            case 'RPL':
-                                                $badgeColor = 'background: #3b82f6; color: white;';
-                                                break;
-                                            case 'TKJ':
-                                                $badgeColor = 'background: #06b6d4; color: white;';
-                                                break;
-                                            case 'MM':
-                                                $badgeColor = 'background: #f59e0b; color: white;';
-                                                break;
-                                            case 'DKV':
-                                                $badgeColor = 'background: #ef4444; color: white;';
-                                                break;
-                                            case 'TJKT':
-                                                $badgeColor = 'background: #10b981; color: white;';
-                                                break;
-                                            default:
-                                                $badgeColor = 'background: #6b7280; color: white;';
-                                        }
-                                    @endphp
-                                    <span class="jurusan-badge" style="{{ $badgeColor }}">
-                                        <i class="fas fa-check-circle"></i>{{ $jurusan }}
-                                    </span>
-                                @endforeach
-                            </div>
-                        @endif                         @if ($dudi->jobdesk)
-                             <div class="jobdesk-section">
-                                 <div class="jobdesk-title">
-                                     <i class="fas fa-briefcase me-2"></i>Jobdesk Siswa PKL:
-                                 </div>
-                                 <div class="jobdesk-text">
-                                     {{ $dudi->jobdesk }}
-                                 </div>
+                         @if ($dudi->jurusan_diterima && count($dudi->jurusan_diterima) > 0)
+                             <div class="jurusan-badges">
+                                 @foreach ($dudi->jurusan_diterima as $jurusan)
+                                     @php
+                                         $badgeColor = '';
+                                         switch ($jurusan) {
+                                             case 'RPL':
+                                                 $badgeColor = 'background: #3b82f6; color: white;';
+                                                 break;
+                                             case 'TKJ':
+                                                 $badgeColor = 'background: #06b6d4; color: white;';
+                                                 break;
+                                             case 'ANM':
+                                                 $badgeColor = 'background: #f59e0b; color: white;';
+                                                 break;
+                                             case 'DKV':
+                                                 $badgeColor = 'background: #ef4444; color: white;';
+                                                 break;
+                                             case 'TJKT':
+                                                 $badgeColor = 'background: #10b981; color: white;';
+                                                 break;
+                                             default:
+                                                 $badgeColor = 'background: #6b7280; color: white;';
+                                         }
+                                     @endphp
+                                     <span class="jurusan-badge" style="{{ $badgeColor }}">
+                                         <i class="fas fa-check-circle"></i>{{ $jurusan }}
+                                     </span>
+                                 @endforeach
                              </div>
-                         @endif
+                             @endif @if ($dudi->jobdesk)
+                                 <div class="jobdesk-section">
+                                     <div class="jobdesk-title">
+                                         <i class="fas fa-briefcase me-2"></i>Jobdesk Siswa PKL:
+                                     </div>
+                                     <div class="jobdesk-text">
+                                         {{ $dudi->jobdesk }}
+                                     </div>
+                                 </div>
+                             @endif
                      </div>
                  </div>
              @empty

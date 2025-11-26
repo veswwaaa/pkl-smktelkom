@@ -37,7 +37,7 @@
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end">
                     <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>Profile</a></li>
-                        <hr class="dropdown-divider">
+                    <hr class="dropdown-divider">
                     <li><a class="dropdown-item text-danger" href="/logout"><i
                                 class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
                 </ul>
@@ -57,16 +57,16 @@
             <a href="/admin/siswa" class="sidebar-item" title="Kelola Siswa">
                 <i class="fas fa-users"></i>
             </a>
-             <a href="/admin/wali-kelas" class="sidebar-item" title="Kelola Wali Kelas">
+            <a href="/admin/wali-kelas" class="sidebar-item" title="Kelola Wali Kelas">
                 <i class="fas fa-chalkboard-teacher"></i>
             </a>
             <a href="/admin/pengajuan-pkl" class="sidebar-item" title="Pengajuan PKL">
                 <i class="fas fa-clipboard-list"></i>
             </a>
             <a href="/admin/surat-permohonan"
-            class="sidebar-item {{ request()->is('admin/surat-permohonan*') ? 'active' : '' }}"
-            title="Surat Permohonan Data">
-            <i class="fas fa-file-invoice"></i>
+                class="sidebar-item {{ request()->is('admin/surat-permohonan*') ? 'active' : '' }}"
+                title="Surat Permohonan Data">
+                <i class="fas fa-file-invoice"></i>
             </a>
             <a href="/admin/surat-pengajuan"
                 class="sidebar-item {{ request()->is('admin/surat-pengajuan*') ? 'active' : '' }}"
@@ -76,7 +76,7 @@
             <a href="/admin/surat-dudi" class="sidebar-item" title="Surat DUDI">
                 <i class="fas fa-envelope"></i>
             </a>
-             <a href="/admin/dokumen-siswa"
+            <a href="/admin/dokumen-siswa"
                 class="sidebar-item {{ request()->is('admin/dokumen-siswa*') ? 'active' : '' }}" title="Dokumen Siswa">
                 <i class="fas fa-folder-open"></i>
             </a>
@@ -520,45 +520,54 @@
                         <hr>
                         <div class="row">
                             <div class="col-md-6">
-                                <h6 class="text-primary"><i class="fas fa-graduation-cap me-2"></i>Jurusan yang Diterima: <span class="text-danger">*</span>
+                                <h6 class="text-primary"><i class="fas fa-graduation-cap me-2"></i>Jurusan yang
+                                    Diterima: <span class="text-danger">*</span>
                                 </h6>
                                 <div id="detail_jurusan_diterima">
                                     <div class="form-check mb-2">
-                                        <input class="form-check-input" type="checkbox" name="jurusan_diterima[]" value="RPL" id="jurusan_rpl">
+                                        <input class="form-check-input" type="checkbox" name="jurusan_diterima[]"
+                                            value="RPL" id="jurusan_rpl">
                                         <label class="form-check-label" for="jurusan_rpl">
                                             <span class="badge bg-primary">RPL</span> - Rekayasa Perangkat Lunak
                                         </label>
                                     </div>
                                     <div class="form-check mb-2">
-                                        <input class="form-check-input" type="checkbox" name="jurusan_diterima[]" value="TKJ" id="jurusan_tkj">
+                                        <input class="form-check-input" type="checkbox" name="jurusan_diterima[]"
+                                            value="TKJ" id="jurusan_tkj">
                                         <label class="form-check-label" for="jurusan_tkj">
                                             <span class="badge bg-info">TKJ</span> - Teknik Komputer dan Jaringan
                                         </label>
                                     </div>
                                     <div class="form-check mb-2">
-                                        <input class="form-check-input" type="checkbox" name="jurusan_diterima[]" value="MM" id="jurusan_mm">
-                                        <label class="form-check-label" for="jurusan_mm">
-                                            <span class="badge bg-warning text-dark">MM</span> - Multimedia
+                                        <input class="form-check-input" type="checkbox" name="jurusan_diterima[]"
+                                            value="ANM" id="jurusan_anm">
+                                        <label class="form-check-label" for="jurusan_anm">
+                                            <span class="badge bg-warning text-dark">ANM</span> - Animasi
                                         </label>
                                     </div>
                                     <div class="form-check mb-2">
-                                        <input class="form-check-input" type="checkbox" name="jurusan_diterima[]" value="DKV" id="jurusan_dkv">
+                                        <input class="form-check-input" type="checkbox" name="jurusan_diterima[]"
+                                            value="DKV" id="jurusan_dkv">
                                         <label class="form-check-label" for="jurusan_dkv">
                                             <span class="badge bg-danger">DKV</span> - Desain Komunikasi Visual
                                         </label>
                                     </div>
                                     <div class="form-check mb-2">
-                                        <input class="form-check-input" type="checkbox" name="jurusan_diterima[]" value="TJKT" id="jurusan_tjkt">
+                                        <input class="form-check-input" type="checkbox" name="jurusan_diterima[]"
+                                            value="TJKT" id="jurusan_tjkt">
                                         <label class="form-check-label" for="jurusan_tjkt">
-                                            <span class="badge bg-success">TJKT</span> - Teknik Jaringan Komputer dan Telekomunikasi
+                                            <span class="badge bg-success">TJKT</span> - Teknik Jaringan Komputer dan
+                                            Telekomunikasi
                                         </label>
                                     </div>
                                 </div>
                                 <small class="text-muted">Centang jurusan yang diterima untuk PKL</small>
                             </div>
                             <div class="col-md-6">
-                                <h6 class="text-primary"><i class="fas fa-briefcase me-2"></i>Jobdesk Siswa PKL: <span class="text-danger">*</span></h6>
-                                <textarea class="form-control" id="detail_jobdesk" name="jobdesk" rows="10" placeholder="Contoh: Membantu maintenance website, membuat aplikasi mobile, testing software, dll..."></textarea>
+                                <h6 class="text-primary"><i class="fas fa-briefcase me-2"></i>Jobdesk Siswa PKL: <span
+                                        class="text-danger">*</span></h6>
+                                <textarea class="form-control" id="detail_jobdesk" name="jobdesk" rows="10"
+                                    placeholder="Contoh: Membantu maintenance website, membuat aplikasi mobile, testing software, dll..."></textarea>
                                 <small class="text-muted">Jelaskan tugas yang akan dikerjakan siswa PKL</small>
                             </div>
                         </div>
@@ -696,7 +705,8 @@
             // Set jurusan diterima yang sudah dipilih
             if (jurusanDiterima && jurusanDiterima.length > 0) {
                 jurusanDiterima.forEach(function(jurusan) {
-                    var checkbox = document.querySelector('input[name="jurusan_diterima[]"][value="' + jurusan + '"]');
+                    var checkbox = document.querySelector('input[name="jurusan_diterima[]"][value="' + jurusan +
+                        '"]');
                     if (checkbox) {
                         checkbox.checked = true;
                     }
@@ -902,7 +912,8 @@
                             showConfirmButton: false,
                             timer: 1500,
                         }).then(() => {
-                            bootstrap.Modal.getInstance(document.getElementById("profilPenerimaanModal")).hide();
+                            bootstrap.Modal.getInstance(document.getElementById("profilPenerimaanModal"))
+                        .hide();
                             location.reload();
                         });
                     } else {

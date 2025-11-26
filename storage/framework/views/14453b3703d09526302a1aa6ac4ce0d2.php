@@ -8,6 +8,23 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="<?php echo e(asset('css/dashboard-siswa-new.css')); ?>">
+
+    <style>
+        /* Force hover animation with high specificity */
+        .card-hover-effect.dudi-card:hover {
+            transform: translateY(-25px) scale(1.1) !important;
+            box-shadow: 0 30px 60px rgba(238, 28, 37, 0.5),
+                0 0 40px rgba(238, 28, 37, 0.3) !important;
+            border-color: #EE1C25 !important;
+            z-index: 999 !important;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+        }
+
+        .card-hover-effect.dudi-card {
+            transition: all 0.4s ease !important;
+            position: relative !important;
+        }
+    </style>
 </head>
 
 <body>
@@ -211,4 +228,4 @@
 </body>
 
 </html>
-<?php /**PATH D:\laragon\www\pkl-smktelkom\resources\views/siswa/info-pkl.blade.php ENDPATH**/ ?>
+<?php /**PATH C:\laragon\www\pkl-smktelkom\resources\views/siswa/info-pkl.blade.php ENDPATH**/ ?>

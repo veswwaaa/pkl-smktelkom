@@ -13,6 +13,8 @@ use App\Models\DokumenSiswa;
 use App\Http\Controllers\PengajuanPklDudiController;
 use App\Http\Controllers\InfoPklSiswaController;
 use App\Http\Controllers\DokumenSiswaController;
+use App\Http\Controllers\WaliKelasController;
+use App\Http\Controllers\WaliKelasAdminController;
 
 Route::redirect('/', '/login');
 
@@ -145,4 +147,15 @@ Route::middleware('isLoggedIn')->group(function () {
     Route::get('/admin/surat-dudi/siswa/{id_dudi}', [\App\Http\Controllers\SuratDudiController::class, 'getSiswaDudi']);
     Route::get('/admin/surat-dudi/{id}/download', [\App\Http\Controllers\SuratDudiController::class, 'download']);
     Route::delete('/admin/surat-dudi/{id}', [\App\Http\Controllers\SuratDudiController::class, 'destroy']);
+
+    //Route untuk Wali Kelas
+    Route::get('/wali-kelas/dashboard', [WaliKelasController::class, 'dashboard']);
+    Route::get('/wali-kelas/siswa', [WaliKelasController::class, 'getSiswaData']);
+
+    //Route untuk Kelola Wali Kelas (Admin)
+    Route::get('/admin/wali-kelas', [WaliKelasAdminController::class, 'index']);
+    Route::post('/admin/wali-kelas', [WaliKelasAdminController::class, 'store']);
+    Route::match(['post', 'put'], '/admin/wali-kelas/{id}', [WaliKelasAdminController::class, 'update']);
+    Route::delete('/admin/wali-kelas/{id}', [WaliKelasAdminController::class, 'destroy']);
+    Route::post('/admin/wali-kelas/{id}/reset-password', [WaliKelasAdminController::class, 'resetPassword']);
 });

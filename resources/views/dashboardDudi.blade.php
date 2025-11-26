@@ -212,31 +212,7 @@
         @endif
     </script>
 
-    <style>
-        .border-left-primary {
-            border-left: 4px solid #4e73df !important;
-        }
-
-        .border-left-warning {
-            border-left: 4px solid #f6c23e !important;
-        }
-
-        .border-left-success {
-            border-left: 4px solid #1cc88a !important;
-        }
-
-        .text-xs {
-            font-size: 0.7rem;
-        }
-
-        .text-gray-300 {
-            color: #dddfeb !important;
-        }
-
-        .text-gray-800 {
-            color: #5a5c69 !important;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ asset('css/shared-components.css') }}">
 </body>
 
 </html>

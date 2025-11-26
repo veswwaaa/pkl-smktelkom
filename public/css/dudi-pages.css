@@ -1,0 +1,179 @@
+/* ========================================
+   DUDI PAGES - Styling untuk semua halaman DUDI
+   ======================================== */
+
+/* Common Layout */
+body {
+    background: #f5f5f5;
+}
+
+/* Sidebar */
+.sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 70px;
+    height: 100vh;
+    background: linear-gradient(180deg, #dc3545 0%, #c82333 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 20px;
+    z-index: 1000;
+}
+
+.sidebar .logo {
+    width: 45px;
+    height: 45px;
+    background: white;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
+.sidebar .menu-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+}
+
+.sidebar .menu-list li {
+    margin-bottom: 15px;
+}
+
+.sidebar .menu-list li a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    margin: 0 auto;
+    color: white;
+    text-decoration: none;
+    border-radius: 10px;
+    transition: all 0.3s;
+    font-size: 22px;
+}
+
+.sidebar .menu-list li a:hover,
+.sidebar .menu-list li.active a {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* Main Content */
+.main-content {
+    margin-left: 70px;
+    padding: 20px;
+    background: #f5f5f5;
+    min-height: 100vh;
+}
+
+/* Top Bar */
+.top-bar {
+    background: white;
+    padding: 15px 25px;
+    border-radius: 15px;
+    margin-bottom: 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+/* Profile Badge */
+.profile-badge {
+    width: 40px;
+    height: 40px;
+    background: #ffc107;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 700;
+    font-size: 18px;
+}
+
+/* Notification Bell */
+.notification-bell {
+    position: relative;
+    cursor: pointer;
+}
+
+.notification-bell i {
+    font-size: 20px;
+}
+
+.notification-count {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: #dc3545;
+    color: white;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    font-size: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+}
+
+/* Cards */
+.card {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    margin-bottom: 20px;
+}
+
+.card-header {
+    border-radius: 15px 15px 0 0 !important;
+    padding: 20px;
+    font-weight: 600;
+}
+
+/* Navigation Pills */
+.nav-pills .nav-link {
+    border-radius: 10px;
+    padding: 12px 25px;
+    margin-right: 10px;
+}
+
+.nav-pills .nav-link.active {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+/* Button Overrides */
+.btn-primary {
+    background: #007bff;
+    border: none;
+    border-radius: 10px;
+    padding: 12px 25px;
+}
+
+.btn-success {
+    background: #28a745;
+    border: none;
+    border-radius: 10px;
+    padding: 12px 25px;
+}
+
+.btn-info {
+    background: #17a2b8;
+    border: none;
+    border-radius: 10px;
+    padding: 12px 25px;
+    color: white;
+}
+
+.btn-warning {
+    background: #ffc107;
+    border: none;
+    border-radius: 10px;
+    padding: 12px 25px;
+}

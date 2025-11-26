@@ -13,10 +13,26 @@
         }
 
         .header {
-            text-align: center;
-            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-top: 12px; /* push header slightly down */
+            margin-bottom: 28px;
             border-bottom: 3px solid #000;
             padding-bottom: 10px;
+            padding-left: 6px; /* nudge everything a bit to the left */
+        }
+
+        .header .logo img {
+            height: 80px; /* slightly larger logo to match sample */
+            width: auto;
+            display: block;
+        }
+
+        .header .brand {
+            flex: 1;
+            text-align: center;
+            transform: translateX(-8px); /* shift brand a little left */
         }
 
         .header h2 {
@@ -87,9 +103,15 @@
 <body>
     <!-- Header -->
     <div class="header">
-        <h2>SMK TELKOM PURWOKERTO</h2>
-        <p>Jl. D.I. Panjaitan No.128, Purwokerto</p>
-        <p>Telp: (0281) 641629 | Email: smktelkom-pwt@telkom.co.id</p>
+        <div class="logo">
+            {{-- Embed logo as base64 to ensure it appears in generated PDFs --}}
+            <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('img/telkom-logo.png'))) }}" alt="Telkom Logo">
+        </div>
+        <div class="brand">
+            <h2>SMK TELKOM PURWOKERTO</h2>
+            <p>Jl. D.I. Panjaitan No.128, Purwokerto</p>
+            <p>Telp: (0281) 641629 | Email: smktelkom-pwt@telkom.co.id</p>
+        </div>
     </div>
 
     <!-- Nomor Surat -->

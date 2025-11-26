@@ -7,7 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class tb_admin extends Model
 {
-    /** @use HasFactory<\Database\Factories\TbAdminFactory> */
     use HasFactory;
     protected $table = 'tb_admin';
+
+    protected $fillable = [
+        'nip',
+        'kelas',
+        'nama_admin',
+        'no_telpon',
+        'alamat',
+    ];
 }

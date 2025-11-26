@@ -7,9 +7,11 @@
     <title>Surat Pengajuan - {{ $dudi->nama_dudi }}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="{{ asset('css/dudi-pages.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/shared-components.css') }}" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <style>
+    <style style="display:none;">
         body {
             background: #f5f5f5;
         }

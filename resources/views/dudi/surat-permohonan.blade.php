@@ -7,9 +7,11 @@
     <title>Surat Permohonan - {{ $dudi->nama_dudi }}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="{{ asset('css/dudi-pages.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/shared-components.css') }}" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <style>
+    <style style="display:none;">
         body {
             background: #f5f5f5;
         }
@@ -389,7 +391,7 @@
                                 <label for="jobdesk_${jurusan}" class="form-label">
                                     <strong>Jobdesk / Tugas Siswa PKL <span class="text-danger">*</span></strong>
                                 </label>
-                                <textarea class="form-control" id="jobdesk_${jurusan}" name="jobdesk[${jurusan}]" rows="4" 
+                                <textarea class="form-control" id="jobdesk_${jurusan}" name="jobdesk[${jurusan}]" rows="4"
                                     placeholder="Contoh: Membuat website, testing aplikasi, dokumentasi, dll..." required></textarea>
                                 <small class="text-muted">Jelaskan tugas dan tanggung jawab siswa ${jurusan} selama PKL</small>
                             </div>
@@ -397,7 +399,7 @@
                                 <label for="kuota_${jurusan}" class="form-label">
                                     <strong>Kuota Penerimaan <span class="text-danger">*</span></strong>
                                 </label>
-                                <input type="number" class="form-control" id="kuota_${jurusan}" name="kuota[${jurusan}]" 
+                                <input type="number" class="form-control" id="kuota_${jurusan}" name="kuota[${jurusan}]"
                                     min="1" max="100" placeholder="Masukkan jumlah siswa yang bisa diterima" required>
                                 <small class="text-muted">Jumlah siswa ${jurusan} yang bisa diterima untuk PKL</small>
                             </div>

@@ -17,7 +17,6 @@
     <nav class="top-navbar">
         <div class="telkom-logo">
             <img src="{{ asset('img/telkom-logo.png') }}" alt="Telkom Schools" onerror="this.style.display='none'">
-            <h5>Telkom Schools</h5>
         </div>
 
         <div class="navbar-right">
@@ -48,9 +47,6 @@
             <a href="/dashboard" class="sidebar-item" title="Dashboard">
                 <i class="fas fa-th-large"></i>
             </a>
-            <a href="/siswa/status" class="sidebar-item" title="Status & Info Siswa">
-                <i class="fas fa-user-circle"></i>
-            </a>
             <a href="/siswa/pengajuan-pkl" class="sidebar-item" title="Pengajuan PKL">
                 <i class="fas fa-file-alt"></i>
             </a>
@@ -62,12 +58,6 @@
             </a>
             <a href="/siswa/upload-dokumen" class="sidebar-item active" title="Upload Dokumen">
                 <i class="fas fa-upload"></i>
-            </a>
-            <a href="#" class="sidebar-item" title="Download Surat" onclick="alert('Fitur dalam pengembangan')">
-                <i class="fas fa-file-download"></i>
-            </a>
-            <a href="/logout" class="sidebar-item" title="Logout">
-                <i class="fas fa-sign-out-alt"></i>
             </a>
         </div>
     </div>

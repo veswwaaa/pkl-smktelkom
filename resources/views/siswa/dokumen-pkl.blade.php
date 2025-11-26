@@ -8,150 +8,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('css/dashboard-siswa-new.css') }}">
-    <style>
-        .document-card {
-            border: 2px solid #e0e0e0;
-            border-radius: 12px;
-            padding: 25px;
-            margin-bottom: 20px;
-            transition: all 0.3s ease;
-        }
-
-        .document-card:hover {
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            transform: translateY(-2px);
-        }
-
-        .document-card.active {
-            border-color: #ee1c25;
-            background-color: #fff5f5;
-        }
-
-        .document-card.completed {
-            border-color: #28a745;
-            background-color: #f0fff4;
-        }
-
-        .status-badge {
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-        }
-
-        .status-badge.belum {
-            background-color: #ffc107;
-            color: #000;
-        }
-
-        .status-badge.sudah {
-            background-color: #28a745;
-            color: #fff;
-        }
-
-        .status-badge.terkirim {
-            background-color: #17a2b8;
-            color: #fff;
-        }
-
-        .upload-area {
-            border: 2px dashed #ccc;
-            border-radius: 8px;
-            padding: 30px;
-            text-align: center;
-            background-color: #f8f9fa;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .upload-area:hover {
-            border-color: #ee1c25;
-            background-color: #fff5f5;
-        }
-
-        .upload-area.drag-over {
-            border-color: #ee1c25;
-            background-color: #ffe5e5;
-        }
-
-        .file-preview {
-            margin-top: 15px;
-            padding: 10px;
-            background-color: #e9ecef;
-            border-radius: 6px;
-            display: none;
-        }
-
-        .file-preview.show {
-            display: block;
-        }
-
-        .btn-telkom {
-            background-color: #ee1c25;
-            color: white;
-            border: none;
-            padding: 10px 25px;
-            border-radius: 6px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-
-        .btn-telkom:hover {
-            background-color: #c41820;
-            color: white;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(238, 28, 37, 0.3);
-        }
-
-        .timeline-step {
-            display: flex;
-            align-items: flex-start;
-            margin-bottom: 30px;
-            position: relative;
-        }
-
-        .timeline-step::before {
-            content: '';
-            position: absolute;
-            left: 20px;
-            top: 40px;
-            height: calc(100% + 10px);
-            width: 2px;
-            background-color: #dee2e6;
-        }
-
-        .timeline-step:last-child::before {
-            display: none;
-        }
-
-        .timeline-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background-color: #dee2e6;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 20px;
-            flex-shrink: 0;
-            z-index: 1;
-            position: relative;
-        }
-
-        .timeline-icon.active {
-            background-color: #ee1c25;
-            color: white;
-        }
-
-        .timeline-icon.completed {
-            background-color: #28a745;
-            color: white;
-        }
-
-        .timeline-content {
-            flex: 1;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ asset('css/shared-components.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
@@ -159,13 +17,15 @@
     <nav class="top-navbar">
         <div class="telkom-logo">
             <img src="{{ asset('img/telkom-logo.png') }}" alt="Telkom Schools" onerror="this.style.display='none'">
-            <h5>Telkom Schools</h5>
         </div>
 
         <div class="navbar-right">
             <div class="dropdown">
-                <div class="user-avatar" data-bs-toggle="dropdown">
-                    {{ substr($siswa->nama, 0, 1) }}
+                <div class="profile-dropdown" data-bs-toggle="dropdown">
+                    <div class="user-avatar">
+                        {{ substr($siswa->nama, 0, 1) }}
+                    </div>
+                    <i class="fas fa-chevron-down text-muted"></i>
                 </div>
                 <ul class="dropdown-menu dropdown-menu-end">
                     <li>
@@ -174,7 +34,7 @@
                     <li>
                         <hr class="dropdown-divider">
                     </li>
-                    <li><a class="dropdown-item" href="/logout"><i class="fas fa-sign-out-alt me-2"></i>Logout</a>
+                    <li><a class="dropdown-item" href="#" onclick="confirmLogout(event)"><i class="fas fa-sign-out-alt me-2"></i>Logout</a>
                     </li>
                 </ul>
             </div>
@@ -182,22 +42,27 @@
     </nav>
 
     <!-- Left Sidebar -->
-    <div class="left-sidebar">
-        <div class="sidebar-menu">
+
+     <!-- Left Sidebar -->
+     <div class="left-sidebar">
+         <div class="sidebar-menu">
             <a href="/dashboard" class="sidebar-item" title="Dashboard">
                 <i class="fas fa-th-large"></i>
             </a>
-            <a href="/siswa/status" class="sidebar-item" title="Status PKL">
-                <i class="fas fa-tasks"></i>
-            </a>
-            <a href="/siswa/status-pengajuan" class="sidebar-item" title="Status Pengajuan">
-                <i class="fas fa-file-alt"></i>
-            </a>
-            <a href="/siswa/dokumen-pkl" class="sidebar-item active" title="Dokumen PKL">
-                <i class="fas fa-folder-open"></i>
-            </a>
-        </div>
-    </div>
+            <a href="/siswa/pengajuan-pkl" class="sidebar-item" title="Pengajuan PKL">
+                 <i class="fas fa-file-alt"></i>
+             </a>
+             <a href="/siswa/status-pengajuan" class="sidebar-item" title="Status Pengajuan PKL">
+                 <i class="fas fa-tasks"></i>
+             </a>
+             <a href="/siswa/info-pkl" class="sidebar-item" title="Info PKL">
+                 <i class="fas fa-info-circle"></i>
+             </a>
+             <a href="/siswa/dokumen-pkl" class="sidebar-item" title="Dokumen PKL">
+                 <i class="fas fa-folder-open"></i>
+             </a>
+         </div>
+     </div>
 
     <div class="main-content">
         <div class="container-fluid">
@@ -800,6 +665,25 @@
                         btnSubmitEviden.disabled = false;
                         btnSubmitEviden.innerHTML = '<i class="fas fa-upload me-2"></i>Upload Eviden';
                     });
+            });
+        }
+
+        // Logout confirmation
+        function confirmLogout(event) {
+            event.preventDefault();
+            Swal.fire({
+                title: 'Konfirmasi Logout',
+                text: 'Apakah Anda yakin ingin keluar?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#e31e24',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Ya, Logout',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = '/logout';
+                }
             });
         }
     </script>

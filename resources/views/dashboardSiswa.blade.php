@@ -8,6 +8,7 @@
      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
      <link rel="stylesheet" href="{{ asset('css/dashboard-siswa-new.css') }}">
+     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
  </head>
 
  <body>
@@ -15,7 +16,6 @@
      <nav class="top-navbar">
          <div class="telkom-logo">
              <img src="{{ asset('img/telkom-logo.png') }}" alt="Telkom Schools" onerror="this.style.display='none'">
-             <h5>Telkom Schools</h5>
          </div>
 
          <div class="navbar-right">
@@ -26,8 +26,11 @@
                  @endif
              </button>
              <div class="dropdown">
-                 <div class="user-avatar" data-bs-toggle="dropdown">
-                     {{ substr($data->nama, 0, 1) }}
+                 <div class="profile-dropdown" data-bs-toggle="dropdown">
+                     <div class="user-avatar">
+                         {{ substr($data->nama, 0, 1) }}
+                     </div>
+                     <i class="fas fa-chevron-down text-muted"></i>
                  </div>
                  <ul class="dropdown-menu dropdown-menu-end">
                      <li>
@@ -36,7 +39,7 @@
                      <li>
                          <hr class="dropdown-divider">
                      </li>
-                     <li><a class="dropdown-item" href="/logout"><i class="fas fa-sign-out-alt me-2"></i>Logout</a>
+                     <li><a class="dropdown-item" href="#" onclick="confirmLogout(event)"><i class="fas fa-sign-out-alt me-2"></i>Logout</a>
                      </li>
                  </ul>
              </div>
@@ -48,9 +51,6 @@
          <div class="sidebar-menu">
              <a href="/dashboard" class="sidebar-item active" title="Dashboard">
                  <i class="fas fa-th-large"></i>
-             </a>
-             <a href="/siswa/status" class="sidebar-item" title="Status & Info Siswa">
-                 <i class="fas fa-user-circle"></i>
              </a>
              <a href="/siswa/pengajuan-pkl" class="sidebar-item" title="Pengajuan PKL">
                  <i class="fas fa-file-alt"></i>
@@ -64,33 +64,34 @@
              <a href="/siswa/dokumen-pkl" class="sidebar-item" title="Dokumen PKL">
                  <i class="fas fa-folder-open"></i>
              </a>
-             <a href="#" class="sidebar-item" title="Download Surat"
-                 onclick="alert('Fitur dalam pengembangan'); return false;">
-                 <i class="fas fa-file-download"></i>
-             </a>
-             <a href="/logout" class="sidebar-item" title="Logout">
-                 <i class="fas fa-sign-out-alt"></i>
-             </a>
          </div>
      </div>
 
      <!-- Main Content -->
      <div class="main-content">
-         <!-- Welcome Banner -->
-         <div class="welcome-banner">
-             <div class="welcome-content">
-                 <h2 class="welcome-title">Selamat Datang di Dashboard PKL</h2>
-                 <p class="welcome-subtitle">Kelola program Praktik Kerja Lapangan SMK Telkom Banjarbaru dengan mudah
-                     dan
-                     efisien</p>
-                 <div class="illustration-avatars">
-                     <div class="avatar-circle" style="background: #4CAF50;">A</div>
-                     <div class="avatar-circle" style="background: #2196F3;">B</div>
-                     <div class="avatar-circle" style="background: #8BC34A;">C</div>
-                     <div class="avatar-circle" style="background: #E0E0E0; color: #999;">D</div>
-                 </div>
-             </div>
-         </div>
+        <!-- Welcome Header -->
+        <div class="welcome-header">
+            <div class="d-flex justify-content-between align-items-start">
+                <div>
+                    <h1>Selamat Datang Di Dashboard PKL</h1>
+                    <p>Kelola program Praktik Kerja Lapangan SMK Telkom Banjarbaru dengan mudah dan efisien</p>
+                </div>
+                <div class="user-avatars">
+                    <div class="user-avatar avatar-orange">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="user-avatar avatar-green">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="user-avatar avatar-gray">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="user-avatar avatar-blue">
+                        <i class="fas fa-user"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
 
          <!-- Pilihan PKL yang Tersedia -->
          <h3 class="section-title">Pilihan PKL yang Tersedia</h3>
@@ -158,6 +159,25 @@
 
      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
      <script src="{{ asset('js/dashboard-siswa.js') }}"></script>
+     <script>
+         function confirmLogout(event) {
+             event.preventDefault();
+             Swal.fire({
+                 title: 'Konfirmasi Logout',
+                 text: 'Apakah Anda yakin ingin keluar?',
+                 icon: 'warning',
+                 showCancelButton: true,
+                 confirmButtonColor: '#e31e24',
+                 cancelButtonColor: '#6c757d',
+                 confirmButtonText: 'Ya, Logout',
+                 cancelButtonText: 'Batal'
+             }).then((result) => {
+                 if (result.isConfirmed) {
+                     window.location.href = '/logout';
+                 }
+             });
+         }
+     </script>
 
  </body>
 

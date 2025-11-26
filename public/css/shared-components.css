@@ -1,0 +1,338 @@
+/* ========================================
+   SHARED COMPONENTS - Komponen yang dipakai di banyak halaman
+   ======================================== */
+
+/* Status Badges */
+.status-badge {
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.status-badge.belum {
+    background-color: #ffc107;
+    color: #000;
+}
+
+.status-badge.sudah {
+    background-color: #28a745;
+    color: #fff;
+}
+
+.status-badge.terkirim {
+    background-color: #17a2b8;
+    color: #fff;
+}
+
+.status-pending {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.status-diterima {
+    background-color: #d1e7dd;
+    color: #0f5132;
+}
+
+.status-ditolak {
+    background-color: #f8d7da;
+    color: #842029;
+}
+
+/* Cards */
+.document-card,
+.surat-card {
+    background: white;
+    border: 2px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 25px;
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.document-card:hover,
+.surat-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+}
+
+.document-card.active {
+    border-color: #ee1c25;
+    background-color: #fff5f5;
+}
+
+.document-card.completed {
+    border-color: #28a745;
+    background-color: #f0fff4;
+}
+
+.welcome-card {
+    background: white;
+    border-radius: 15px;
+    padding: 30px;
+    margin-bottom: 25px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.welcome-card h4 {
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.welcome-card p {
+    color: #666;
+    margin-bottom: 0;
+}
+
+/* Buttons */
+.btn-telkom {
+    background-color: #ee1c25;
+    color: white;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 6px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-telkom:hover {
+    background-color: #c41820;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(238, 28, 37, 0.3);
+}
+
+.btn-action {
+    padding: 5px 10px;
+    font-size: 12px;
+    border-radius: 4px;
+}
+
+/* Progress Bar */
+.progress-bar-container {
+    height: 8px;
+    background-color: #e9ecef;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #ee1c25, #c41820);
+    transition: width 0.3s ease;
+}
+
+/* Upload Area */
+.upload-area {
+    border: 2px dashed #ccc;
+    border-radius: 8px;
+    padding: 30px;
+    text-align: center;
+    background-color: #f8f9fa;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.upload-area:hover {
+    border-color: #ee1c25;
+    background-color: #fff5f5;
+}
+
+.upload-area.drag-over {
+    border-color: #ee1c25;
+    background-color: #ffe5e5;
+}
+
+.file-preview {
+    margin-top: 15px;
+    padding: 10px;
+    background-color: #e9ecef;
+    border-radius: 6px;
+    display: none;
+}
+
+.file-preview.show {
+    display: block;
+}
+
+/* Timeline */
+.timeline-step {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 30px;
+    position: relative;
+}
+
+.timeline-step::before {
+    content: '';
+    position: absolute;
+    left: 20px;
+    top: 40px;
+    height: calc(100% + 10px);
+    width: 2px;
+    background-color: #dee2e6;
+}
+
+.timeline-step:last-child::before {
+    display: none;
+}
+
+.timeline-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #dee2e6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 20px;
+    flex-shrink: 0;
+    z-index: 1;
+    position: relative;
+}
+
+.timeline-icon.active {
+    background-color: #ee1c25;
+    color: white;
+}
+
+.timeline-icon.completed {
+    background-color: #28a745;
+    color: white;
+}
+
+.timeline-content {
+    flex: 1;
+}
+
+/* Stat Circles */
+.stat-circles {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.stat-circle {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 700;
+    font-size: 18px;
+}
+
+.stat-circle.teal {
+    background: #17a2b8;
+}
+
+.stat-circle.blue {
+    background: #007bff;
+}
+
+.stat-circle.green {
+    background: #28a745;
+}
+
+.stat-circle.gray {
+    background: #6c757d;
+}
+
+/* Notifications */
+.notification-section {
+    background: white;
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.notification-section h5 {
+    font-weight: 700;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.notification-section h5 i {
+    color: #dc3545;
+}
+
+.notification-item {
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.3s;
+}
+
+.notification-item:hover {
+    background: #e9ecef;
+    transform: translateX(5px);
+}
+
+.notification-info h6 {
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.notification-info p {
+    color: #666;
+    font-size: 14px;
+    margin: 0;
+}
+
+.notification-badge {
+    width: 12px;
+    height: 12px;
+    background: #dc3545;
+    border-radius: 50%;
+}
+
+/* Alert Custom */
+.alert-warning-custom {
+    background: #fff3cd;
+    border: 1px solid #ffc107;
+    border-radius: 10px;
+    padding: 15px 20px;
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.alert-warning-custom i {
+    color: #856404;
+}
+
+/* Utility Classes */
+.border-left-primary {
+    border-left: 4px solid #4e73df !important;
+}
+
+.border-left-warning {
+    border-left: 4px solid #f6c23e !important;
+}
+
+.border-left-success {
+    border-left: 4px solid #1cc88a !important;
+}
+
+.text-xs {
+    font-size: 0.7rem;
+}
+
+.text-gray-300 {
+    color: #dddfeb !important;
+}
+
+.text-gray-800 {
+    color: #5a5c69 !important;
+}

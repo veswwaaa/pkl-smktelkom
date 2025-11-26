@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+{{-- <!DOCTYPE html>
 <html lang="id">
 
 <head>
@@ -15,7 +15,6 @@
     <nav class="top-navbar">
         <div class="telkom-logo">
             <img src="{{ asset('img/telkom-logo.png') }}" alt="Telkom Schools" onerror="this.style.display='none'">
-            <h5>Telkom Schools</h5>
         </div>
 
         <div class="navbar-right">
@@ -63,12 +62,6 @@
             </a>
             <a href="/siswa/dokumen-pkl" class="sidebar-item" title="Dokumen PKL">
                 <i class="fas fa-folder-open"></i>
-            </a>
-            <a href="#" class="sidebar-item" title="Download Surat" onclick="alert('Fitur dalam pengembangan')">
-                <i class="fas fa-file-download"></i>
-            </a>
-            <a href="/logout" class="sidebar-item" title="Logout">
-                <i class="fas fa-sign-out-alt"></i>
             </a>
         </div>
     </div>
@@ -150,4 +143,4 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
-</html>
+</html> --}}

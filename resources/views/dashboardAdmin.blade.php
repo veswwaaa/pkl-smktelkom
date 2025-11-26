@@ -10,7 +10,6 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="{{ asset('css/dashboard-admin.css') }}" rel="stylesheet">
 </head>
-
 <body>
     <!-- Top Navbar -->
     <nav class="top-navbar d-flex align-items-center justify-content-between">
@@ -35,7 +34,6 @@
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end">
                     <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>Profile</a></li>
-                    <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>Pengaturan</a></li>
                     <li>
                         <hr class="dropdown-divider">
                     </li>
@@ -43,7 +41,7 @@
                                 class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
                 </ul>
             </div>
-        </div>
+        </div>  
     </nav>
 
     <!-- Left Sidebar -->
@@ -57,6 +55,9 @@
             </a>
             <a href="/admin/siswa" class="sidebar-item" title="kelola Siswa">
                 <i class="fas fa-users"></i>
+            </a>
+            <a href="/admin/wali-kelas" class="sidebar-item" title="Kelola Wali Kelas">
+                <i class="fas fa-chalkboard-teacher"></i>
             </a>
             <a href="/admin/pengajuan-pkl" class="sidebar-item" title="Pengajuan PKL">
                 <i class="fas fa-clipboard-list"></i>
@@ -73,6 +74,10 @@
             </a>
              <a href="/admin/surat-dudi" class="sidebar-item" title="Surat DUDI">
                 <i class="fas fa-envelope"></i>
+            </a>
+             <a href="/admin/dokumen-siswa"
+                class="sidebar-item {{ request()->is('admin/dokumen-siswa*') ? 'active' : '' }}" title="Dokumen Siswa">
+                <i class="fas fa-folder-open"></i>
             </a>
         </div>
     </div>
@@ -112,14 +117,8 @@
                 </div>
                 <div class="stat-number">{{ $totalSiswa }}</div>
                 <div class="stat-label">Total Siswa</div>
-                <div class="stat-change {{ $siswaGrowth > 0 ? 'positive' : 'negative' }}">
-                    @if ($siswaGrowth > 0)
-                        +{{ $siswaGrowth }} bulan dari lalu
-                    @elseif($siswaGrowth < 0)
-                        {{ $siswaGrowth }} bulan dari lalu
-                    @else
-                        Tidak ada perubahan
-                    @endif
+                <div class="stat-change positive">
+                    Lihat selengkapnya
                 </div>
                 <i class="fas fa-chevron-right stat-arrow"></i>
             </div>
@@ -131,46 +130,21 @@
                 </div>
                 <div class="stat-number">{{ $totalDudi }}</div>
                 <div class="stat-label">Total DUDI</div>
-                <div class="stat-change {{ $dudiGrowth > 0 ? 'positive' : 'negative' }}">
-                    @if ($dudiGrowth > 0)
-                        +{{ $dudiGrowth }} mitra baru
-                    @elseif($dudiGrowth < 0)
-                        {{ $dudiGrowth }} mitra berkurang
-                    @else
-                        Tidak ada perubahan
-                    @endif
+                <div class="stat-change positive">
+                    Lihat selengkapnya
                 </div>
                 <i class="fas fa-chevron-right stat-arrow"></i>
             </div>
 
-            <!-- Siswa Ditempatkan -->
-            <div class="stat-card border-red" onclick="window.location.href='/admin/siswa?status=ditempatkan'"
-                style="cursor: pointer;">
+            <!-- Total Wali Kelas -->
+            <div class="stat-card border-red" onclick="window.location.href='/admin/wali-kelas'" style="cursor: pointer;">
                 <div class="stat-icon icon-red">
-                    <i class="fas fa-user-check"></i>
+                    <i class="fas fa-chalkboard-teacher"></i>
                 </div>
-                <div class="stat-number">{{ $siswaDitempatkan }}</div>
-                <div class="stat-label">Siswa Ditempatkan</div>
-                <div class="stat-change {{ $persenDitempatkan >= 75 ? 'positive' : 'negative' }}">
-                    {{ $persenDitempatkan }}% dari total
-                </div>
-                <i class="fas fa-chevron-right stat-arrow"></i>
-            </div>
-
-            <!-- Menunggu Penempatan -->
-            <div class="stat-card border-red" onclick="window.location.href='/admin/siswa?status=belum'"
-                style="cursor: pointer;">
-                <div class="stat-icon icon-red">
-                    <i class="fas fa-clock"></i>
-                </div>
-                <div class="stat-number">{{ $siswaMenunggu }}</div>
-                <div class="stat-label">Menunggu Penempatan</div>
-                <div class="stat-change {{ $siswaMenunggu > 0 ? 'negative' : 'positive' }}">
-                    @if ($siswaMenunggu > 0)
-                        Perlu tindak lanjut
-                    @else
-                        Semua sudah ditempatkan!
-                    @endif
+                <div class="stat-number">{{ $totalWaliKelas }}</div>
+                <div class="stat-label">Total Wali Kelas</div>
+                <div class="stat-change positive">
+                    Lihat selengkapnya
                 </div>
                 <i class="fas fa-chevron-right stat-arrow"></i>
             </div>

@@ -8,7 +8,9 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="{{ asset('css/kelola-dudi.css') }}" rel="stylesheet">
-    <style>
+    <link href="{{ asset('css/dudi-pages.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/shared-components.css') }}" rel="stylesheet">
+    {{-- <style style="display:none;">
         .sidebar {
             position: fixed;
             left: 0;
@@ -238,7 +240,7 @@
             align-items: center;
             justify-content: center;
             font-weight: 700;
-        }
+        } --}}
     </style>
 </head>
 

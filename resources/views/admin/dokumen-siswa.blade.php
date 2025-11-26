@@ -2,49 +2,11 @@
 
 @section('title', 'Dokumen Siswa')
 
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('css/shared-components.css') }}">
+@endpush
+
 @section('content')
-    <style>
-        .status-badge {
-            padding: 5px 12px;
-            border-radius: 15px;
-            font-size: 11px;
-            font-weight: 600;
-        }
-
-        .status-badge.belum {
-            background-color: #ffc107;
-            color: #000;
-        }
-
-        .status-badge.sudah {
-            background-color: #28a745;
-            color: #fff;
-        }
-
-        .status-badge.terkirim {
-            background-color: #17a2b8;
-            color: #fff;
-        }
-
-        .btn-action {
-            padding: 5px 10px;
-            font-size: 12px;
-            border-radius: 4px;
-        }
-
-        .progress-bar-container {
-            height: 8px;
-            background-color: #e9ecef;
-            border-radius: 10px;
-            overflow: hidden;
-        }
-
-        .progress-bar-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #ee1c25, #c41820);
-            transition: width 0.3s ease;
-        }
-    </style>
 
     <div class="page-header">
         <div class="page-title">

@@ -36,7 +36,6 @@
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end">
                     <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>Profile</a></li>
-                    <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>Pengaturan</a></li>
                     <li>
                         <hr class="dropdown-divider">
                     </li>
@@ -59,6 +58,9 @@
             <a href="/admin/siswa" class="sidebar-item active" title="Kelola Siswa">
                 <i class="fas fa-users"></i>
             </a>
+             <a href="/admin/wali-kelas" class="sidebar-item" title="Kelola Wali Kelas">
+                <i class="fas fa-chalkboard-teacher"></i>
+            </a>
             <a href="/admin/pengajuan-pkl" class="sidebar-item" title="Pengajuan PKL">
                 <i class="fas fa-clipboard-list"></i>
             </a>
@@ -74,6 +76,10 @@
             </a>
             <a href="/admin/surat-dudi" class="sidebar-item" title="Surat DUDI">
                 <i class="fas fa-envelope"></i>
+            </a>
+             <a href="/admin/dokumen-siswa"
+                class="sidebar-item {{ request()->is('admin/dokumen-siswa*') ? 'active' : '' }}" title="Dokumen Siswa">
+                <i class="fas fa-folder-open"></i>
             </a>
         </div>
     </div>
@@ -247,12 +253,6 @@
                                     </button>
                                     <ul class="dropdown-menu">
                                         @if ($siswaItem->status_penempatan != 'belum')
-                                            <li>
-                                                <a class="dropdown-item" href="#"
-                                                    onclick="event.preventDefault(); openSetTanggalModal({{ $siswaItem->id }}, '{{ $siswaItem->nama }}', '{{ $siswaItem->tanggal_mulai_pkl }}', '{{ $siswaItem->tanggal_selesai_pkl }}')">
-                                                    <i class="fas fa-calendar-alt text-primary"></i> Set Tanggal PKL
-                                                </a>
-                                            </li>
                                             <li>
                                                 <a class="dropdown-item" href="#"
                                                     onclick="event.preventDefault(); confirmCancelAssignment({{ $siswaItem->id }}, '{{ $siswaItem->nama }}')">
@@ -693,62 +693,6 @@
             </div>
         </div>
     </div>
-
-    {{-- Modal Set Tanggal PKL --}}
-    <div class="modal fade" id="setTanggalModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header bg-primary text-white">
-                    <h5 class="modal-title">
-                        <i class="fas fa-calendar-alt"></i> Set Tanggal PKL
-                    </h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-                </div>
-                <form id="setTanggalForm" method="POST">
-                    @csrf
-                    <div class="modal-body">
-                        <div class="alert alert-info">
-                            <i class="fas fa-info-circle"></i>
-                            Atur tanggal mulai dan selesai PKL untuk: <strong id="setTanggalNamaSiswa"></strong>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="set_tanggal_mulai_pkl" class="form-label">
-                                <i class="fas fa-calendar-check text-success"></i> Tanggal Mulai PKL
-                            </label>
-                            <input type="date" class="form-control" id="set_tanggal_mulai_pkl"
-                                name="tanggal_mulai_pkl" required>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="set_tanggal_selesai_pkl" class="form-label">
-                                <i class="fas fa-calendar-times text-danger"></i> Tanggal Selesai PKL
-                            </label>
-                            <input type="date" class="form-control" id="set_tanggal_selesai_pkl"
-                                name="tanggal_selesai_pkl" required>
-                        </div>
-
-                        <div class="alert alert-warning">
-                            <small>
-                                <i class="fas fa-exclamation-triangle"></i>
-                                <strong>Catatan:</strong> Pastikan tanggal selesai lebih akhir dari tanggal mulai.
-                            </small>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                            <i class="fas fa-times"></i> Batal
-                        </button>
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-save"></i> Simpan Tanggal
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    {{-- modal import dari excel --}}
 
     {{-- Modal Input Grade --}}
     <div class="modal fade" id="gradeModal" tabindex="-1">

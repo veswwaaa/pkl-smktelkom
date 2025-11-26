@@ -275,7 +275,10 @@ class AuthenController extends Controller
                 ->whereNotNull('jobdesk')
                 ->get();
 
-            return view('dashboardSiswa', compact('data', 'pengajuan', 'dudiTersedia'));
+            // Ambil aktivitas terkini untuk dashboard siswa
+            $activities = getRecentActivities(10);
+
+            return view('dashboardSiswa', compact('data', 'pengajuan', 'dudiTersedia', 'activities'));
 
         } elseif ($role === 'admin') {
             // Ambil aktivitas terkini untuk dashboard admin
@@ -283,6 +286,7 @@ class AuthenController extends Controller
 
             $totalSiswa = DB::table('tb_siswa')->count();
             $totalDudi = DB::table('tb_dudi')->count();
+            $totalWaliKelas = DB::table('tb_users')->where('role', 'wali_kelas')->count();
 
             $siswaLastMonth = DB::table('tb_siswa')
                 ->where('created_at', '<', now()->subDays(30))
@@ -309,11 +313,15 @@ class AuthenController extends Controller
             // Hitung persentase
             $persenDitempatkan = $totalSiswa > 0 ? round(($siswaDitempatkan / $totalSiswa) * 100, 1) : 0;
 
-            return view('dashboardAdmin', compact('data', 'activities', 'totalSiswa', 'totalDudi', 'siswaGrowth', 'dudiGrowth', 'siswaDitempatkan', 'siswaMenunggu', 'persenDitempatkan'));
+            return view('dashboardAdmin', compact('data', 'activities', 'totalSiswa', 'totalDudi', 'totalWaliKelas', 'siswaGrowth', 'dudiGrowth', 'siswaDitempatkan', 'siswaMenunggu', 'persenDitempatkan'));
 
         } elseif ($role === 'dudi') {
             // Redirect DUDI ke dashboard khusus mereka
             return redirect('/dudi/dashboard');
+
+        } elseif ($role === 'wali_kelas') {
+            // Redirect Wali Kelas ke dashboard khusus mereka
+            return redirect('/wali-kelas/dashboard');
 
         } else {
             Session::flush();

@@ -37,10 +37,7 @@
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end">
                     <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>Profile</a></li>
-                    <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>Pengaturan</a></li>
-                    <li>
                         <hr class="dropdown-divider">
-                    </li>
                     <li><a class="dropdown-item text-danger" href="/logout"><i
                                 class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
                 </ul>
@@ -60,6 +57,9 @@
             <a href="/admin/siswa" class="sidebar-item" title="Kelola Siswa">
                 <i class="fas fa-users"></i>
             </a>
+             <a href="/admin/wali-kelas" class="sidebar-item" title="Kelola Wali Kelas">
+                <i class="fas fa-chalkboard-teacher"></i>
+            </a>
             <a href="/admin/pengajuan-pkl" class="sidebar-item" title="Pengajuan PKL">
                 <i class="fas fa-clipboard-list"></i>
             </a>
@@ -75,6 +75,10 @@
             </a>
             <a href="/admin/surat-dudi" class="sidebar-item" title="Surat DUDI">
                 <i class="fas fa-envelope"></i>
+            </a>
+             <a href="/admin/dokumen-siswa"
+                class="sidebar-item {{ request()->is('admin/dokumen-siswa*') ? 'active' : '' }}" title="Dokumen Siswa">
+                <i class="fas fa-folder-open"></i>
             </a>
         </div>
     </div>

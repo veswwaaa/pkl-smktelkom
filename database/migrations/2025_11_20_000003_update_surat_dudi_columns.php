@@ -10,16 +10,34 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::table('tb_surat_dudi', function (Blueprint $table) {
-            // Rename catatan columns
-            $table->renameColumn('catatan_dudi_pengajuan', 'catatan_balasan_pengajuan');
-            $table->renameColumn('catatan_dudi_permohonan', 'catatan_balasan_permohonan');
-        });
+        // Safely rename catatan columns only if source columns exist
+        if (Schema::hasColumn('tb_surat_dudi', 'catatan_dudi_pengajuan') || Schema::hasColumn('tb_surat_dudi', 'catatan_dudi_permohonan')) {
+            Schema::table('tb_surat_dudi', function (Blueprint $table) {
+                if (Schema::hasColumn('tb_surat_dudi', 'catatan_dudi_pengajuan') && !Schema::hasColumn('tb_surat_dudi', 'catatan_balasan_pengajuan')) {
+                    $table->renameColumn('catatan_dudi_pengajuan', 'catatan_balasan_pengajuan');
+                }
+                if (Schema::hasColumn('tb_surat_dudi', 'catatan_dudi_permohonan') && !Schema::hasColumn('tb_surat_dudi', 'catatan_balasan_permohonan')) {
+                    $table->renameColumn('catatan_dudi_permohonan', 'catatan_balasan_permohonan');
+                }
+            });
+        }
 
+        // Add status columns for balasan if they don't already exist
         Schema::table('tb_surat_dudi', function (Blueprint $table) {
-            // Add status columns for balasan
-            $table->string('status_balasan_pengajuan', 50)->nullable()->after('file_balasan_pengajuan');
-            $table->string('status_balasan_permohonan', 50)->nullable()->after('file_balasan_permohonan');
+            if (!Schema::hasColumn('tb_surat_dudi', 'status_balasan_pengajuan')) {
+                if (Schema::hasColumn('tb_surat_dudi', 'file_balasan_pengajuan')) {
+                    $table->string('status_balasan_pengajuan', 50)->nullable()->after('file_balasan_pengajuan');
+                } else {
+                    $table->string('status_balasan_pengajuan', 50)->nullable();
+                }
+            }
+            if (!Schema::hasColumn('tb_surat_dudi', 'status_balasan_permohonan')) {
+                if (Schema::hasColumn('tb_surat_dudi', 'file_balasan_permohonan')) {
+                    $table->string('status_balasan_permohonan', 50)->nullable()->after('file_balasan_permohonan');
+                } else {
+                    $table->string('status_balasan_permohonan', 50)->nullable();
+                }
+            }
         });
     }
 

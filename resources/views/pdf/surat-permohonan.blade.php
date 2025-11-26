@@ -5,18 +5,35 @@
     <meta charset="utf-8">
     <title>Surat Permohonan Data PKL</title>
     <style>
-        body {
-            font-family: 'Times New Roman', Times, serif;
-            font-size: 12pt;
-            line-height: 1.6;
-            margin: 40px;
-        }
-
         .header {
-            text-align: center;
-            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-top: 12px; /* push header slightly down */
+            margin-bottom: 28px;
             border-bottom: 3px solid #000;
             padding-bottom: 10px;
+            padding-left: 6px; /* nudge everything a bit to the left */
+        }
+
+        .header .logo img {
+            height: 50px; /* slightly larger logo to match sample */
+            width: auto;
+            display: block;
+        }
+
+        .header .brand {
+            flex: 1;
+            text-align: center;
+            transform: translateX(8px); /* shift brand a little left */
+            width: auto;
+            display: block;
+        }
+
+
+        .header .brand {
+            flex: 1;
+            text-align: center;
         }
 
         .header h2 {
@@ -89,11 +106,16 @@
 <body>
     <!-- Header -->
     <div class="header">
-        <h2>SMK TELKOM BANJARBARU</h2>
-        <p>Jl. A YANI No.128, Banjarbaru</p>
-        <p>Telp: (0281) 641629 | Email: smktelkom-bjb@telkom.co.id</p>
+        <div class="logo">
+            {{-- Embed logo as base64 to ensure it appears in generated PDFs --}}
+            <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('img/telkom-logo.png'))) }}" alt="Telkom Logo">
+        </div>
+        <div class="brand">
+            <h2>SMK TELKOM BANJARBARU</h2>
+            <p>Jl. A YANI No.128, Banjarbaru</p>
+            <p>Telp: (0281) 641629 | Email: smktelkom-bjb@telkom.co.id</p>
+        </div>
     </div>
-
     <!-- Nomor Surat -->
     <div class="nomor-surat">
         Nomor: {{ $nomor_surat ?? '___/PERM-PKL/SMK-TELKOM/' . date('Y') }}
@@ -184,7 +206,7 @@
         <p><strong>Kepala Sekolah</strong></p>
         <div class="ttd-space"></div>
         <p>
-            <strong><u>{{ $kepala_sekolah ?? 'Drs. H. Bambang Sutopo, M.Pd' }}</u></strong><br>
+            <strong><u>{{ $kepala_sekolah ?? 'Drs. H. Jarminto Sutopo, M.Pd' }}</u></strong><br>
             NIP. {{ $nip_kepala_sekolah ?? '196505121990031007' }}
         </p>
     </div>

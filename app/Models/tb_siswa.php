@@ -29,4 +29,10 @@ class tb_siswa extends Model
     {
         return $this->belongsTo(\App\Models\tb_dudi::class, 'id_dudi', 'id');
     }
+
+    // Relasi ke DokumenSiswa
+    public function dokumen()
+    {
+        return $this->hasOne(\App\Models\DokumenSiswa::class, 'id_siswa', 'id');
+    }
 }

@@ -57,9 +57,9 @@
                 <i class="fas fa-clipboard-list"></i>
             </a>
             <a href="/admin/surat-permohonan"
-            class="sidebar-item <?php echo e(request()->is('admin/surat-permohonan*') ? 'active' : ''); ?>"
-            title="Surat Permohonan Data">
-            <i class="fas fa-file-invoice"></i>
+                class="sidebar-item <?php echo e(request()->is('admin/surat-permohonan*') ? 'active' : ''); ?>"
+                title="Surat Permohonan Data">
+                <i class="fas fa-file-invoice"></i>
             </a>
             <a href="/admin/surat-pengajuan"
                 class="sidebar-item <?php echo e(request()->is('admin/surat-pengajuan*') ? 'active' : ''); ?>"
@@ -70,6 +70,10 @@
                 class="sidebar-item <?php echo e(request()->is('admin/surat-dudi*') && !request()->is('admin/surat-pengajuan*') && !request()->is('admin/surat-permohonan*') ? 'active' : ''); ?>"
                 title="Surat Balasan DUDI">
                 <i class="fas fa-envelope"></i>
+            </a>
+            <a href="/admin/dokumen-siswa"
+                class="sidebar-item <?php echo e(request()->is('admin/dokumen-siswa*') ? 'active' : ''); ?>" title="Dokumen Siswa">
+                <i class="fas fa-folder-open"></i>
             </a>
         </div>
     </div>

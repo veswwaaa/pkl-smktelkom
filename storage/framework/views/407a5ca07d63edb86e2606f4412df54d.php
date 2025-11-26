@@ -62,10 +62,11 @@
             <a href="/siswa/info-pkl" class="sidebar-item" title="Info PKL">
                 <i class="fas fa-info-circle"></i>
             </a>
-            <a href="/siswa/upload-dokumen" class="sidebar-item" title="Upload Dokumen">
-                <i class="fas fa-upload"></i>
+            <a href="/siswa/dokumen-pkl" class="sidebar-item" title="Dokumen PKL">
+                <i class="fas fa-folder-open"></i>
             </a>
-            <a href="#" class="sidebar-item" title="Download Surat" onclick="alert('Fitur dalam pengembangan')">
+            <a href="#" class="sidebar-item" title="Download Surat"
+                onclick="alert('Fitur dalam pengembangan'); return false;">
                 <i class="fas fa-file-download"></i>
             </a>
             <a href="/logout" class="sidebar-item" title="Logout">

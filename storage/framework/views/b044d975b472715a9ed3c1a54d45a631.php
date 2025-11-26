@@ -19,13 +19,13 @@
 
             <form action="<?php echo e(route('login-user')); ?>" method="post" enctype="multipart/form-data">
                 <?php echo csrf_field(); ?>
-                <?php if (Session::has('success')): ?>
+                <?php if(Session::has('success')): ?>
                     <div class="alert alert-success">
                         <?php echo e(Session::get('success')); ?>
 
                     </div>
                 <?php endif; ?>
-                <?php if (Session::has('fail')): ?>
+                <?php if(Session::has('fail')): ?>
                     <div class="alert alert-danger">
                         <?php echo e(Session::get('fail')); ?>
 
@@ -36,20 +36,16 @@
                 <input type="text" id="username" name="username" placeholder="Masukkan Username" />
                 <span class="text-danger">
                     <?php $__errorArgs = ['username'];
-                    $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-                    if ($__bag->has($__errorArgs[0])):
-                        if (isset($message)) {
-                            $__messageOriginal = $message;
-                        }
-                        $message = $__bag->first($__errorArgs[0]); ?>
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
                         <?php echo e($message); ?>
 
-                        <?php unset($message);
-                        if (isset($__messageOriginal)) {
-                            $message = $__messageOriginal;
-                        }
-                    endif;
-                    unset($__errorArgs, $__bag); ?>
+                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                 </span>
 
                 <label for="password">Password</label>
@@ -62,20 +58,16 @@
 
                 <span class="text-danger">
                     <?php $__errorArgs = ['password'];
-                    $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-                    if ($__bag->has($__errorArgs[0])):
-                        if (isset($message)) {
-                            $__messageOriginal = $message;
-                        }
-                        $message = $__bag->first($__errorArgs[0]); ?>
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
                         <?php echo e($message); ?>
 
-                        <?php unset($message);
-                        if (isset($__messageOriginal)) {
-                            $message = $__messageOriginal;
-                        }
-                    endif;
-                    unset($__errorArgs, $__bag); ?>
+                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                 </span>
 
 
@@ -100,7 +92,7 @@
         </div>
     </div>
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             console.log('DOM loaded, initializing password toggle...');
 
             const togglePassword = document.getElementById("togglePassword");
@@ -110,7 +102,7 @@
                 const icon = togglePassword.querySelector("i");
 
                 // Show/hide icon based on input
-                passwordInput.addEventListener('input', function () {
+                passwordInput.addEventListener('input', function() {
                     if (this.value.length > 0) {
                         togglePassword.classList.add('show');
                         console.log('Password icon shown');
@@ -122,7 +114,7 @@
 
                 // Toggle password visibility
                 if (icon) {
-                    togglePassword.addEventListener("click", function () {
+                    togglePassword.addEventListener("click", function() {
                         console.log('Toggle password clicked!');
 
                         const isPassword = passwordInput.type === "password";

@@ -123,7 +123,11 @@
                                             </td>
                                             <td>
                                                 <?php if($surat->status_balasan_pengajuan): ?>
-                                                    <?php if($surat->status_balasan_pengajuan == 'diterima'): ?>
+                                                    <?php if($surat->status_balasan_pengajuan == 'terkirim'): ?>
+                                                        <span class="badge bg-success">
+                                                            <i class="fas fa-check-circle me-1"></i>Dibalas
+                                                        </span>
+                                                    <?php elseif($surat->status_balasan_pengajuan == 'diterima'): ?>
                                                         <span class="badge bg-success">
                                                             <i class="fas fa-check-circle me-1"></i>Diterima
                                                         </span>
@@ -178,8 +182,7 @@
                                                                     <h5 class="modal-title">
                                                                         <i class="fas fa-sticky-note me-2"></i>Catatan DUDI
                                                                     </h5>
-                                                                    <button type="button"
-                                                                        class="btn-close btn-close-white"
+                                                                    <button type="button" class="btn-close btn-close-white"
                                                                         data-bs-dismiss="modal"></button>
                                                                 </div>
                                                                 <div class="modal-body">
@@ -287,7 +290,11 @@
                                             </td>
                                             <td>
                                                 <?php if($surat->status_balasan_permohonan): ?>
-                                                    <?php if($surat->status_balasan_permohonan == 'diterima'): ?>
+                                                    <?php if($surat->status_balasan_permohonan == 'terkirim'): ?>
+                                                        <span class="badge bg-success">
+                                                            <i class="fas fa-check-circle me-1"></i>Dibalas
+                                                        </span>
+                                                    <?php elseif($surat->status_balasan_permohonan == 'diterima'): ?>
                                                         <span class="badge bg-success">
                                                             <i class="fas fa-check-circle me-1"></i>Diterima
                                                         </span>

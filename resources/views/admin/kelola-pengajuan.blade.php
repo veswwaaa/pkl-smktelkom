@@ -91,6 +91,12 @@
         <!-- Filter Section -->
         <div class="card mb-4">
             <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h6 class="mb-0"><i class="fas fa-filter me-2"></i>Filter Data</h6>
+                    <a href="/admin/pengajuan-pkl/export-approved" class="btn btn-success btn-sm">
+                        <i class="fas fa-file-excel me-1"></i> Export Siswa Approved ke Excel
+                    </a>
+                </div>
                 <form action="/admin/pengajuan-pkl" method="GET" class="row g-3">
                     <div class="col-md-3">
                         <label class="form-label">Status</label>
@@ -120,8 +126,8 @@
 
                     <div class="col-md-4">
                         <label class="form-label">Cari (Nama/NIS)</label>
-                        <input type="text" name="search" class="form-control" placeholder="Ketik nama atau NIS..."
-                            value="{{ request('search') }}">
+                        <input type="text" name="search" class="form-control"
+                            placeholder="Ketik nama atau NIS..." value="{{ request('search') }}">
                     </div>
 
                     <div class="col-md-2">

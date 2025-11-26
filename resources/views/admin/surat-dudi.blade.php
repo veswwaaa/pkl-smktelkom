@@ -133,7 +133,11 @@
                                             </td>
                                             <td>
                                                 @if ($surat->status_balasan_pengajuan)
-                                                    @if ($surat->status_balasan_pengajuan == 'diterima')
+                                                    @if ($surat->status_balasan_pengajuan == 'terkirim')
+                                                        <span class="badge bg-success">
+                                                            <i class="fas fa-check-circle me-1"></i>Dibalas
+                                                        </span>
+                                                    @elseif($surat->status_balasan_pengajuan == 'diterima')
                                                         <span class="badge bg-success">
                                                             <i class="fas fa-check-circle me-1"></i>Diterima
                                                         </span>
@@ -187,8 +191,7 @@
                                                                     <h5 class="modal-title">
                                                                         <i class="fas fa-sticky-note me-2"></i>Catatan DUDI
                                                                     </h5>
-                                                                    <button type="button"
-                                                                        class="btn-close btn-close-white"
+                                                                    <button type="button" class="btn-close btn-close-white"
                                                                         data-bs-dismiss="modal"></button>
                                                                 </div>
                                                                 <div class="modal-body">
@@ -294,7 +297,11 @@
                                             </td>
                                             <td>
                                                 @if ($surat->status_balasan_permohonan)
-                                                    @if ($surat->status_balasan_permohonan == 'diterima')
+                                                    @if ($surat->status_balasan_permohonan == 'terkirim')
+                                                        <span class="badge bg-success">
+                                                            <i class="fas fa-check-circle me-1"></i>Dibalas
+                                                        </span>
+                                                    @elseif($surat->status_balasan_permohonan == 'diterima')
                                                         <span class="badge bg-success">
                                                             <i class="fas fa-check-circle me-1"></i>Diterima
                                                         </span>

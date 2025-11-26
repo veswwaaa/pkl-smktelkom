@@ -267,24 +267,83 @@
                         <?php echo csrf_field(); ?>
                         <input type="hidden" name="jenis_surat" value="permohonan">
 
-                        <div class="row">
-                            <div class="col-12 mb-3">
-                                <label for="file_balasan_permohonan" class="form-label">
-                                    <i class="fas fa-file-upload me-1"></i>File Surat Balasan <span
-                                        class="text-danger">*</span>
-                                </label>
-                                <input type="file" class="form-control" id="file_balasan_permohonan"
-                                    name="file_surat_balasan" accept=".pdf,.doc,.docx" required>
-                                <small class="text-muted">Format: PDF, DOC, DOCX (Max: 5MB)</small>
-                            </div>
+                        <div class="alert alert-info mb-4">
+                            <i class="fas fa-info-circle me-2"></i>
+                            <strong>Informasi:</strong> Isi form di bawah ini untuk memberikan informasi penerimaan PKL.
+                            Surat balasan akan di-generate otomatis berdasarkan data yang Anda isi.
+                        </div>
 
-                            <div class="col-12 mb-3">
-                                <label for="catatan_permohonan" class="form-label">
-                                    <i class="fas fa-sticky-note me-1"></i>Catatan (Opsional)
-                                </label>
-                                <textarea class="form-control" id="catatan_permohonan" name="catatan_dudi" rows="3"
-                                    placeholder="Tambahkan catatan untuk admin..."><?php echo e($surat->catatan_dudi_permohonan ?? ''); ?></textarea>
+                        <!-- Checkbox Jurusan -->
+                        <div class="card mb-4">
+                            <div class="card-header bg-light">
+                                <h6 class="mb-0"><i class="fas fa-graduation-cap me-2"></i>Jurusan yang Diterima <span
+                                        class="text-danger">*</span></h6>
                             </div>
+                            <div class="card-body">
+                                <p class="text-muted mb-3">Pilih jurusan yang bisa diterima untuk PKL di perusahaan
+                                    Anda:</p>
+                                <div class="row">
+                                    <div class="col-md-4 mb-2">
+                                        <div class="form-check">
+                                            <input class="form-check-input jurusan-checkbox" type="checkbox"
+                                                name="jurusan[]" value="RPL" id="jurusan_rpl">
+                                            <label class="form-check-label" for="jurusan_rpl">
+                                                <strong>RPL</strong> - Rekayasa Perangkat Lunak
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 mb-2">
+                                        <div class="form-check">
+                                            <input class="form-check-input jurusan-checkbox" type="checkbox"
+                                                name="jurusan[]" value="DKV" id="jurusan_dkv">
+                                            <label class="form-check-label" for="jurusan_dkv">
+                                                <strong>DKV</strong> - Desain Komunikasi Visual
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 mb-2">
+                                        <div class="form-check">
+                                            <input class="form-check-input jurusan-checkbox" type="checkbox"
+                                                name="jurusan[]" value="ANM" id="jurusan_anm">
+                                            <label class="form-check-label" for="jurusan_anm">
+                                                <strong>ANM</strong> - Animasi
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 mb-2">
+                                        <div class="form-check">
+                                            <input class="form-check-input jurusan-checkbox" type="checkbox"
+                                                name="jurusan[]" value="TKJ" id="jurusan_tkj">
+                                            <label class="form-check-label" for="jurusan_tkj">
+                                                <strong>TKJ</strong> - Teknik Komputer dan Jaringan
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 mb-2">
+                                        <div class="form-check">
+                                            <input class="form-check-input jurusan-checkbox" type="checkbox"
+                                                name="jurusan[]" value="TJAT" id="jurusan_tjat">
+                                            <label class="form-check-label" for="jurusan_tjat">
+                                                <strong>TJAT</strong> - Teknik Jaringan Akses Telekomunikasi
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <small class="text-danger" id="error-jurusan" style="display: none;">Pilih minimal 1
+                                    jurusan</small>
+                            </div>
+                        </div>
+
+                        <!-- Detail per Jurusan (akan muncul dinamis) -->
+                        <div id="detailJurusanContainer"></div>
+
+                        <!-- Catatan -->
+                        <div class="col-12 mb-3">
+                            <label for="catatan_permohonan" class="form-label">
+                                <i class="fas fa-sticky-note me-1"></i>Catatan Tambahan (Opsional)
+                            </label>
+                            <textarea class="form-control" id="catatan_permohonan" name="catatan_dudi" rows="3"
+                                placeholder="Tambahkan catatan atau persyaratan tambahan..."><?php echo e($surat->catatan_dudi_permohonan ?? ''); ?></textarea>
                         </div>
 
                         <button type="submit" class="btn btn-warning btn-lg">
@@ -313,33 +372,105 @@
             return new bootstrap.Tooltip(tooltipTriggerEl);
         });
 
+        // Handle checkbox jurusan - show/hide detail form
+        document.querySelectorAll('.jurusan-checkbox').forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                const jurusan = this.value;
+                const container = document.getElementById('detailJurusanContainer');
+
+                if (this.checked) {
+                    // Tambah form detail untuk jurusan ini
+                    const detailDiv = document.createElement('div');
+                    detailDiv.id = `detail-${jurusan}`;
+                    detailDiv.className = 'card mb-4';
+                    detailDiv.innerHTML = `
+                        <div class="card-header bg-primary text-white">
+                            <h6 class="mb-0"><i class="fas fa-briefcase me-2"></i>Detail untuk Jurusan ${jurusan}</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label for="jobdesk_${jurusan}" class="form-label">
+                                    <strong>Jobdesk / Tugas Siswa PKL <span class="text-danger">*</span></strong>
+                                </label>
+                                <textarea class="form-control" id="jobdesk_${jurusan}" name="jobdesk[${jurusan}]" rows="4" 
+                                    placeholder="Contoh: Membuat website, testing aplikasi, dokumentasi, dll..." required></textarea>
+                                <small class="text-muted">Jelaskan tugas dan tanggung jawab siswa ${jurusan} selama PKL</small>
+                            </div>
+                            <div class="mb-3">
+                                <label for="kuota_${jurusan}" class="form-label">
+                                    <strong>Kuota Penerimaan <span class="text-danger">*</span></strong>
+                                </label>
+                                <input type="number" class="form-control" id="kuota_${jurusan}" name="kuota[${jurusan}]" 
+                                    min="1" max="100" placeholder="Masukkan jumlah siswa yang bisa diterima" required>
+                                <small class="text-muted">Jumlah siswa ${jurusan} yang bisa diterima untuk PKL</small>
+                            </div>
+                        </div>
+                    `;
+                    container.appendChild(detailDiv);
+                } else {
+                    // Hapus form detail untuk jurusan ini
+                    const detailDiv = document.getElementById(`detail-${jurusan}`);
+                    if (detailDiv) {
+                        detailDiv.remove();
+                    }
+                }
+            });
+        });
+
         // Form submission
         document.getElementById('formBalasanPermohonan')?.addEventListener('submit', function(e) {
             e.preventDefault();
 
-            const formData = new FormData(this);
-            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-
-            // Validate file
-            const fileInput = document.getElementById('file_balasan_permohonan');
-            if (!fileInput.files.length) {
+            // Validasi: minimal 1 jurusan harus dipilih
+            const checkedJurusan = document.querySelectorAll('.jurusan-checkbox:checked');
+            if (checkedJurusan.length === 0) {
+                document.getElementById('error-jurusan').style.display = 'block';
                 Swal.fire({
                     icon: 'warning',
                     title: 'Perhatian!',
-                    text: 'Silakan pilih file surat balasan terlebih dahulu'
+                    text: 'Silakan pilih minimal 1 jurusan yang diterima'
                 });
                 return;
             }
+            document.getElementById('error-jurusan').style.display = 'none';
 
-            // Validate file size (5MB)
-            const maxSize = 5 * 1024 * 1024;
-            if (fileInput.files[0].size > maxSize) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'File Terlalu Besar!',
-                    text: 'Ukuran file maksimal adalah 5MB'
-                });
-                return;
+            // Validasi: semua field jobdesk dan kuota harus diisi
+            let isValid = true;
+            checkedJurusan.forEach(checkbox => {
+                const jurusan = checkbox.value;
+                const jobdesk = document.getElementById(`jobdesk_${jurusan}`);
+                const kuota = document.getElementById(`kuota_${jurusan}`);
+
+                if (!jobdesk || !jobdesk.value.trim()) {
+                    isValid = false;
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Perhatian!',
+                        text: `Jobdesk untuk jurusan ${jurusan} harus diisi`
+                    });
+                    return false;
+                }
+
+                if (!kuota || !kuota.value || parseInt(kuota.value) < 1) {
+                    isValid = false;
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Perhatian!',
+                        text: `Kuota untuk jurusan ${jurusan} harus diisi minimal 1`
+                    });
+                    return false;
+                }
+            });
+
+            if (!isValid) return;
+
+            const formData = new FormData(this);
+            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+            // Debug: Log form data
+            console.log('Form Data:');
+            for (let pair of formData.entries()) {
+                console.log(pair[0] + ': ' + pair[1]);
             }
 
             // Show loading
@@ -366,7 +497,16 @@
                 })
                 .then(async response => {
                     const data = await response.json();
+
                     if (!response.ok) {
+                        // Jika ada error validasi, tampilkan detail errornya
+                        if (data.errors) {
+                            let errorMessages = '';
+                            for (let field in data.errors) {
+                                errorMessages += data.errors[field].join(', ') + '\n';
+                            }
+                            throw new Error(errorMessages || 'Validasi gagal');
+                        }
                         throw new Error(data.message || 'Terjadi kesalahan');
                     }
                     return data;
@@ -382,10 +522,11 @@
                     });
                 })
                 .catch(error => {
+                    console.error('Error:', error);
                     Swal.fire({
                         icon: 'error',
                         title: 'Gagal!',
-                        text: error.message,
+                        html: error.message.replace(/\n/g, '<br>'),
                         confirmButtonColor: '#e53e3e'
                     });
                 });

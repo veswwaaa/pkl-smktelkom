@@ -147,7 +147,16 @@
                         </div>
                         <div class="col-md-6">
                             <p><strong>Status:</strong></p>
-                            @if ($pengajuan->status_pilihan_1 == 'approved')
+                            @php
+                                $isPklDiSekolah = $pengajuan->pilihan_aktif == 'SMK Telkom Banjarbaru';
+                                $isPilihan1Inactive = $isPklDiSekolah;
+                            @endphp
+
+                            @if ($isPilihan1Inactive)
+                                <span class="badge bg-secondary fs-6">
+                                    <i class="fas fa-ban me-1"></i>Tidak Aktif
+                                </span>
+                            @elseif ($pengajuan->status_pilihan_1 == 'approved')
                                 <span class="badge bg-success fs-6">
                                     <i class="fas fa-check-circle me-1"></i>Diterima
                                 </span>
@@ -201,7 +210,17 @@
                         </div>
                         <div class="col-md-6">
                             <p><strong>Status:</strong></p>
-                            @if ($pengajuan->status_pilihan_2 == 'approved')
+                            @php
+                                $isPklDiSekolah = $pengajuan->pilihan_aktif == 'SMK Telkom Banjarbaru';
+                                $isPilihan1Approved = $pengajuan->status_pilihan_1 == 'approved';
+                                $isPilihan2Inactive = $isPklDiSekolah || $isPilihan1Approved;
+                            @endphp
+
+                            @if ($isPilihan2Inactive)
+                                <span class="badge bg-secondary fs-6">
+                                    <i class="fas fa-ban me-1"></i>Tidak Aktif
+                                </span>
+                            @elseif ($pengajuan->status_pilihan_2 == 'approved')
                                 <span class="badge bg-success fs-6">
                                     <i class="fas fa-check-circle me-1"></i>Diterima
                                 </span>
@@ -255,7 +274,18 @@
                         </div>
                         <div class="col-md-6">
                             <p><strong>Status:</strong></p>
-                            @if ($pengajuan->status_pilihan_3 == 'approved')
+                            @php
+                                $isPklDiSekolah = $pengajuan->pilihan_aktif == 'SMK Telkom Banjarbaru';
+                                $isPilihan1Approved = $pengajuan->status_pilihan_1 == 'approved';
+                                $isPilihan2Approved = $pengajuan->status_pilihan_2 == 'approved';
+                                $isPilihan3Inactive = $isPklDiSekolah || $isPilihan1Approved || $isPilihan2Approved;
+                            @endphp
+
+                            @if ($isPilihan3Inactive)
+                                <span class="badge bg-secondary fs-6">
+                                    <i class="fas fa-ban me-1"></i>Tidak Aktif
+                                </span>
+                            @elseif ($pengajuan->status_pilihan_3 == 'approved')
                                 <span class="badge bg-success fs-6">
                                     <i class="fas fa-check-circle me-1"></i>Diterima
                                 </span>

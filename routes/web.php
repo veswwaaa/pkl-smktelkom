@@ -86,6 +86,7 @@ Route::middleware('isLoggedIn')->group(function () {
 
     //Route untuk Pengajuan PKL (Admin)
     Route::get('/admin/pengajuan-pkl', [PengajuanPklAdminController::class, 'index'])->middleware('isLoggedIn');
+    Route::get('/admin/pengajuan-pkl/export-approved', [PengajuanPklAdminController::class, 'exportApproved'])->middleware('isLoggedIn');
     Route::get('/admin/pengajuan-pkl/{id}/detail', [PengajuanPklAdminController::class, 'detail'])->middleware('isLoggedIn');
     Route::post('/admin/pengajuan-pkl/{id}/approve', [PengajuanPklAdminController::class, 'approve'])->middleware('isLoggedIn');
     Route::post('/admin/pengajuan-pkl/{id}/reject', [PengajuanPklAdminController::class, 'reject'])->middleware('isLoggedIn');

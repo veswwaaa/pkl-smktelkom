@@ -7,6 +7,8 @@ use App\Models\tb_siswa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\PengajuanApprovedExport;
 
 class PengajuanPklAdminController extends Controller
 {
@@ -324,5 +326,26 @@ class PengajuanPklAdminController extends Controller
         );
 
         return back()->with('success', 'Pengajuan berhasil dihapus.');
+    }
+
+    // Export data pengajuan yang sudah approved ke Excel
+    public function exportApproved()
+    {
+        $user = \App\Models\User::where('id', Session::get('loginId'))->first();
+
+        if (!$user || $user->role != 'admin') {
+            return redirect('/login')->with('fail', 'Anda harus login sebagai admin.');
+        }
+
+        logActivity(
+            'info',
+            'Export Data Siswa PKL Approved',
+            'Admin melakukan export data siswa yang sudah diterima PKL ke Excel',
+            Session::get('loginId')
+        );
+
+        $filename = 'Data_Siswa_PKL_Approved_' . date('Y-m-d_His') . '.xlsx';
+
+        return Excel::download(new PengajuanApprovedExport, $filename);
     }
 }

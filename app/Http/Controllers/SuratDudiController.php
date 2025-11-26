@@ -189,11 +189,54 @@ class SuratDudiController extends Controller
                 ], 403);
             }
 
-            $request->validate([
-                'file_surat_balasan' => 'required|file|mimes:pdf,doc,docx|max:5120', // 5MB
-                'catatan_dudi' => 'nullable|string',
-                'jenis_surat' => 'required|in:pengajuan,permohonan'
-            ]);
+            $jenisSurat = $request->jenis_surat;
+
+            // Validasi berbeda untuk permohonan (form data) vs pengajuan (file upload)
+            if ($jenisSurat == 'permohonan') {
+                $request->validate([
+                    'jurusan' => 'required|array|min:1',
+                    'jobdesk' => 'required|array|min:1',
+                    'kuota' => 'required|array|min:1',
+                    'catatan_dudi' => 'nullable|string',
+                    'jenis_surat' => 'required|in:pengajuan,permohonan'
+                ]);
+
+                // Validasi manual untuk memastikan setiap jurusan punya jobdesk dan kuota
+                $jurusanList = $request->jurusan;
+                $jobdeskList = $request->jobdesk;
+                $kuotaList = $request->kuota;
+
+                $validJurusan = ['RPL', 'DKV', 'ANM', 'TKJ', 'TJAT'];
+
+                foreach ($jurusanList as $jurusan) {
+                    if (!in_array($jurusan, $validJurusan)) {
+                        return response()->json([
+                            'success' => false,
+                            'message' => "Jurusan {$jurusan} tidak valid"
+                        ], 422);
+                    }
+
+                    if (!isset($jobdeskList[$jurusan]) || empty(trim($jobdeskList[$jurusan]))) {
+                        return response()->json([
+                            'success' => false,
+                            'message' => "Jobdesk untuk jurusan {$jurusan} harus diisi"
+                        ], 422);
+                    }
+
+                    if (!isset($kuotaList[$jurusan]) || !is_numeric($kuotaList[$jurusan]) || $kuotaList[$jurusan] < 1) {
+                        return response()->json([
+                            'success' => false,
+                            'message' => "Kuota untuk jurusan {$jurusan} harus diisi minimal 1"
+                        ], 422);
+                    }
+                }
+            } else {
+                $request->validate([
+                    'file_surat_balasan' => 'required|file|mimes:pdf,doc,docx|max:5120', // 5MB
+                    'catatan_dudi' => 'nullable|string',
+                    'jenis_surat' => 'required|in:pengajuan,permohonan'
+                ]);
+            }
 
             $dudi = tb_dudi::find($user->id_dudi);
 
@@ -207,25 +250,34 @@ class SuratDudiController extends Controller
                 ], 404);
             }
 
-            // Determine which type of letter
-            $jenisSurat = $request->jenis_surat;
+            if ($jenisSurat == 'permohonan') {
+                // Handle data penerimaan PKL (form-based)
+                $dataPenerimaanPkl = [];
 
-            // Handle file upload
-            $file = $request->file('file_surat_balasan');
-            $fileName = 'surat_balasan_' . $jenisSurat . '_dudi_' . $dudi->id . '_' . time() . '.' . $file->getClientOriginalExtension();
-            $filePath = $file->storeAs('public/surat_dudi', $fileName);
-
-            if ($jenisSurat == 'pengajuan') {
-                // Delete old file if exists
-                if ($surat->file_balasan_pengajuan && Storage::exists('public/surat_dudi/' . $surat->file_balasan_pengajuan)) {
-                    Storage::delete('public/surat_dudi/' . $surat->file_balasan_pengajuan);
+                foreach ($request->jurusan as $jurusan) {
+                    $dataPenerimaanPkl[$jurusan] = [
+                        'jobdesk' => $request->jobdesk[$jurusan] ?? '',
+                        'kuota' => (int) ($request->kuota[$jurusan] ?? 0)
+                    ];
                 }
 
-                $surat->file_balasan_pengajuan = $fileName;
-                $surat->tanggal_upload_balasan_pengajuan = now();
-                $surat->catatan_balasan_pengajuan = $request->catatan_dudi;
-                $surat->status_balasan_pengajuan = 'terkirim';
-            } else {
+                // Simpan data penerimaan ke tb_dudi
+                $dudi->data_penerimaan_pkl = $dataPenerimaanPkl;
+                $dudi->save();
+
+                // Generate PDF surat balasan
+                $pdf = PDF::loadView('pdf.surat-balasan-permohonan', [
+                    'dudi' => $dudi,
+                    'surat' => $surat,
+                    'dataPenerimaan' => $dataPenerimaanPkl,
+                    'catatan' => $request->catatan_dudi
+                ]);
+
+                // Simpan PDF
+                $fileName = 'surat_balasan_permohonan_dudi_' . $dudi->id . '_' . time() . '.pdf';
+                $pdfContent = $pdf->output();
+                Storage::put('public/surat_dudi/' . $fileName, $pdfContent);
+
                 // Delete old file if exists
                 if ($surat->file_balasan_permohonan && Storage::exists('public/surat_dudi/' . $surat->file_balasan_permohonan)) {
                     Storage::delete('public/surat_dudi/' . $surat->file_balasan_permohonan);
@@ -235,17 +287,39 @@ class SuratDudiController extends Controller
                 $surat->tanggal_upload_balasan_permohonan = now();
                 $surat->catatan_balasan_permohonan = $request->catatan_dudi;
                 $surat->status_balasan_permohonan = 'terkirim';
+                $surat->save();
+
+                logActivity(
+                    'create',
+                    'Surat Balasan Permohonan Dikirim',
+                    "DUDI {$dudi->nama_dudi} mengirim balasan data penerimaan PKL: " . implode(', ', array_keys($dataPenerimaanPkl)),
+                    Session::get('loginId')
+                );
+
+            } else {
+                // Handle file upload untuk pengajuan (existing code)
+                $file = $request->file('file_surat_balasan');
+                $fileName = 'surat_balasan_pengajuan_dudi_' . $dudi->id . '_' . time() . '.' . $file->getClientOriginalExtension();
+                $filePath = $file->storeAs('public/surat_dudi', $fileName);
+
+                // Delete old file if exists
+                if ($surat->file_balasan_pengajuan && Storage::exists('public/surat_dudi/' . $surat->file_balasan_pengajuan)) {
+                    Storage::delete('public/surat_dudi/' . $surat->file_balasan_pengajuan);
+                }
+
+                $surat->file_balasan_pengajuan = $fileName;
+                $surat->tanggal_upload_balasan_pengajuan = now();
+                $surat->catatan_balasan_pengajuan = $request->catatan_dudi;
+                $surat->status_balasan_pengajuan = 'terkirim';
+                $surat->save();
+
+                logActivity(
+                    'upload',
+                    'Surat Balasan Pengajuan Diupload',
+                    "DUDI {$dudi->nama_dudi} mengirim balasan surat pengajuan",
+                    Session::get('loginId')
+                );
             }
-
-            $surat->save();
-
-            // Log activity
-            logActivity(
-                'upload',
-                'Surat Balasan ' . ucfirst($jenisSurat) . ' Diupload',
-                "DUDI {$dudi->nama_dudi} mengirim balasan surat " . $jenisSurat,
-                Session::get('loginId')
-            );
 
             if ($request->ajax() || $request->wantsJson()) {
                 return response()->json([

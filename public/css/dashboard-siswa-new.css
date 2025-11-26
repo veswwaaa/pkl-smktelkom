@@ -345,54 +345,50 @@ body {
 /* DUDI Card */
 .dudi-card {
     background: white;
-    border: 2px solid #e0e0e0;
+    border: 2px solid var(--primary-red);
     border-radius: 12px;
     padding: 1.5rem;
     margin-bottom: 1.5rem;
-    transition: transform 0.3s, box-shadow 0.3s;
     cursor: pointer;
 }
 
-.dudi-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-    border-color: var(--primary-red);
-}
-
 .dudi-logo {
-    width: 60px;
-    height: 60px;
-    background: #f0f0f0;
-    border-radius: 10px;
+    width: 70px;
+    height: 70px;
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
     margin-bottom: 1rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .dudi-logo i {
-    font-size: 2rem;
+    font-size: 2.2rem;
     color: var(--primary-red);
 }
 
 .dudi-name {
-    font-size: 1.2rem;
+    font-size: 1.25rem;
     font-weight: 700;
-    color: #333;
+    color: #2c3e50;
     margin-bottom: 0.5rem;
+    line-height: 1.3;
 }
 
 .dudi-description {
-    color: #666;
+    color: #6c757d;
     font-size: 0.9rem;
     margin-bottom: 1rem;
-    line-height: 1.5;
+    line-height: 1.6;
 }
 
 .dudi-contact {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+    margin-bottom: 1rem;
 }
 
 .contact-item {
@@ -405,6 +401,7 @@ body {
 
 .contact-item i {
     color: var(--primary-red);
+    width: 18px;
 }
 
 .jurusan-badges {
@@ -412,36 +409,50 @@ body {
     flex-wrap: wrap;
     gap: 0.5rem;
     margin-top: 1rem;
-}
-
-.jurusan-badge {
-    background: #e8f5e9;
-    color: #2e7d32;
-    padding: 0.3rem 0.8rem;
-    border-radius: 20px;
-    font-size: 0.85rem;
-    font-weight: 500;
-}
-
-.jobdesk-section {
-    margin-top: 1rem;
-    padding: 1rem;
-    background: #f8f9fa;
-    border-left: 3px solid var(--primary-red);
-    border-radius: 5px;
-}
-
-.jobdesk-title {
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: #333;
     margin-bottom: 0.5rem;
 }
 
-.jobdesk-text {
+.jurusan-badge {
+    padding: 0.4rem 0.9rem;
+    border-radius: 20px;
     font-size: 0.85rem;
-    color: #666;
-    line-height: 1.6;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    transition: transform 0.2s;
+}
+
+.jurusan-badge i {
+    font-size: 0.75rem;
+}
+
+.jurusan-badge:hover {
+    transform: scale(1.05);
+}
+
+.jobdesk-section {
+    margin-top: 1.2rem;
+    padding: 1rem 1.2rem;
+    background: linear-gradient(135deg, #f8f9fa, #fff);
+    border-left: 4px solid var(--primary-red);
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.jobdesk-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 0.6rem;
+    display: flex;
+    align-items: center;
+}
+
+.jobdesk-text {
+    font-size: 0.875rem;
+    color: #495057;
+    line-height: 1.7;
 }
 
 /* Empty State */

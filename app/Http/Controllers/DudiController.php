@@ -9,6 +9,7 @@ use App\Models\SuratDudi;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Log;
 
 class DudiController extends Controller
 {
@@ -396,6 +397,57 @@ class DudiController extends Controller
                 ], 500);
             }
             return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Update profil penerimaan PKL (jurusan_diterima & jobdesk)
+     */
+    public function updateProfilPenerimaan(Request $request)
+    {
+        try {
+            $request->validate([
+                'id_dudi' => 'required|exists:tb_dudi,id',
+                'jurusan_diterima' => 'required|array|min:1',
+                'jurusan_diterima.*' => 'in:RPL,TKJ,MM,DKV,TJKT',
+                'jobdesk' => 'required|string|min:10',
+            ], [
+                'jurusan_diterima.required' => 'Pilih minimal 1 jurusan yang diterima',
+                'jurusan_diterima.min' => 'Pilih minimal 1 jurusan yang diterima',
+                'jobdesk.required' => 'Jobdesk siswa PKL wajib diisi',
+                'jobdesk.min' => 'Jobdesk minimal 10 karakter',
+            ]);
+
+            // Update data DUDI
+            $dudi = tb_dudi::findOrFail($request->id_dudi);
+            $dudi->jurusan_diterima = $request->jurusan_diterima;
+            $dudi->jobdesk = $request->jobdesk;
+            $dudi->save();
+
+            // Log activity
+            logActivity(
+                'update',
+                'Profil Penerimaan PKL Diperbarui',
+                "Profil penerimaan PKL untuk DUDI {$dudi->nama_dudi} telah diperbarui. Jurusan: " . implode(', ', $request->jurusan_diterima)
+            );
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Profil penerimaan PKL berhasil diperbarui!'
+            ], 200, ['Content-Type' => 'application/json']);
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validasi gagal: ' . implode(', ', $e->validator->errors()->all())
+            ], 422, ['Content-Type' => 'application/json']);
+        } catch (\Exception $e) {
+            Log::error('Error update profil penerimaan: ' . $e->getMessage());
+            Log::error($e->getTraceAsString());
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan: ' . $e->getMessage()
+            ], 500, ['Content-Type' => 'application/json']);
         }
     }
 }

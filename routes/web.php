@@ -54,6 +54,7 @@ Route::middleware('isLoggedIn')->group(function () {
     Route::delete('/admin/dudi/{id}', [DudiController::class, 'destroy']);
     Route::post('/admin/dudi/{id}/reset-password', [DudiController::class, 'resetPassword']);
     Route::post('/admin/dudi/upload-surat', [DudiController::class, 'uploadSurat']);
+    Route::post('/admin/dudi/update-profil-penerimaan', [DudiController::class, 'updateProfilPenerimaan']);
 
     //Route untuk crud siswa di admin
     Route::get('/admin/siswa', [SiswaController::class, 'index']);

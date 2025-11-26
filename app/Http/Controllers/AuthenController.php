@@ -270,10 +270,18 @@ class AuthenController extends Controller
                 ->first();
 
             // Ambil semua DUDI sekolah yang sudah mengisi profil penerimaan PKL
+            // Filter berdasarkan jurusan siswa
             $dudiTersedia = tb_dudi::where('jenis_dudi', 'sekolah')
                 ->whereNotNull('jurusan_diterima')
                 ->whereNotNull('jobdesk')
-                ->get();
+                ->get()
+                ->filter(function($dudi) use ($data) {
+                    // Jika jurusan_diterima tidak null, cek apakah jurusan siswa ada di array
+                    if ($dudi->jurusan_diterima && is_array($dudi->jurusan_diterima)) {
+                        return in_array($data->jurusan, $dudi->jurusan_diterima);
+                    }
+                    return false;
+                });
 
             // Ambil aktivitas terkini untuk dashboard siswa
             $activities = getRecentActivities(10);

@@ -94,7 +94,12 @@
         </div>
 
          <!-- Pilihan PKL yang Tersedia -->
-         <h3 class="section-title">Pilihan PKL yang Tersedia</h3>
+         <div class="d-flex justify-content-between align-items-center mb-3">
+             <h3 class="section-title mb-0">Pilihan PKL yang Tersedia untuk Jurusan {{ $data->jurusan }}</h3>
+             <span class="badge" style="background: var(--primary-red); padding: 0.5rem 1rem; font-size: 0.9rem;">
+                 <i class="fas fa-building me-1"></i>{{ $dudiTersedia->count() }} DUDI
+             </span>
+         </div>
 
          <div class="row">
              @forelse($dudiTersedia as $dudi)
@@ -123,17 +128,37 @@
                              @endif
                          </div>
 
-                         @if ($dudi->jurusan_diterima && count($dudi->jurusan_diterima) > 0)
-                             <div class="jurusan-badges">
-                                 @foreach ($dudi->jurusan_diterima as $jurusan)
-                                     <span class="jurusan-badge">
-                                         <i class="fas fa-check-circle me-1"></i>{{ $jurusan }}
-                                     </span>
-                                 @endforeach
-                             </div>
-                         @endif
-
-                         @if ($dudi->jobdesk)
+                        @if ($dudi->jurusan_diterima && count($dudi->jurusan_diterima) > 0)
+                            <div class="jurusan-badges">
+                                @foreach ($dudi->jurusan_diterima as $jurusan)
+                                    @php
+                                        $badgeColor = '';
+                                        switch($jurusan) {
+                                            case 'RPL':
+                                                $badgeColor = 'background: #3b82f6; color: white;';
+                                                break;
+                                            case 'TKJ':
+                                                $badgeColor = 'background: #06b6d4; color: white;';
+                                                break;
+                                            case 'MM':
+                                                $badgeColor = 'background: #f59e0b; color: white;';
+                                                break;
+                                            case 'DKV':
+                                                $badgeColor = 'background: #ef4444; color: white;';
+                                                break;
+                                            case 'TJKT':
+                                                $badgeColor = 'background: #10b981; color: white;';
+                                                break;
+                                            default:
+                                                $badgeColor = 'background: #6b7280; color: white;';
+                                        }
+                                    @endphp
+                                    <span class="jurusan-badge" style="{{ $badgeColor }}">
+                                        <i class="fas fa-check-circle"></i>{{ $jurusan }}
+                                    </span>
+                                @endforeach
+                            </div>
+                        @endif                         @if ($dudi->jobdesk)
                              <div class="jobdesk-section">
                                  <div class="jobdesk-title">
                                      <i class="fas fa-briefcase me-2"></i>Jobdesk Siswa PKL:
@@ -149,8 +174,8 @@
                  <div class="col-12">
                      <div class="empty-state">
                          <i class="fas fa-inbox"></i>
-                         <h5>Belum Ada DUDI Tersedia</h5>
-                         <p class="text-muted">Saat ini belum ada DUDI yang membuka lowongan PKL.</p>
+                         <h5>Belum Ada DUDI Tersedia untuk Jurusan {{ $data->jurusan }}</h5>
+                         <p class="text-muted">Saat ini belum ada DUDI yang membuka lowongan PKL untuk jurusan Anda.</p>
                      </div>
                  </div>
              @endforelse

@@ -509,34 +509,71 @@
                     </h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <h6 class="text-primary"><i class="fas fa-building me-2"></i>Nama DUDI:</h6>
-                        <p class="fs-5 fw-bold" id="detail_nama_dudi">-</p>
-                    </div>
-                    <hr>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <h6 class="text-primary"><i class="fas fa-graduation-cap me-2"></i>Jurusan yang Diterima:
-                            </h6>
-                            <div id="detail_jurusan_diterima">
-                                <p class="text-muted">Belum diatur</p>
+                <form id="profilPenerimaanForm">
+                    @csrf
+                    <input type="hidden" id="profil_id_dudi" name="id_dudi">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <h6 class="text-primary"><i class="fas fa-building me-2"></i>Nama DUDI:</h6>
+                            <p class="fs-5 fw-bold" id="detail_nama_dudi">-</p>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6 class="text-primary"><i class="fas fa-graduation-cap me-2"></i>Jurusan yang Diterima: <span class="text-danger">*</span>
+                                </h6>
+                                <div id="detail_jurusan_diterima">
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" name="jurusan_diterima[]" value="RPL" id="jurusan_rpl">
+                                        <label class="form-check-label" for="jurusan_rpl">
+                                            <span class="badge bg-primary">RPL</span> - Rekayasa Perangkat Lunak
+                                        </label>
+                                    </div>
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" name="jurusan_diterima[]" value="TKJ" id="jurusan_tkj">
+                                        <label class="form-check-label" for="jurusan_tkj">
+                                            <span class="badge bg-info">TKJ</span> - Teknik Komputer dan Jaringan
+                                        </label>
+                                    </div>
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" name="jurusan_diterima[]" value="MM" id="jurusan_mm">
+                                        <label class="form-check-label" for="jurusan_mm">
+                                            <span class="badge bg-warning text-dark">MM</span> - Multimedia
+                                        </label>
+                                    </div>
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" name="jurusan_diterima[]" value="DKV" id="jurusan_dkv">
+                                        <label class="form-check-label" for="jurusan_dkv">
+                                            <span class="badge bg-danger">DKV</span> - Desain Komunikasi Visual
+                                        </label>
+                                    </div>
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" name="jurusan_diterima[]" value="TJKT" id="jurusan_tjkt">
+                                        <label class="form-check-label" for="jurusan_tjkt">
+                                            <span class="badge bg-success">TJKT</span> - Teknik Jaringan Komputer dan Telekomunikasi
+                                        </label>
+                                    </div>
+                                </div>
+                                <small class="text-muted">Centang jurusan yang diterima untuk PKL</small>
+                            </div>
+                            <div class="col-md-6">
+                                <h6 class="text-primary"><i class="fas fa-briefcase me-2"></i>Jobdesk Siswa PKL: <span class="text-danger">*</span></h6>
+                                <textarea class="form-control" id="detail_jobdesk" name="jobdesk" rows="10" placeholder="Contoh: Membantu maintenance website, membuat aplikasi mobile, testing software, dll..."></textarea>
+                                <small class="text-muted">Jelaskan tugas yang akan dikerjakan siswa PKL</small>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <h6 class="text-primary"><i class="fas fa-briefcase me-2"></i>Jobdesk Siswa PKL:</h6>
-                            <div id="detail_jobdesk">
-                                <p class="text-muted">Belum diatur</p>
-                            </div>
-                        </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                        <i class="fas fa-times me-1"></i>
-                        Tutup
-                    </button>
-                </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            <i class="fas fa-times me-1"></i>
+                            Batal
+                        </button>
+                        <button type="button" class="btn btn-success" onclick="submitProfilPenerimaan()">
+                            <i class="fas fa-save me-1"></i>
+                            Simpan Profil
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -645,33 +682,33 @@
             console.log('Jurusan Diterima:', jurusanDiterima);
             console.log('Jobdesk:', jobdesk);
 
+            // Set ID DUDI
+            document.getElementById('profil_id_dudi').value = idDudi;
+
             // Set nama DUDI
             document.getElementById('detail_nama_dudi').textContent = namaDudi;
 
-            // Set jurusan diterima
-            var jurusanContainer = document.getElementById('detail_jurusan_diterima');
+            // Reset semua checkbox jurusan
+            document.querySelectorAll('input[name="jurusan_diterima[]"]').forEach(function(checkbox) {
+                checkbox.checked = false;
+            });
+
+            // Set jurusan diterima yang sudah dipilih
             if (jurusanDiterima && jurusanDiterima.length > 0) {
-                var jurusanHtml = '<ul class=\"list-unstyled\">';
                 jurusanDiterima.forEach(function(jurusan) {
-                    jurusanHtml +=
-                        '<li class=\"mb-1\"><i class=\"fas fa-check-circle text-success me-2\"></i><span class=\"badge bg-primary\">' +
-                        jurusan + '</span></li>';
+                    var checkbox = document.querySelector('input[name="jurusan_diterima[]"][value="' + jurusan + '"]');
+                    if (checkbox) {
+                        checkbox.checked = true;
+                    }
                 });
-                jurusanHtml += '</ul>';
-                jurusanContainer.innerHTML = jurusanHtml;
-            } else {
-                jurusanContainer.innerHTML =
-                    '<div class=\"alert alert-warning\"><i class=\"fas fa-exclamation-triangle me-2\"></i>Belum diatur oleh DUDI</div>';
             }
 
             // Set jobdesk
-            var jobdeskContainer = document.getElementById('detail_jobdesk');
+            var jobdeskTextarea = document.getElementById('detail_jobdesk');
             if (jobdesk && jobdesk.trim() !== '') {
-                jobdeskContainer.innerHTML = '<div class=\"alert alert-light border\"><p class=\"mb-0\">' + jobdesk +
-                    '</p></div>';
+                jobdeskTextarea.value = jobdesk;
             } else {
-                jobdeskContainer.innerHTML =
-                    '<div class=\"alert alert-warning\"><i class=\"fas fa-exclamation-triangle me-2\"></i>Belum diatur oleh DUDI</div>';
+                jobdeskTextarea.value = '';
             }
 
             // Show modal
@@ -791,6 +828,93 @@
                         icon: "error",
                         title: "Gagal Upload!",
                         text: error.message || "Terjadi kesalahan saat mengupload surat",
+                        confirmButtonColor: "#e53e3e",
+                    });
+                });
+        }
+
+        // Function to submit profil penerimaan PKL
+        function submitProfilPenerimaan() {
+            var form = document.getElementById("profilPenerimaanForm");
+            var formData = new FormData(form);
+            var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
+
+            // Validate at least one jurusan selected
+            var jurusanChecked = document.querySelectorAll('input[name="jurusan_diterima[]"]:checked');
+            if (jurusanChecked.length === 0) {
+                Swal.fire({
+                    icon: "warning",
+                    title: "Perhatian!",
+                    text: "Silakan pilih minimal 1 jurusan yang diterima",
+                });
+                return;
+            }
+
+            // Validate jobdesk
+            var jobdesk = document.getElementById("detail_jobdesk").value.trim();
+            if (!jobdesk) {
+                Swal.fire({
+                    icon: "warning",
+                    title: "Perhatian!",
+                    text: "Silakan isi jobdesk siswa PKL",
+                });
+                return;
+            }
+
+            // Show loading
+            Swal.fire({
+                title: "Menyimpan...",
+                text: "Sedang menyimpan profil penerimaan PKL",
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                },
+            });
+
+            // Submit form
+            fetch("/admin/dudi/update-profil-penerimaan", {
+                    method: "POST",
+                    headers: {
+                        "X-CSRF-TOKEN": csrfToken,
+                        "X-Requested-With": "XMLHttpRequest",
+                        "Accept": "application/json",
+                    },
+                    body: formData,
+                })
+                .then(async (response) => {
+                    const contentType = response.headers.get("content-type");
+                    if (contentType && contentType.includes("application/json")) {
+                        const data = await response.json();
+                        if (!response.ok) {
+                            throw new Error(data.message || "Terjadi kesalahan pada server");
+                        }
+                        return data;
+                    } else {
+                        throw new Error("Server tidak mengembalikan response JSON yang valid");
+                    }
+                })
+                .then((data) => {
+                    if (data.success) {
+                        Swal.fire({
+                            icon: "success",
+                            title: "Berhasil!",
+                            text: data.message,
+                            showConfirmButton: false,
+                            timer: 1500,
+                        }).then(() => {
+                            bootstrap.Modal.getInstance(document.getElementById("profilPenerimaanModal")).hide();
+                            location.reload();
+                        });
+                    } else {
+                        throw new Error(data.message || "Terjadi kesalahan");
+                    }
+                })
+                .catch((error) => {
+                    console.error("Submit error:", error);
+                    Swal.fire({
+                        icon: "error",
+                        title: "Gagal Menyimpan!",
+                        text: error.message || "Terjadi kesalahan saat menyimpan profil penerimaan",
                         confirmButtonColor: "#e53e3e",
                     });
                 });

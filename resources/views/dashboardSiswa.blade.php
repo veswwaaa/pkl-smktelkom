@@ -14,8 +14,15 @@
  <body>
      <!-- Top Navbar -->
      <nav class="top-navbar">
-         <div class="telkom-logo">
-             <img src="{{ asset('img/telkom-logo.png') }}" alt="Telkom Schools" onerror="this.style.display='none'">
+         <div class="d-flex align-items-center gap-3">
+             <!-- Hamburger Menu (Mobile Only) -->
+             <button class="hamburger-menu" id="hamburgerMenu" onclick="toggleSidebar()">
+                 <i class="fas fa-bars"></i>
+             </button>
+
+             <div class="telkom-logo">
+                 <img src="{{ asset('img/telkom-logo.png') }}" alt="Telkom Schools" onerror="this.style.display='none'">
+             </div>
          </div>
 
          <div class="navbar-right">
@@ -47,8 +54,11 @@
          </div>
      </nav>
 
+     <!-- Overlay untuk mobile -->
+     <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
      <!-- Left Sidebar -->
-     <div class="left-sidebar">
+     <div class="left-sidebar" id="leftSidebar">
          <div class="sidebar-menu">
              <a href="/dashboard" class="sidebar-item active" title="Dashboard">
                  <i class="fas fa-th-large"></i>
@@ -179,7 +189,8 @@
                      <div class="empty-state">
                          <i class="fas fa-inbox"></i>
                          <h5>Belum Ada DUDI Tersedia untuk Jurusan {{ $data->jurusan }}</h5>
-                         <p class="text-muted">Saat ini belum ada DUDI yang membuka lowongan PKL untuk jurusan Anda.</p>
+                         <p class="text-muted">Saat ini belum ada DUDI yang membuka lowongan PKL untuk jurusan Anda.
+                         </p>
                      </div>
                  </div>
              @endforelse
@@ -189,6 +200,24 @@
      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
      <script src="{{ asset('js/dashboard-siswa.js') }}"></script>
      <script>
+         // Toggle Sidebar untuk Mobile
+         function toggleSidebar() {
+             const sidebar = document.getElementById('leftSidebar');
+             const overlay = document.getElementById('sidebarOverlay');
+
+             sidebar.classList.toggle('show');
+             overlay.classList.toggle('show');
+         }
+
+         // Close sidebar when clicking on menu item (mobile)
+         document.querySelectorAll('.sidebar-item').forEach(item => {
+             item.addEventListener('click', function() {
+                 if (window.innerWidth <= 768) {
+                     toggleSidebar();
+                 }
+             });
+         });
+
          function confirmLogout(event) {
              event.preventDefault();
              Swal.fire({

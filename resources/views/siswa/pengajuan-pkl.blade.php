@@ -13,8 +13,13 @@
 <body>
     <!-- Top Navbar -->
     <nav class="top-navbar">
-        <div class="telkom-logo">
-            <img src="{{ asset('img/telkom-logo.png') }}" alt="Telkom Schools" onerror="this.style.display='none'">
+        <div class="d-flex align-items-center gap-3">
+            <button class="hamburger-menu" onclick="toggleSidebar()">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="telkom-logo">
+                <img src="{{ asset('img/telkom-logo.png') }}" alt="Telkom Schools" onerror="this.style.display='none'">
+            </div>
         </div>
 
         <div class="navbar-right">
@@ -39,8 +44,10 @@
         </div>
     </nav>
 
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
     <!-- Left Sidebar -->
-    <div class="left-sidebar">
+    <div class="left-sidebar" id="leftSidebar">
         <div class="sidebar-menu">
             <a href="/dashboard" class="sidebar-item" title="Dashboard">
                 <i class="fas fa-th-large"></i>
@@ -264,6 +271,17 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="{{ asset('js/pengajuan-pkl.js') }}"></script>
+    <script>
+        function toggleSidebar() {
+            document.getElementById('leftSidebar').classList.toggle('show');
+            document.getElementById('sidebarOverlay').classList.toggle('show');
+        }
+        document.querySelectorAll('.sidebar-item').forEach(item => {
+            item.addEventListener('click', () => {
+                if (window.innerWidth <= 768) toggleSidebar();
+            });
+        });
+    </script>
 </body>
 
 </html>

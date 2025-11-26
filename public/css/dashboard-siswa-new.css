@@ -48,6 +48,42 @@ body {
     gap: 15px;
 }
 
+/* Hamburger Menu */
+.hamburger-menu {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--primary-red);
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.hamburger-menu:hover {
+    background: rgba(227, 30, 36, 0.1);
+}
+
+/* Sidebar Overlay */
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 998;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.sidebar-overlay.show {
+    display: block;
+    opacity: 1;
+}
+
 .notification-btn {
     position: relative;
     background: none;
@@ -120,7 +156,7 @@ body {
     left: 0;
     width: 90px;
     height: calc(100vh - 70px);
-    background: var(--primary-red);
+    background: #e53e3e !important;
     z-index: 1040;
     padding: 20px 0;
 }
@@ -466,4 +502,229 @@ body {
     font-size: 4rem;
     margin-bottom: 1rem;
     color: #ddd;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .main-content {
+        padding: 20px;
+    }
+
+    .dudi-card {
+        margin-bottom: 20px;
+    }
+}
+
+@media (max-width: 992px) {
+    .left-sidebar {
+        width: 60px;
+    }
+
+    body {
+        padding-left: 60px;
+    }
+
+    .main-content {
+        margin-left: 0;
+    }
+}
+
+@media (max-width: 768px) {
+    body {
+        padding-left: 0;
+        padding-top: 60px;
+    }
+
+    .top-navbar {
+        height: 60px;
+        padding: 0 15px;
+    }
+
+    /* Show hamburger menu on mobile */
+    .hamburger-menu {
+        display: block;
+    }
+
+    .telkom-logo img {
+        height: 35px;
+    }
+
+    .telkom-logo h5 {
+        font-size: 0.9rem;
+    }
+
+    .left-sidebar {
+        position: fixed;
+        left: 0;
+        top: 60px;
+        width: 70px;
+        height: calc(100vh - 60px);
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+        z-index: 999;
+        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .left-sidebar.show {
+        transform: translateX(0);
+    }
+
+    .main-content {
+        margin-left: 0;
+        padding: 15px;
+    }
+
+    .welcome-header {
+        padding: 20px 15px;
+        flex-direction: column;
+        align-items: flex-start !important;
+    }
+
+    .welcome-header .d-flex {
+        flex-direction: column;
+        width: 100%;
+        gap: 15px;
+    }
+
+    .welcome-header h1 {
+        font-size: 1.5rem;
+    }
+
+    .welcome-header p {
+        font-size: 0.9rem;
+    }
+
+    .user-avatars {
+        margin-top: 10px;
+    }
+
+    .user-avatar {
+        width: 35px;
+        height: 35px;
+        font-size: 0.85rem;
+    }
+
+    .section-title {
+        font-size: 1.2rem;
+    }
+
+    .badge {
+        font-size: 0.8rem;
+        padding: 0.4rem 0.8rem;
+    }
+
+    .dudi-card {
+        padding: 20px;
+    }
+
+    .dudi-name {
+        font-size: 1.1rem;
+    }
+
+    .dudi-description {
+        font-size: 0.9rem;
+    }
+
+    .jurusan-badge {
+        font-size: 0.75rem;
+        padding: 4px 8px;
+    }
+
+    .jobdesk-section {
+        padding: 12px;
+    }
+}
+
+@media (max-width: 576px) {
+    .main-content {
+        padding: 10px;
+    }
+
+    .welcome-header {
+        padding: 15px 10px;
+    }
+
+    .welcome-header h1 {
+        font-size: 1.3rem;
+    }
+
+    .welcome-header p {
+        font-size: 0.85rem;
+    }
+
+    .user-avatar {
+        width: 30px;
+        height: 30px;
+        font-size: 0.75rem;
+    }
+
+    .section-title {
+        font-size: 1.1rem;
+    }
+
+    .d-flex.justify-content-between {
+        flex-direction: column;
+        gap: 10px;
+        align-items: flex-start !important;
+    }
+
+    .dudi-card {
+        padding: 15px;
+    }
+
+    .dudi-logo {
+        width: 60px;
+        height: 60px;
+        font-size: 1.5rem;
+    }
+
+    .dudi-name {
+        font-size: 1rem;
+    }
+
+    .dudi-description {
+        font-size: 0.85rem;
+    }
+
+    .contact-item {
+        font-size: 0.85rem;
+    }
+
+    .jurusan-badges {
+        flex-wrap: wrap;
+        gap: 5px;
+    }
+
+    .jobdesk-title {
+        font-size: 0.9rem;
+    }
+
+    .jobdesk-text {
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .welcome-header h1 {
+        font-size: 1.1rem;
+    }
+
+    .dudi-card {
+        padding: 12px;
+    }
+
+    .dudi-logo {
+        width: 50px;
+        height: 50px;
+        font-size: 1.2rem;
+    }
+
+    .section-title {
+        font-size: 1rem;
+    }
+
+    .badge {
+        font-size: 0.75rem;
+        padding: 0.3rem 0.6rem;
+    }
 }

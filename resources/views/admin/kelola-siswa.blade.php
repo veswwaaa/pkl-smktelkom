@@ -16,8 +16,15 @@
     <!-- Top Navbar -->
     <nav class="top-navbar d-flex align-items-center justify-content-between">
         <!-- Logo dan Brand -->
-        <div class="telkom-logo">
-            <img src="{{ asset('img/telkom-logo.png') }}" alt="Telkom Logo" height="40">
+        <div class="d-flex align-items-center gap-3">
+            <!-- Hamburger Menu (Mobile Only) -->
+            <button class="hamburger-menu" onclick="toggleSidebar()">
+                <i class="fas fa-bars"></i>
+            </button>
+
+            <div class="telkom-logo">
+                <img src="{{ asset('img/telkom-logo.png') }}" alt="Telkom Logo" height="40">
+            </div>
         </div>
 
         <!-- Right side -->
@@ -46,8 +53,11 @@
         </div>
     </nav>
 
+    <!-- Overlay untuk mobile -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
     <!-- Left Sidebar -->
-    <div class="left-sidebar">
+    <div class="left-sidebar" id="leftSidebar">
         <div class="sidebar-menu">
             <a href="/dashboard" class="sidebar-item" title="Dashboard">
                 <i class="fas fa-th-large"></i>
@@ -58,16 +68,16 @@
             <a href="/admin/siswa" class="sidebar-item active" title="Kelola Siswa">
                 <i class="fas fa-users"></i>
             </a>
-             <a href="/admin/wali-kelas" class="sidebar-item" title="Kelola Wali Kelas">
+            <a href="/admin/wali-kelas" class="sidebar-item" title="Kelola Wali Kelas">
                 <i class="fas fa-chalkboard-teacher"></i>
             </a>
             <a href="/admin/pengajuan-pkl" class="sidebar-item" title="Pengajuan PKL">
                 <i class="fas fa-clipboard-list"></i>
             </a>
-           <a href="/admin/surat-permohonan"
-            class="sidebar-item {{ request()->is('admin/surat-permohonan*') ? 'active' : '' }}"
-            title="Surat Permohonan Data">
-            <i class="fas fa-file-invoice"></i>
+            <a href="/admin/surat-permohonan"
+                class="sidebar-item {{ request()->is('admin/surat-permohonan*') ? 'active' : '' }}"
+                title="Surat Permohonan Data">
+                <i class="fas fa-file-invoice"></i>
             </a>
             <a href="/admin/surat-pengajuan"
                 class="sidebar-item {{ request()->is('admin/surat-pengajuan*') ? 'active' : '' }}"
@@ -77,7 +87,7 @@
             <a href="/admin/surat-dudi" class="sidebar-item" title="Surat DUDI">
                 <i class="fas fa-envelope"></i>
             </a>
-             <a href="/admin/dokumen-siswa"
+            <a href="/admin/dokumen-siswa"
                 class="sidebar-item {{ request()->is('admin/dokumen-siswa*') ? 'active' : '' }}" title="Dokumen Siswa">
                 <i class="fas fa-folder-open"></i>
             </a>
@@ -135,7 +145,7 @@
         </div>
 
         {{-- add Button --}}
-       <div class="data-table-card">
+        <div class="data-table-card">
             <div class="table-header">
                 <div class="table-header-content">
                     <div class="table-title">
@@ -921,6 +931,26 @@
             @method('DELETE')
         </form>
     @endforeach
+
+    <script>
+        // Toggle Sidebar untuk Mobile
+        function toggleSidebar() {
+            const sidebar = document.getElementById('leftSidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+
+            sidebar.classList.toggle('show');
+            overlay.classList.toggle('show');
+        }
+
+        // Close sidebar when clicking on menu item (mobile)
+        document.querySelectorAll('.sidebar-item').forEach(item => {
+            item.addEventListener('click', function() {
+                if (window.innerWidth <= 768) {
+                    toggleSidebar();
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>

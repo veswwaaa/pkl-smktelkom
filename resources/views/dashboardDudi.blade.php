@@ -14,6 +14,9 @@
 <body>
     <!-- Top Navbar -->
     <nav class="top-navbar d-flex align-items-center justify-content-between">
+        <button class="hamburger-menu" onclick="toggleSidebar()">
+            <i class="fas fa-bars"></i>
+        </button>
         <div class="navbar-brand">
             <div class="telkom-logo">
                 <i class="fas fa-building fa-2x text-danger"></i>
@@ -213,6 +216,14 @@
     </script>
 
     <link rel="stylesheet" href="{{ asset('css/shared-components.css') }}">
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.querySelector('.left-sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            if (sidebar) sidebar.classList.toggle('show');
+            if (overlay) overlay.classList.toggle('show');
+        }
+    </script>
 </body>
 
 </html>

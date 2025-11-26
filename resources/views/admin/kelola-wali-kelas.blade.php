@@ -16,8 +16,13 @@
 <body>
     <!-- Top Navbar -->
     <nav class="top-navbar d-flex align-items-center justify-content-between">
-        <div class="telkom-logo">
-            <img src="{{ asset('img/telkom-logo.png') }}" alt="Telkom Logo" height="40">
+        <div class="d-flex align-items-center gap-3">
+            <button class="hamburger-menu" onclick="toggleSidebar()">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="telkom-logo">
+                <img src="{{ asset('img/telkom-logo.png') }}" alt="Telkom Logo" height="40">
+            </div>
         </div>
         <div class="navbar-right">
             <button class="notification-btn">
@@ -41,8 +46,11 @@
         </div>
     </nav>
 
+    <!-- Overlay untuk mobile -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
     <!-- Left Sidebar -->
-    <div class="left-sidebar">
+    <div class="left-sidebar" id="leftSidebar">
         <div class="sidebar-menu">
             <a href="/dashboard" class="sidebar-item" title="Dashboard">
                 <i class="fas fa-th-large"></i>
@@ -715,6 +723,88 @@
             });
         }
     </script>
+
+    <script>
+        // Toggle Sidebar untuk Mobile
+        function toggleSidebar() {
+            const sidebar = document.getElementById('leftSidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+
+            sidebar.classList.toggle('show');
+            overlay.classList.toggle('show');
+        }
+
+        // Close sidebar when clicking on menu item (mobile)
+        document.querySelectorAll('.sidebar-item').forEach(item => {
+            item.addEventListener('click', function() {
+                if (window.innerWidth <= 768) {
+                    toggleSidebar();
+                }
+            });
+        });
+    </script>
+    <style>
+        /* Force sidebar to display on desktop, toggleable on mobile */
+        body .left-sidebar {
+            position: fixed !important;
+            top: 70px !important;
+            left: 0 !important;
+            width: 90px !important;
+            height: calc(100vh - 70px) !important;
+            background: #e53e3e !important;
+            z-index: 1040 !important;
+            padding: 20px 0 !important;
+            visibility: visible !important;
+            display: block !important;
+        }
+
+        .sidebar-item {
+            color: white !important;
+            display: flex !important;
+        }
+
+        .sidebar-item i {
+            color: white !important;
+        }
+
+        .hamburger-menu {
+            display: none !important;
+        }
+
+        /* Mobile responsive */
+        @media (max-width: 768px) {
+            .hamburger-menu {
+                display: block !important;
+                background: none !important;
+                border: none !important;
+                font-size: 1.5rem !important;
+                color: #e53e3e !important;
+                cursor: pointer !important;
+                padding: 8px !important;
+            }
+
+            body .left-sidebar {
+                transform: translateX(-100%) !important;
+                transition: transform 0.3s ease !important;
+            }
+
+            body .left-sidebar.show {
+                transform: translateX(0) !important;
+            }
+
+            .main-content {
+                margin-left: 0 !important;
+            }
+
+            .sidebar-overlay {
+                display: none !important;
+            }
+
+            .sidebar-overlay.show {
+                display: block !important;
+            }
+        }
+    </style>
 </body>
 
 </html>

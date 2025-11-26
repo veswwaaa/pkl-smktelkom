@@ -15,6 +15,9 @@
 <body>
     <!-- Top Navbar -->
     <nav class="top-navbar">
+        <button class="hamburger-menu" onclick="toggleSidebar()">
+            <i class="fas fa-bars"></i>
+        </button>
         <div class="telkom-logo">
             <img src="{{ asset('img/telkom-logo.png') }}" alt="Telkom Schools" onerror="this.style.display='none'">
         </div>
@@ -41,8 +44,11 @@
         </div>
     </nav>
 
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
     <!-- Left Sidebar -->
-    <div class="left-sidebar">
+    <div class="left-sidebar" id="leftSidebar">
         <div class="sidebar-menu">
             <a href="/dashboard" class="sidebar-item" title="Dashboard">
                 <i class="fas fa-th-large"></i>
@@ -315,6 +321,17 @@
                 text: '{{ session('error') }}'
             });
         @endif
+    </script>
+    <script>
+        function toggleSidebar() {
+            document.getElementById('leftSidebar').classList.toggle('show');
+            document.getElementById('sidebarOverlay').classList.toggle('show');
+        }
+        document.querySelectorAll('.sidebar-item').forEach(item => {
+            item.addEventListener('click', () => {
+                if (window.innerWidth <= 768) toggleSidebar();
+            });
+        });
     </script>
 </body>
 

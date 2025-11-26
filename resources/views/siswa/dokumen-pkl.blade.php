@@ -15,6 +15,9 @@
 <body>
     <!-- Top Navbar -->
     <nav class="top-navbar">
+        <button class="hamburger-menu" onclick="toggleSidebar()">
+            <i class="fas fa-bars"></i>
+        </button>
         <div class="telkom-logo">
             <img src="{{ asset('img/telkom-logo.png') }}" alt="Telkom Schools" onerror="this.style.display='none'">
         </div>
@@ -34,35 +37,37 @@
                     <li>
                         <hr class="dropdown-divider">
                     </li>
-                    <li><a class="dropdown-item" href="#" onclick="confirmLogout(event)"><i class="fas fa-sign-out-alt me-2"></i>Logout</a>
+                    <li><a class="dropdown-item" href="#" onclick="confirmLogout(event)"><i
+                                class="fas fa-sign-out-alt me-2"></i>Logout</a>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
 
-    <!-- Left Sidebar -->
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
 
-     <!-- Left Sidebar -->
-     <div class="left-sidebar">
-         <div class="sidebar-menu">
+    <!-- Left Sidebar -->
+    <div class="left-sidebar" id="leftSidebar">
+        <div class="sidebar-menu">
             <a href="/dashboard" class="sidebar-item" title="Dashboard">
                 <i class="fas fa-th-large"></i>
             </a>
             <a href="/siswa/pengajuan-pkl" class="sidebar-item" title="Pengajuan PKL">
-                 <i class="fas fa-file-alt"></i>
-             </a>
-             <a href="/siswa/status-pengajuan" class="sidebar-item" title="Status Pengajuan PKL">
-                 <i class="fas fa-tasks"></i>
-             </a>
-             <a href="/siswa/info-pkl" class="sidebar-item" title="Info PKL">
-                 <i class="fas fa-info-circle"></i>
-             </a>
-             <a href="/siswa/dokumen-pkl" class="sidebar-item" title="Dokumen PKL">
-                 <i class="fas fa-folder-open"></i>
-             </a>
-         </div>
-     </div>
+                <i class="fas fa-file-alt"></i>
+            </a>
+            <a href="/siswa/status-pengajuan" class="sidebar-item" title="Status Pengajuan PKL">
+                <i class="fas fa-tasks"></i>
+            </a>
+            <a href="/siswa/info-pkl" class="sidebar-item" title="Info PKL">
+                <i class="fas fa-info-circle"></i>
+            </a>
+            <a href="/siswa/dokumen-pkl" class="sidebar-item" title="Dokumen PKL">
+                <i class="fas fa-folder-open"></i>
+            </a>
+        </div>
+    </div>
 
     <div class="main-content">
         <div class="container-fluid">
@@ -686,6 +691,17 @@
                 }
             });
         }
+    </script>
+    <script>
+        function toggleSidebar() {
+            document.getElementById('leftSidebar').classList.toggle('show');
+            document.getElementById('sidebarOverlay').classList.toggle('show');
+        }
+        document.querySelectorAll('.sidebar-item').forEach(item => {
+            item.addEventListener('click', () => {
+                if (window.innerWidth <= 768) toggleSidebar();
+            });
+        });
     </script>
 </body>
 

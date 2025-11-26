@@ -15,8 +15,15 @@
     <!-- Top Navbar -->
     <nav class="top-navbar d-flex align-items-center justify-content-between">
         <!-- Logo dan Brand -->
-        <div class="telkom-logo">
-            <img src="{{ asset('img/telkom-logo.png') }}" alt="Telkom Logo" height="40">
+        <div class="d-flex align-items-center gap-3">
+            <!-- Hamburger Menu (Mobile Only) -->
+            <button class="hamburger-menu" id="hamburgerMenu" onclick="toggleSidebar()">
+                <i class="fas fa-bars"></i>
+            </button>
+
+            <div class="telkom-logo">
+                <img src="{{ asset('img/telkom-logo.png') }}" alt="Telkom Logo" height="40">
+            </div>
         </div>
 
         <!-- Right side -->
@@ -45,8 +52,11 @@
         </div>
     </nav>
 
+    <!-- Overlay untuk mobile -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
     <!-- Left Sidebar -->
-    <div class="left-sidebar">
+    <div class="left-sidebar" id="leftSidebar">
         <div class="sidebar-menu">
             <a href="#" class="sidebar-item active" title="Dashboard">
                 <i class="fas fa-th-large"></i>

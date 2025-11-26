@@ -61,6 +61,42 @@ body {
     gap: 15px;
 }
 
+/* Hamburger Menu */
+.hamburger-menu {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--primary-red);
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.hamburger-menu:hover {
+    background: rgba(227, 30, 36, 0.1);
+}
+
+/* Sidebar Overlay */
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 998;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.sidebar-overlay.show {
+    display: block;
+    opacity: 1;
+}
+
 .notification-btn {
     position: relative;
     background: none;
@@ -125,7 +161,7 @@ body {
     left: 0;
     width: var(--sidebar-width);
     height: calc(100vh - 70px);
-    background: var(--telkom-red);
+    background: #e53e3e !important;
     z-index: 1040;
     padding: 20px 0;
 }
@@ -689,6 +725,16 @@ body {
 }
 
 /* Responsive Design */
+@media (max-width: 1400px) {
+    .main-content {
+        padding: 25px;
+    }
+
+    .stats-row {
+        gap: 20px;
+    }
+}
+
 @media (max-width: 1200px) {
     .stats-row {
         grid-template-columns: repeat(2, 1fr);
@@ -697,21 +743,51 @@ body {
     .content-row {
         grid-template-columns: 1fr;
     }
+
+    .main-content {
+        padding: 20px;
+    }
+}
+
+@media (max-width: 992px) {
+    .left-sidebar {
+        width: 60px;
+    }
+
+    .main-content {
+        margin-left: 60px;
+    }
+
+    .stats-row {
+        gap: 15px;
+    }
+
+    .stat-card {
+        padding: 20px;
+    }
 }
 
 @media (max-width: 768px) {
     .stats-row {
         grid-template-columns: 1fr;
+        gap: 15px;
     }
 
     .main-content {
         margin-left: 0;
-        padding: 20px;
+        padding: 15px;
+        padding-top: 70px;
     }
 
     .left-sidebar {
+        position: fixed;
+        left: 0;
+        top: 60px;
         transform: translateX(-100%);
         transition: transform 0.3s;
+        z-index: 999;
+        background: var(--primary-red);
+        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
     }
 
     .left-sidebar.show {
@@ -720,6 +796,12 @@ body {
 
     .top-navbar {
         padding: 0 15px;
+        height: 60px;
+    }
+
+    /* Show hamburger menu on mobile */
+    .hamburger-menu {
+        display: block;
     }
 
     .navbar-right {
@@ -727,34 +809,142 @@ body {
     }
 
     .brand-text h5 {
-        font-size: 1rem;
+        font-size: 0.9rem;
     }
 
     .welcome-header {
-        padding: 20px;
+        padding: 20px 15px;
+        flex-direction: column;
+        align-items: flex-start !important;
+    }
+
+    .welcome-header .d-flex {
+        flex-direction: column;
+        width: 100%;
     }
 
     .welcome-header h1 {
-        font-size: 1.8rem;
+        font-size: 1.5rem;
+    }
+
+    .welcome-header p {
+        font-size: 0.9rem;
     }
 
     .user-avatars {
         flex-wrap: wrap;
+        margin-top: 15px;
     }
-}
 
-@media (max-width: 480px) {
-    .welcome-header h1 {
-        font-size: 1.5rem;
+    .user-avatar {
+        width: 35px;
+        height: 35px;
+        font-size: 0.8rem;
+    }
+
+    .stat-card {
+        padding: 20px 15px;
     }
 
     .stat-number {
         font-size: 2rem;
     }
 
+    .stat-label {
+        font-size: 0.9rem;
+    }
+
+    .activity-item {
+        padding: 12px;
+    }
+
+    .activity-info h6 {
+        font-size: 0.9rem;
+    }
+
+    .activity-info p {
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .welcome-header h1 {
+        font-size: 1.3rem;
+    }
+
+    .welcome-header p {
+        font-size: 0.85rem;
+    }
+
+    .stat-number {
+        font-size: 1.8rem;
+    }
+
+    .stat-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 1.2rem;
+    }
+
     .activities-header {
         flex-direction: column;
-        align-items: flex-start;
+        align-items: flex-start !important;
         gap: 10px;
+    }
+
+    .activities-header h3 {
+        font-size: 1.1rem;
+    }
+
+    .view-all-btn {
+        font-size: 0.85rem;
+        padding: 6px 12px;
+    }
+
+    .activity-icon {
+        width: 35px;
+        height: 35px;
+        font-size: 0.9rem;
+    }
+
+    .top-navbar .telkom-logo img {
+        height: 35px;
+    }
+}
+
+@media (max-width: 480px) {
+    .main-content {
+        padding: 10px;
+        padding-top: 65px;
+    }
+
+    .welcome-header {
+        padding: 15px 10px;
+    }
+
+    .welcome-header h1 {
+        font-size: 1.2rem;
+    }
+
+    .stat-card {
+        padding: 15px;
+    }
+
+    .stat-number {
+        font-size: 1.6rem;
+    }
+
+    .activities-header h3 {
+        font-size: 1rem;
+    }
+
+    .activity-item {
+        padding: 10px;
+    }
+
+    .user-avatar {
+        width: 30px;
+        height: 30px;
+        font-size: 0.75rem;
     }
 }

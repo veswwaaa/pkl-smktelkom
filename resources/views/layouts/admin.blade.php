@@ -15,6 +15,9 @@
 <body>
     <!-- Top Navbar -->
     <nav class="top-navbar d-flex align-items-center justify-content-between">
+        <button class="hamburger-menu" onclick="toggleSidebar()">
+            <i class="fas fa-bars"></i>
+        </button>
         <div class="telkom-logo">
             <img src="{{ asset('img/telkom-logo.png') }}" alt="Telkom Logo" height="40"
                 onerror="this.style.display='none'">
@@ -31,7 +34,7 @@
                 <ul class="dropdown-menu dropdown-menu-end">
                     <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>Profile</a></li>
                     <li></li>
-                        <hr class="dropdown-divider">
+                    <hr class="dropdown-divider">
                     </li>
                     <li><a class="dropdown-item text-danger" href="/logout"><i
                                 class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
@@ -40,8 +43,11 @@
         </div>
     </nav>
 
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
     <!-- Left Sidebar -->
-    <div class="left-sidebar">
+    <div class="left-sidebar" id="leftSidebar">
         <div class="sidebar-menu">
             <a href="/dashboard" class="sidebar-item {{ request()->is('dashboard') ? 'active' : '' }}"
                 title="Dashboard">
@@ -56,7 +62,7 @@
                 title="Kelola Siswa">
                 <i class="fas fa-users"></i>
             </a>
-             <a href="/admin/wali-kelas" class="sidebar-item" title="Kelola Wali Kelas">
+            <a href="/admin/wali-kelas" class="sidebar-item" title="Kelola Wali Kelas">
                 <i class="fas fa-chalkboard-teacher"></i>
             </a>
             <a href="/admin/pengajuan-pkl"
@@ -92,6 +98,17 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     @stack('scripts')
+    <script>
+        function toggleSidebar() {
+            document.getElementById('leftSidebar').classList.toggle('show');
+            document.getElementById('sidebarOverlay').classList.toggle('show');
+        }
+        document.querySelectorAll('.sidebar-item').forEach(item => {
+            item.addEventListener('click', () => {
+                if (window.innerWidth <= 768) toggleSidebar();
+            });
+        });
+    </script>
 </body>
 
 </html>

@@ -68,9 +68,6 @@
             <a href="/dudi/surat-pengajuan" class="sidebar-item active" title="Surat Pengajuan">
                 <i class="fas fa-file-invoice"></i>
             </a>
-            <a href="/dudi/surat-pkl" class="sidebar-item" title="Surat PKL">
-                <i class="fas fa-clipboard-list"></i>
-            </a>
         </div>
     </div>
 

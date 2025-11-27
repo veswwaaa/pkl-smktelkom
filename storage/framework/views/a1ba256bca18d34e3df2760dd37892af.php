@@ -1,9 +1,7 @@
-@extends('layouts.admin')
+<?php $__env->startSection('title', 'Dokumen Siswa'); ?>
 
-@section('title', 'Dokumen Siswa')
-
-@push('styles')
-    <link rel="stylesheet" href="{{ asset('css/shared-components.css') }}">
+<?php $__env->startPush('styles'); ?>
+    <link rel="stylesheet" href="<?php echo e(asset('css/shared-components.css')); ?>">
     <style>
         /* Status Badges dengan Warna Jelas */
         .status-badge {
@@ -44,9 +42,9 @@
             transition: width 0.3s ease;
         }
     </style>
-@endpush
+<?php $__env->stopPush(); ?>
 
-@section('content')
+<?php $__env->startSection('content'); ?>
 
     <div class="page-header">
         <div class="page-title">
@@ -71,7 +69,7 @@
                 <div class="card text-center shadow-sm">
                     <div class="card-body">
                         <i class="fas fa-users fa-2x mb-2" style="color: #ee1c25;"></i>
-                        <h5 class="mb-0">{{ $dokumenList->count() }}</h5>
+                        <h5 class="mb-0"><?php echo e($dokumenList->count()); ?></h5>
                         <small class="text-muted">Total Siswa</small>
                     </div>
                 </div>
@@ -80,7 +78,7 @@
                 <div class="card text-center shadow-sm">
                     <div class="card-body">
                         <i class="fas fa-file-upload fa-2x mb-2" style="color: #28a745;"></i>
-                        <h5 class="mb-0">{{ $dokumenList->where('status_cv_portofolio', 'sudah')->count() }}</h5>
+                        <h5 class="mb-0"><?php echo e($dokumenList->where('status_cv_portofolio', 'sudah')->count()); ?></h5>
                         <small class="text-muted">CV & Portofolio</small>
                     </div>
                 </div>
@@ -89,7 +87,7 @@
                 <div class="card text-center shadow-sm">
                     <div class="card-body">
                         <i class="fas fa-envelope fa-2x mb-2" style="color: #17a2b8;"></i>
-                        <h5 class="mb-0">{{ $dokumenList->where('status_surat_pernyataan', 'terkirim')->count() }}</h5>
+                        <h5 class="mb-0"><?php echo e($dokumenList->where('status_surat_pernyataan', 'terkirim')->count()); ?></h5>
                         <small class="text-muted">Surat Pernyataan</small>
                     </div>
                 </div>
@@ -98,7 +96,7 @@
                 <div class="card text-center shadow-sm">
                     <div class="card-body">
                         <i class="fas fa-file-signature fa-2x mb-2" style="color: #6610f2;"></i>
-                        <h5 class="mb-0">{{ $dokumenList->where('status_surat_tugas', 'terkirim')->count() }}</h5>
+                        <h5 class="mb-0"><?php echo e($dokumenList->where('status_surat_tugas', 'terkirim')->count()); ?></h5>
                         <small class="text-muted">Surat Tugas</small>
                     </div>
                 </div>
@@ -125,58 +123,62 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($dokumenList as $index => $dokumen)
+                            <?php $__currentLoopData = $dokumenList; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $dokumen): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <tr>
-                                    <td>{{ $index + 1 }}</td>
-                                    <td>{{ $dokumen->siswa->nis }}</td>
-                                    <td>{{ $dokumen->siswa->nama }}</td>
-                                    <td>{{ $dokumen->siswa->kelas }}</td>
+                                    <td><?php echo e($index + 1); ?></td>
+                                    <td><?php echo e($dokumen->siswa->nis); ?></td>
+                                    <td><?php echo e($dokumen->siswa->nama); ?></td>
+                                    <td><?php echo e($dokumen->siswa->kelas); ?></td>
                                     <td>
                                         <span
-                                            class="badge bg-{{ $dokumen->status_cv_portofolio == 'sudah' ? 'success' : 'warning' }}">
-                                            {{ $dokumen->status_cv_portofolio == 'sudah' ? 'Sudah' : 'Belum' }}
+                                            class="badge bg-<?php echo e($dokumen->status_cv_portofolio == 'sudah' ? 'success' : 'warning'); ?>">
+                                            <?php echo e($dokumen->status_cv_portofolio == 'sudah' ? 'Sudah' : 'Belum'); ?>
+
                                         </span>
-                                        @if ($dokumen->status_cv_portofolio == 'sudah')
+                                        <?php if($dokumen->status_cv_portofolio == 'sudah'): ?>
                                             <br>
                                             <small
-                                                class="text-muted">{{ $dokumen->tanggal_upload_cv_portofolio->format('d/m/Y') }}</small>
-                                        @endif
+                                                class="text-muted"><?php echo e($dokumen->tanggal_upload_cv_portofolio->format('d/m/Y')); ?></small>
+                                        <?php endif; ?>
                                     </td>
                                     <td>
                                         <span
-                                            class="badge bg-{{ $dokumen->status_surat_pernyataan == 'terkirim' ? 'info' : 'secondary' }}">
-                                            {{ $dokumen->status_surat_pernyataan == 'terkirim' ? 'Terkirim' : 'Belum' }}
+                                            class="badge bg-<?php echo e($dokumen->status_surat_pernyataan == 'terkirim' ? 'info' : 'secondary'); ?>">
+                                            <?php echo e($dokumen->status_surat_pernyataan == 'terkirim' ? 'Terkirim' : 'Belum'); ?>
+
                                         </span>
-                                        @if ($dokumen->status_surat_pernyataan == 'terkirim')
+                                        <?php if($dokumen->status_surat_pernyataan == 'terkirim'): ?>
                                             <br>
                                             <small
-                                                class="text-muted">{{ $dokumen->tanggal_kirim_surat_pernyataan->format('d/m/Y') }}</small>
-                                        @endif
+                                                class="text-muted"><?php echo e($dokumen->tanggal_kirim_surat_pernyataan->format('d/m/Y')); ?></small>
+                                        <?php endif; ?>
                                     </td>
                                     <td>
                                         <span
-                                            class="badge bg-{{ $dokumen->status_eviden == 'sudah' ? 'success' : 'warning' }}">
-                                            {{ $dokumen->status_eviden == 'sudah' ? 'Sudah' : 'Belum' }}
+                                            class="badge bg-<?php echo e($dokumen->status_eviden == 'sudah' ? 'success' : 'warning'); ?>">
+                                            <?php echo e($dokumen->status_eviden == 'sudah' ? 'Sudah' : 'Belum'); ?>
+
                                         </span>
-                                        @if ($dokumen->status_eviden == 'sudah')
+                                        <?php if($dokumen->status_eviden == 'sudah'): ?>
                                             <br>
                                             <small
-                                                class="text-muted">{{ $dokumen->tanggal_upload_eviden->format('d/m/Y') }}</small>
-                                        @endif
+                                                class="text-muted"><?php echo e($dokumen->tanggal_upload_eviden->format('d/m/Y')); ?></small>
+                                        <?php endif; ?>
                                     </td>
                                     <td>
                                         <span
-                                            class="badge bg-{{ $dokumen->status_surat_tugas == 'terkirim' ? 'info' : 'secondary' }}">
-                                            {{ $dokumen->status_surat_tugas == 'terkirim' ? 'Terkirim' : 'Belum' }}
+                                            class="badge bg-<?php echo e($dokumen->status_surat_tugas == 'terkirim' ? 'info' : 'secondary'); ?>">
+                                            <?php echo e($dokumen->status_surat_tugas == 'terkirim' ? 'Terkirim' : 'Belum'); ?>
+
                                         </span>
-                                        @if ($dokumen->status_surat_tugas == 'terkirim')
+                                        <?php if($dokumen->status_surat_tugas == 'terkirim'): ?>
                                             <br>
                                             <small
-                                                class="text-muted">{{ $dokumen->tanggal_kirim_surat_tugas->format('d/m/Y') }}</small>
-                                        @endif
+                                                class="text-muted"><?php echo e($dokumen->tanggal_kirim_surat_tugas->format('d/m/Y')); ?></small>
+                                        <?php endif; ?>
                                     </td>
                                     <td>
-                                        @php
+                                        <?php
                                             $progress = 0;
                                             if ($dokumen->status_cv_portofolio == 'sudah') {
                                                 $progress += 25;
@@ -192,23 +194,23 @@
                                             }
                                             $progressColor =
                                                 $progress == 100 ? 'success' : ($progress >= 50 ? 'info' : 'warning');
-                                        @endphp
+                                        ?>
                                         <div class="progress" style="height: 10px;">
-                                            <div class="progress-bar bg-{{ $progressColor }}" role="progressbar"
-                                                style="width: {{ $progress }}%" aria-valuenow="{{ $progress }}"
+                                            <div class="progress-bar bg-<?php echo e($progressColor); ?>" role="progressbar"
+                                                style="width: <?php echo e($progress); ?>%" aria-valuenow="<?php echo e($progress); ?>"
                                                 aria-valuemin="0" aria-valuemax="100">
                                             </div>
                                         </div>
-                                        <small class="text-muted d-block text-center mt-1">{{ $progress }}%</small>
+                                        <small class="text-muted d-block text-center mt-1"><?php echo e($progress); ?>%</small>
                                     </td>
                                     <td>
                                         <button class="btn btn-sm btn-primary btn-action"
-                                            onclick="viewDetail({{ $dokumen->id }})">
+                                            onclick="viewDetail(<?php echo e($dokumen->id); ?>)">
                                             <i class="fas fa-eye"></i> Detail
                                         </button>
                                     </td>
                                 </tr>
-                            @endforeach
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </tbody>
                     </table>
                 </div>
@@ -264,9 +266,9 @@
             </div>
         </div>
     </div>
-@endsection
+<?php $__env->stopSection(); ?>
 
-@push('scripts')
+<?php $__env->startPush('scripts'); ?>
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css">
     <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
     <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
@@ -287,7 +289,7 @@
 
         function viewDetail(dokumenId) {
             // Ambil data dokumen berdasarkan ID
-            const dokumen = @json($dokumenList);
+            const dokumen = <?php echo json_encode($dokumenList, 15, 512) ?>;
             const data = dokumen.find(d => d.id === dokumenId);
 
             if (!data) return;
@@ -432,7 +434,7 @@
                         url: `/admin/dokumen-siswa/${dokumenId}/kirim-surat-pernyataan`,
                         type: 'POST',
                         data: {
-                            _token: '{{ csrf_token() }}'
+                            _token: '<?php echo e(csrf_token()); ?>'
                         },
                         success: function(response) {
                             Swal.fire({
@@ -497,7 +499,7 @@
                         url: `/admin/dokumen-siswa/${dokumenId}/kirim-surat-tugas`,
                         type: 'POST',
                         data: {
-                            _token: '{{ csrf_token() }}',
+                            _token: '<?php echo e(csrf_token()); ?>',
                             nomor_surat: nomorSurat
                         },
                         success: function(response) {
@@ -523,4 +525,6 @@
             });
         }
     </script>
-@endpush
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('layouts.admin', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\laragon\www\pkl-smktelkom\resources\views/admin/dokumen-siswa.blade.php ENDPATH**/ ?>

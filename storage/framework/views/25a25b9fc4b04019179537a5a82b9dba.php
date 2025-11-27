@@ -7,75 +7,92 @@
     <title>Dashboard DUDI - <?php echo e($dudi->nama_dudi); ?></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="<?php echo e(asset('css/welcome-header.css')); ?>" rel="stylesheet">
     <link href="<?php echo e(asset('css/kelola-dudi.css')); ?>" rel="stylesheet">
     <link href="<?php echo e(asset('css/dudi-pages.css')); ?>" rel="stylesheet">
     <link href="<?php echo e(asset('css/shared-components.css')); ?>" rel="stylesheet">
-    
-    </style>
 </head>
 
 <body>
-    <!-- Sidebar -->
-    <div class="sidebar">
-        <div class="logo">
-            <i class="fas fa-graduation-cap text-danger" style="font-size: 24px;"></i>
+    <!-- Top Navbar -->
+    <nav class="top-navbar d-flex align-items-center justify-content-between">
+        <!-- Logo dan Brand -->
+        <div class="d-flex align-items-center gap-3">
+            <!-- Hamburger Menu (Mobile Only) -->
+            <button class="hamburger-menu" onclick="toggleSidebar()">
+                <i class="fas fa-bars"></i>
+            </button>
+
+            <div class="telkom-logo">
+                <img src="<?php echo e(asset('img/telkom-logo.png')); ?>" alt="Telkom Logo" height="40">
+            </div>
         </div>
 
-        <ul class="menu-list">
-            <li class="active">
-                <a href="/dudi/dashboard" data-bs-toggle="tooltip" title="Dashboard">
-                    <i class="fas fa-th-large"></i>
-                </a>
-            </li>
-            <li>
-                <a href="/dudi/surat-pengajuan" data-bs-toggle="tooltip" title="Surat Pengajuan">
-                    <i class="fas fa-file-import"></i>
-                </a>
-            </li>
-            <li>
-                <a href="/dudi/surat-permohonan" data-bs-toggle="tooltip" title="Surat Permohonan">
-                    <i class="fas fa-file-signature"></i>
-                </a>
-            </li>
-            <li style="margin-top: auto; margin-bottom: 20px;">
-                <a href="/logout" data-bs-toggle="tooltip" title="Logout">
-                    <i class="fas fa-sign-out-alt"></i>
-                </a>
-            </li>
-        </ul>
+        <!-- Right side -->
+        <div class="navbar-right">
+            <!-- Notification -->
+            <button class="notification-btn">
+                <i class="fas fa-bell"></i>
+                <span class="notification-badge">3</span>
+            </button>
+
+            <!-- Profile Dropdown -->
+            <div class="dropdown">
+                <button class="profile-dropdown" type="button" data-bs-toggle="dropdown">
+                    <div class="profile-avatar">D</div>
+                    <i class="fas fa-chevron-down text-muted"></i>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>Profile</a></li>
+                    <hr class="dropdown-divider">
+                    <li><a class="dropdown-item text-danger" href="/logout"><i
+                                class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Overlay untuk mobile -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+    <!-- Left Sidebar -->
+    <div class="left-sidebar" id="leftSidebar">
+        <div class="sidebar-menu">
+            <a href="/dudi/dashboard" class="sidebar-item active" title="Dashboard">
+                <i class="fas fa-th-large"></i>
+            </a>
+            <a href="/dudi/surat-permohonan" class="sidebar-item" title="Surat Permohonan">
+                <i class="fas fa-file-export"></i>
+            </a>
+            <a href="/dudi/surat-pengajuan" class="sidebar-item" title="Surat Pengajuan">
+                <i class="fas fa-file-invoice"></i>
+            </a>
+        </div>
     </div>
 
     <!-- Main Content -->
-    <div class="main-content">
-        <!-- Top Bar -->
-        <div class="top-bar">
-            <div>
-                <h5 class="mb-0"><strong>Halaman Dashboard</strong></h5>
-            </div>
-            <div class="d-flex align-items-center gap-3">
-                <div class="notification-bell">
-                    <i class="fas fa-bell"></i>
-                    <?php if($pengajuanCount > 0): ?>
-                        <span class="notification-count"><?php echo e($pengajuanCount); ?></span>
-                    <?php endif; ?>
+   <div class="main-content">
+        <!-- Welcome Header -->
+        <div class="welcome-header">
+            <div class="d-flex justify-content-between align-items-start">
+                <div>
+                    <h1>Selamat Datang Di Dashboard PKL</h1>
+                    <p>Kelola program Praktik Kerja Lapangan SMK Telkom Banjarbaru dengan mudah dan efisien</p>
                 </div>
-                <div class="profile-badge">
-                    <?php echo e(strtoupper(substr($dudi->nama_dudi, 0, 1))); ?>
-
+                <div class="user-avatars">
+                    <div class="user-avatar avatar-orange">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="user-avatar avatar-green">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="user-avatar avatar-gray">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="user-avatar avatar-blue">
+                        <i class="fas fa-user"></i>
+                    </div>
                 </div>
-            </div>
-        </div>
-
-        <!-- Welcome Card -->
-        <div class="welcome-card">
-            <h4>Selamat Datang Di Dashboard PKL</h4>
-            <p>Kelola program Praktik Kerja Lapangan SMK Telkom Banjarbaru dengan mudah dan efisien</p>
-
-            <div class="stat-circles">
-                <div class="stat-circle teal" data-bs-toggle="tooltip" title="Total Pengajuan">A</div>
-                <div class="stat-circle blue" data-bs-toggle="tooltip" title="Menunggu Review">B</div>
-                <div class="stat-circle green" data-bs-toggle="tooltip" title="Diterima">C</div>
-                <div class="stat-circle gray" data-bs-toggle="tooltip" title="Ditolak">D</div>
             </div>
         </div>
 
@@ -121,10 +138,19 @@
                 </div>
             <?php endif; ?>
         </div>
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        // Toggle Sidebar
+        function toggleSidebar() {
+            const sidebar = document.getElementById('leftSidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            sidebar.classList.toggle('show');
+            overlay.classList.toggle('show');
+        }
+
         // Initialize tooltips
         var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
         var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {

@@ -30,38 +30,16 @@ class SuratDudiController extends Controller
         $surat = SuratDudi::where('id_dudi', $dudi->id)->first();
 
         // Get pengajuan PKL yang mendaftar ke DUDI ini
-        $pengajuanList = collect();
-        $pengajuanCount = 0;
-
-        if ($dudi->jenis_dudi == 'mandiri') {
-            $dudiMandiriIds = \App\Models\DudiMandiri::where('id_dudi', $dudi->id)
-                ->pluck('id')
-                ->toArray();
-
-            if (!empty($dudiMandiriIds)) {
-                $pengajuanList = \App\Models\PengajuanPkl::where(function ($query) use ($dudiMandiriIds) {
-                    foreach ($dudiMandiriIds as $dmId) {
-                        $query->orWhere('id_dudi_mandiri_pilihan_1', $dmId)
-                            ->orWhere('id_dudi_mandiri_pilihan_2', $dmId)
-                            ->orWhere('id_dudi_mandiri_pilihan_3', $dmId);
-                    }
-                })
-                    ->with('siswa')
-                    ->orderBy('created_at', 'desc')
-                    ->limit(10)
-                    ->get();
-            }
-        } else {
-            $pengajuanList = \App\Models\PengajuanPkl::where(function ($query) use ($dudi) {
-                $query->where('id_dudi_pilihan_1', $dudi->id)
-                    ->orWhere('id_dudi_pilihan_2', $dudi->id)
-                    ->orWhere('id_dudi_pilihan_3', $dudi->id);
-            })
-                ->with('siswa')
-                ->orderBy('created_at', 'desc')
-                ->limit(10)
-                ->get();
-        }
+        // Baik DUDI sekolah maupun mandiri menggunakan field id_dudi_pilihan_1/2/3
+        $pengajuanList = \App\Models\PengajuanPkl::where(function ($query) use ($dudi) {
+            $query->where('id_dudi_pilihan_1', $dudi->id)
+                ->orWhere('id_dudi_pilihan_2', $dudi->id)
+                ->orWhere('id_dudi_pilihan_3', $dudi->id);
+        })
+            ->with('siswa')
+            ->orderBy('created_at', 'desc')
+            ->limit(10)
+            ->get();
 
         $pengajuanCount = $pengajuanList->count();
 
@@ -726,47 +704,22 @@ class SuratDudiController extends Controller
                 ], 404);
             }
 
-            // Cari siswa yang mendaftar ke DUDI ini dari pengajuan_pkl
-            // Untuk DUDI sekolah: cari di id_dudi_pilihan_1/2/3
-            // Untuk DUDI mandiri: cari di id_dudi_mandiri_pilihan_1/2/3
+            // Untuk semua jenis DUDI (sekolah/mandiri), logikanya sama:
+            // Cari siswa yang apply ke DUDI ini di id_dudi_pilihan_1/2/3
+            // dan sudah approved atau masih pending
 
-            $siswas = collect();
-
-            if ($dudi->jenis_dudi == 'mandiri') {
-                // Untuk DUDI mandiri, ambil ID dari tabel dudi_mandiri yang sudah approved
-                $dudiMandiriIds = \App\Models\DudiMandiri::where('id_dudi', $id_dudi)
-                    ->pluck('id')
-                    ->toArray();
-
-                if (!empty($dudiMandiriIds)) {
-                    $siswas = \App\Models\PengajuanPkl::where(function ($query) use ($dudiMandiriIds) {
-                        foreach ($dudiMandiriIds as $dmId) {
-                            $query->orWhere('id_dudi_mandiri_pilihan_1', $dmId)
-                                ->orWhere('id_dudi_mandiri_pilihan_2', $dmId)
-                                ->orWhere('id_dudi_mandiri_pilihan_3', $dmId);
-                        }
-                    })
-                        ->with('siswa')
-                        ->get()
-                        ->pluck('siswa')
-                        ->filter()
-                        ->unique('id')
-                        ->values();
-                }
-            } else {
-                // Untuk DUDI sekolah
-                $siswas = \App\Models\PengajuanPkl::where(function ($query) use ($id_dudi) {
-                    $query->where('id_dudi_pilihan_1', $id_dudi)
-                        ->orWhere('id_dudi_pilihan_2', $id_dudi)
-                        ->orWhere('id_dudi_pilihan_3', $id_dudi);
-                })
-                    ->with('siswa')
-                    ->get()
-                    ->pluck('siswa')
-                    ->filter()
-                    ->unique('id')
-                    ->values();
-            }
+            $siswas = \App\Models\PengajuanPkl::where(function ($query) use ($id_dudi) {
+                $query->where('id_dudi_pilihan_1', $id_dudi)
+                    ->orWhere('id_dudi_pilihan_2', $id_dudi)
+                    ->orWhere('id_dudi_pilihan_3', $id_dudi);
+            })
+                ->whereIn('status', ['pending', 'approved'])
+                ->with('siswa')
+                ->get()
+                ->pluck('siswa')
+                ->filter()
+                ->unique('id')
+                ->values();
 
             return response()->json([
                 'success' => true,

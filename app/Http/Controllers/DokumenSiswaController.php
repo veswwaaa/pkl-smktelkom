@@ -294,8 +294,16 @@ class DokumenSiswaController extends Controller
     }
 
     // Admin kirim surat tugas ke siswa
-    public function kirimSuratTugas($id)
+    public function kirimSuratTugas(Request $request, $id)
     {
+        // Validasi input nomor surat
+        $request->validate([
+            'nomor_surat' => 'required|string|max:100'
+        ], [
+            'nomor_surat.required' => 'Nomor surat harus diisi',
+            'nomor_surat.max' => 'Nomor surat maksimal 100 karakter'
+        ]);
+
         $dokumen = DokumenSiswa::with('siswa')->findOrFail($id);
 
         // Validasi: pastikan siswa sudah upload eviden
@@ -306,15 +314,8 @@ class DokumenSiswaController extends Controller
             ], 400);
         }
 
-        // Generate nomor surat
-        $tahun = date('Y');
-        $bulan = date('m');
-        $nomorUrut = DokumenSiswa::whereYear('tanggal_kirim_surat_tugas', $tahun)
-            ->whereMonth('tanggal_kirim_surat_tugas', $bulan)
-            ->where('status_surat_tugas', 'terkirim')
-            ->count() + 1;
-
-        $nomorSurat = sprintf('ST/%03d/PKL-SMKTELKOM/%s/%s', $nomorUrut, $bulan, $tahun);
+        // Gunakan nomor surat dari input admin
+        $nomorSurat = $request->nomor_surat;
 
         // Generate PDF Surat Tugas
         $pdf = Pdf::loadView('pdf.surat-tugas', [
@@ -337,7 +338,7 @@ class DokumenSiswaController extends Controller
         ]);
 
         // Log activity
-        logActivity('success', 'Kirim Surat Tugas', 'Admin mengirim surat tugas ke siswa ' . $dokumen->siswa->nama);
+        logActivity('success', 'Kirim Surat Tugas', 'Admin mengirim surat tugas ke siswa ' . $dokumen->siswa->nama . ' dengan nomor: ' . $nomorSurat);
 
         return response()->json([
             'success' => true,

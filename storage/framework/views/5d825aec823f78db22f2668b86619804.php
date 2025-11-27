@@ -7,6 +7,7 @@
      <title>Dashboard PKL - SMK Telkom Banjarbaru</title>
      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+     <link href="<?php echo e(asset('css/welcome-header.css')); ?>" rel="stylesheet">
      <link rel="stylesheet" href="<?php echo e(asset('css/dashboard-siswa-new.css')); ?>">
      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
  </head>
@@ -32,14 +33,14 @@
                      <span class="notification-badge">1</span>
                  <?php endif; ?>
              </button>
-             <div class="dropdown">
-                 <div class="profile-dropdown" data-bs-toggle="dropdown">
-                     <div class="user-avatar">
-                         <?php echo e(substr($data->nama, 0, 1)); ?>
+            <div class="dropdown">
+                <div class="profile-dropdown" data-bs-toggle="dropdown">
+                    <div class="user-avatar navbar-avatar">
+                        <?php echo e(substr($data->nama, 0, 1)); ?>
 
-                     </div>
-                     <i class="fas fa-chevron-down text-muted"></i>
-                 </div>
+                    </div>
+                    <i class="fas fa-chevron-down text-muted"></i>
+                </div>
                  <ul class="dropdown-menu dropdown-menu-end">
                      <li>
                          <h6 class="dropdown-header"><?php echo e($data->nama); ?></h6>
@@ -80,30 +81,30 @@
      </div>
 
      <!-- Main Content -->
-     <div class="main-content">
-         <!-- Welcome Header -->
-         <div class="welcome-header">
-             <div class="d-flex justify-content-between align-items-start">
-                 <div>
-                     <h1>Selamat Datang Di Dashboard PKL</h1>
-                     <p>Kelola program Praktik Kerja Lapangan SMK Telkom Banjarbaru dengan mudah dan efisien</p>
-                 </div>
-                 <div class="user-avatars">
-                     <div class="user-avatar avatar-orange">
-                         <i class="fas fa-user"></i>
-                     </div>
-                     <div class="user-avatar avatar-green">
-                         <i class="fas fa-users"></i>
-                     </div>
-                     <div class="user-avatar avatar-gray">
-                         <i class="fas fa-user"></i>
-                     </div>
-                     <div class="user-avatar avatar-blue">
-                         <i class="fas fa-user"></i>
-                     </div>
-                 </div>
-             </div>
-         </div>
+    <div class="main-content">
+        <!-- Welcome Header -->
+        <div class="welcome-header">
+            <div class="d-flex justify-content-between align-items-start">
+                <div>
+                    <h1>Selamat Datang Di Dashboard PKL</h1>
+                    <p>Kelola program Praktik Kerja Lapangan SMK Telkom Banjarbaru dengan mudah dan efisien</p>
+                </div>
+                <div class="user-avatars">
+                    <div class="user-avatar avatar-orange">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="user-avatar avatar-green">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="user-avatar avatar-gray">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="user-avatar avatar-blue">
+                        <i class="fas fa-user"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
 
          <!-- Pilihan PKL yang Tersedia -->
          <div class="d-flex justify-content-between align-items-center mb-3">

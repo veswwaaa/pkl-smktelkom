@@ -4,12 +4,12 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
     <title>Dashboard Wali Kelas - SMK Telkom</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="{{ asset('css/welcome-header.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/wali-kelas.css') }}" rel="stylesheet">
+    <link href="<?php echo e(asset('css/welcome-header.css')); ?>" rel="stylesheet">
+    <link href="<?php echo e(asset('css/wali-kelas.css')); ?>" rel="stylesheet">
 </head>
 
 <body>
@@ -23,7 +23,7 @@
             </button>
 
             <div class="telkom-logo">
-                <img src="{{ asset('img/telkom-logo.png') }}" alt="Telkom Logo" height="40">
+                <img src="<?php echo e(asset('img/telkom-logo.png')); ?>" alt="Telkom Logo" height="40">
             </div>
         </div>
 
@@ -100,38 +100,7 @@
                 </div>
             </div>
 
-            {{-- <!-- Filter Section -->
-            <div class="filter-section">
-                <div class="row g-3">
-                    <div class="col-md-3">
-                        <select class="form-select" id="filterKelas">
-                            <option value="">Semua Kelas</option>
-                            @foreach ($kelasList as $kls)
-                                <option value="{{ $kls }}">{{ $kls }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="col-md-3">
-                        <select class="form-select" id="filterJurusan">
-                            <option value="">Semua Jurusan</option>
-                            @foreach ($jurusanList as $jrs)
-                                <option value="{{ $jrs }}">{{ $jrs }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="col-md-3">
-                        <select class="form-select" id="filterStatus">
-                            <option value="">Semua Status</option>
-                            <option value="belum">Belum Ditempatkan</option>
-                            <option value="ditempatkan">Sudah Ditempatkan</option>
-                            <option value="selesai">Selesai PKL</option>
-                        </select>
-                    </div>
-                    <div class="col-md-3">
-                        <input type="text" class="form-control" id="searchSiswa" placeholder="Cari nama atau NIS...">
-                    </div>
-                </div>
-            </div> --}}
+            
 
             <!-- Table Section -->
             <div class="table-responsive">
@@ -150,44 +119,45 @@
                         </tr>
                     </thead>
                     <tbody id="siswaTableBody">
-                        @forelse($siswa as $index => $s)
-                            <tr data-kelas="{{ $s->kelas }}" data-jurusan="{{ $s->jurusan }}"
-                                data-status="{{ $s->status_penempatan ?? 'belum' }}"
-                                data-search="{{ strtolower($s->nama . ' ' . $s->nis) }}">
-                                <td>{{ $index + 1 }}</td>
-                                <td><span class="badge bg-primary">{{ $s->nis }}</span></td>
-                                <td>{{ $s->nama }}</td>
-                                <td>{{ $s->kelas }}</td>
-                                <td>{{ $s->jenis_kelamin }}</td>
-                                <td>{{ $s->angkatan }}</td>
-                                <td>{{ $s->jurusan }}</td>
+                        <?php $__empty_1 = true; $__currentLoopData = $siswa; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $s): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                            <tr data-kelas="<?php echo e($s->kelas); ?>" data-jurusan="<?php echo e($s->jurusan); ?>"
+                                data-status="<?php echo e($s->status_penempatan ?? 'belum'); ?>"
+                                data-search="<?php echo e(strtolower($s->nama . ' ' . $s->nis)); ?>">
+                                <td><?php echo e($index + 1); ?></td>
+                                <td><span class="badge bg-primary"><?php echo e($s->nis); ?></span></td>
+                                <td><?php echo e($s->nama); ?></td>
+                                <td><?php echo e($s->kelas); ?></td>
+                                <td><?php echo e($s->jenis_kelamin); ?></td>
+                                <td><?php echo e($s->angkatan); ?></td>
+                                <td><?php echo e($s->jurusan); ?></td>
                                 <td>
-                                    @if ($s->status_penempatan == 'ditempatkan')
+                                    <?php if($s->status_penempatan == 'ditempatkan'): ?>
                                         <span class="badge bg-success">Ditempatkan</span>
-                                    @elseif($s->status_penempatan == 'selesai')
+                                    <?php elseif($s->status_penempatan == 'selesai'): ?>
                                         <span class="badge bg-info">Selesai</span>
-                                    @else
+                                    <?php else: ?>
                                         <span class="badge bg-warning">Belum Ditempatkan</span>
-                                    @endif
+                                    <?php endif; ?>
                                 </td>
                                 <td>
-                                    @if ($s->dudi)
+                                    <?php if($s->dudi): ?>
                                         <span class="text-success">
-                                            <i class="fas fa-building me-1"></i>{{ $s->dudi->nama_dudi }}
+                                            <i class="fas fa-building me-1"></i><?php echo e($s->dudi->nama_dudi); ?>
+
                                         </span>
-                                    @else
+                                    <?php else: ?>
                                         <span class="text-muted">-</span>
-                                    @endif
+                                    <?php endif; ?>
                                 </td>
                             </tr>
-                        @empty
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                             <tr>
                                 <td colspan="9" class="text-center text-muted py-4">
                                     <i class="fas fa-inbox fa-3x mb-3 d-block"></i>
                                     Belum ada data siswa
                                 </td>
                             </tr>
-                        @endforelse
+                        <?php endif; ?>
                     </tbody>
                 </table>
             </div>
@@ -202,7 +172,7 @@
                             </div>
                             <div class="summary-info">
                                 <h6>Total Siswa</h6>
-                                <h4>{{ $siswa->count() }}</h4>
+                                <h4><?php echo e($siswa->count()); ?></h4>
                             </div>
                         </div>
                     </div>
@@ -213,7 +183,7 @@
                             </div>
                             <div class="summary-info">
                                 <h6>Ditempatkan</h6>
-                                <h4>{{ $siswa->where('status_penempatan', 'ditempatkan')->count() }}</h4>
+                                <h4><?php echo e($siswa->where('status_penempatan', 'ditempatkan')->count()); ?></h4>
                             </div>
                         </div>
                     </div>
@@ -224,7 +194,7 @@
                             </div>
                             <div class="summary-info">
                                 <h6>Belum Ditempatkan</h6>
-                                <h4>{{ $siswa->where('status_penempatan', 'belum')->count() }}</h4>
+                                <h4><?php echo e($siswa->where('status_penempatan', 'belum')->count()); ?></h4>
                             </div>
                         </div>
                     </div>
@@ -235,7 +205,7 @@
                             </div>
                             <div class="summary-info">
                                 <h6>Selesai</h6>
-                                <h4>{{ $siswa->where('status_penempatan', 'selesai')->count() }}</h4>
+                                <h4><?php echo e($siswa->where('status_penempatan', 'selesai')->count()); ?></h4>
                             </div>
                         </div>
                     </div>
@@ -297,3 +267,4 @@
 </body>
 
 </html>
+<?php /**PATH C:\laragon\www\pkl-smktelkom\resources\views/dashboardWaliKelas.blade.php ENDPATH**/ ?>

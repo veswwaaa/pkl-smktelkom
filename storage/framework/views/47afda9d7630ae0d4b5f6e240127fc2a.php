@@ -7,188 +7,78 @@
     <title>Surat Pengajuan - <?php echo e($dudi->nama_dudi); ?></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="<?php echo e(asset('css/kelola-dudi.css')); ?>" rel="stylesheet">
     <link href="<?php echo e(asset('css/dudi-pages.css')); ?>" rel="stylesheet">
     <link href="<?php echo e(asset('css/shared-components.css')); ?>" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
-    <style style="display:none;">
-        body {
-            background: #f5f5f5;
-        }
-
-        .sidebar {
-            position: fixed;
-            left: 0;
-            top: 0;
-            width: 70px;
-            height: 100vh;
-            background: linear-gradient(180deg, #dc3545 0%, #c82333 100%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding-top: 20px;
-            z-index: 1000;
-        }
-
-        .sidebar .logo {
-            width: 45px;
-            height: 45px;
-            background: white;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 30px;
-        }
-
-        .sidebar .menu-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            width: 100%;
-        }
-
-        .sidebar .menu-list li {
-            margin-bottom: 15px;
-        }
-
-        .sidebar .menu-list li a {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 50px;
-            height: 50px;
-            margin: 0 auto;
-            color: white;
-            text-decoration: none;
-            border-radius: 10px;
-            transition: all 0.3s;
-            font-size: 22px;
-        }
-
-        .sidebar .menu-list li a:hover,
-        .sidebar .menu-list li.active a {
-            background: rgba(255, 255, 255, 0.2);
-        }
-
-        .main-content {
-            margin-left: 70px;
-            padding: 20px;
-            min-height: 100vh;
-        }
-
-        .top-bar {
-            background: white;
-            padding: 15px 25px;
-            border-radius: 15px;
-            margin-bottom: 25px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-        }
-
-        .profile-badge {
-            width: 40px;
-            height: 40px;
-            background: #ffc107;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: 700;
-            font-size: 18px;
-        }
-
-        .card {
-            border: none;
-            border-radius: 15px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-            margin-bottom: 20px;
-        }
-
-        .card-header {
-            border-radius: 15px 15px 0 0 !important;
-            padding: 20px;
-            font-weight: 600;
-        }
-
-        .btn-primary {
-            background: #007bff;
-            border: none;
-            border-radius: 10px;
-            padding: 12px 25px;
-        }
-
-        .btn-success {
-            background: #28a745;
-            border: none;
-            border-radius: 10px;
-            padding: 12px 25px;
-        }
-
-        .notification-bell {
-            position: relative;
-            cursor: pointer;
-        }
-
-        .notification-bell i {
-            font-size: 20px;
-        }
-    </style>
 </head>
 
 <body>
-    <!-- Sidebar -->
-    <div class="sidebar">
-        <div class="logo">
-            <i class="fas fa-graduation-cap text-danger" style="font-size: 24px;"></i>
+    <!-- Top Navbar -->
+    <nav class="top-navbar d-flex align-items-center justify-content-between">
+        <!-- Logo dan Brand -->
+        <div class="d-flex align-items-center gap-3">
+            <!-- Hamburger Menu (Mobile Only) -->
+            <button class="hamburger-menu" onclick="toggleSidebar()">
+                <i class="fas fa-bars"></i>
+            </button>
+
+            <div class="telkom-logo">
+                <img src="<?php echo e(asset('img/telkom-logo.png')); ?>" alt="Telkom Logo" height="40">
+            </div>
         </div>
 
-        <ul class="menu-list">
-            <li>
-                <a href="/dudi/dashboard" data-bs-toggle="tooltip" title="Dashboard">
-                    <i class="fas fa-th-large"></i>
-                </a>
-            </li>
-            <li class="active">
-                <a href="/dudi/surat-pengajuan" data-bs-toggle="tooltip" title="Surat Pengajuan">
-                    <i class="fas fa-file-import"></i>
-                </a>
-            </li>
-            <li>
-                <a href="/dudi/surat-permohonan" data-bs-toggle="tooltip" title="Surat Permohonan">
-                    <i class="fas fa-file-signature"></i>
-                </a>
-            </li>
-            <li style="margin-top: auto; margin-bottom: 20px;">
-                <a href="/logout" data-bs-toggle="tooltip" title="Logout">
-                    <i class="fas fa-sign-out-alt"></i>
-                </a>
-            </li>
-        </ul>
+        <!-- Right side -->
+        <div class="navbar-right">
+            <!-- Notification -->
+            <button class="notification-btn">
+                <i class="fas fa-bell"></i>
+                <span class="notification-badge">3</span>
+            </button>
+
+            <!-- Profile Dropdown -->
+            <div class="dropdown">
+                <button class="profile-dropdown" type="button" data-bs-toggle="dropdown">
+                    <div class="profile-avatar">D</div>
+                    <i class="fas fa-chevron-down text-muted"></i>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>Profile</a></li>
+                    <hr class="dropdown-divider">
+                    <li><a class="dropdown-item text-danger" href="/logout"><i
+                                class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Overlay untuk mobile -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+    <!-- Left Sidebar -->
+     <div class="left-sidebar" id="leftSidebar">
+        <div class="sidebar-menu">
+            <a href="/dudi/dashboard" class="sidebar-item" title="Dashboard">
+                <i class="fas fa-th-large"></i>
+            </a>
+            <a href="/dudi/surat-permohonan" class="sidebar-item" title="Surat Permohonan">
+                <i class="fas fa-file-export"></i>
+            </a>
+            <a href="/dudi/surat-pengajuan" class="sidebar-item active" title="Surat Pengajuan">
+                <i class="fas fa-file-invoice"></i>
+            </a>
+        </div>
     </div>
 
     <!-- Main Content -->
     <div class="main-content">
-        <!-- Top Bar -->
-        <div class="top-bar">
-            <div>
-                <h5 class="mb-0"><strong>Surat Pengajuan PKL</strong></h5>
+        <div class="container-fluid py-4">
+            <div class="page-header mb-4">
+                <h4 class="mb-0"><strong>Surat Pengajuan PKL</strong></h4>
             </div>
-            <div class="d-flex align-items-center gap-3">
-                <div class="notification-bell">
-                    <i class="fas fa-bell"></i>
-                </div>
-                <div class="profile-badge">
-                    <?php echo e(strtoupper(substr($dudi->nama_dudi, 0, 1))); ?>
 
-                </div>
-            </div>
-        </div>
-
-        <?php if($surat && $surat->file_surat_pengajuan): ?>
+            <?php if($surat && $surat->file_surat_pengajuan): ?>
             <!-- Download Surat Pengajuan -->
             <div class="card">
                 <div class="card-header bg-primary text-white">
@@ -301,9 +191,10 @@
                     <i class="fas fa-inbox fa-4x text-muted mb-3"></i>
                     <h4 class="text-muted">Belum Ada Surat Pengajuan</h4>
                     <p class="text-muted">Admin belum mengirim surat pengajuan PKL untuk DUDI Anda.</p>
-                </div>
+                </form>
             </div>
         <?php endif; ?>
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
@@ -408,6 +299,14 @@
                 text: '<?php echo e(session('error')); ?>'
             });
         <?php endif; ?>
+
+        // Toggle Sidebar
+        function toggleSidebar() {
+            const sidebar = document.getElementById('leftSidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            sidebar.classList.toggle('show');
+            overlay.classList.toggle('show');
+        }
     </script>
 </body>
 

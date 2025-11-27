@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+{{-- <!DOCTYPE html>
 <html lang="id">
 
 <head>
@@ -252,4 +252,4 @@
     </script>
 </body>
 
-</html>
+</html> --}}

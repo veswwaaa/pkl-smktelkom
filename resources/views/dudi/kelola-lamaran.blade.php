@@ -15,40 +15,65 @@
 <body>
     <!-- Top Navbar -->
     <nav class="top-navbar d-flex align-items-center justify-content-between">
-        <div class="navbar-brand">
+        <!-- Logo dan Brand -->
+        <div class="d-flex align-items-center gap-3">
+            <!-- Hamburger Menu (Mobile Only) -->
+            <button class="hamburger-menu" onclick="toggleSidebar()">
+                <i class="fas fa-bars"></i>
+            </button>
+
             <div class="telkom-logo">
-                <i class="fas fa-building fa-2x text-danger"></i>
-            </div>
-            <div class="brand-text">
-                <h5 class="mb-0">DUDI - {{ Session::get('nama_dudi') }}</h5>
-                <small class="text-muted">Kelola Lamaran PKL</small>
+                <img src="{{ asset('img/telkom-logo.png') }}" alt="Telkom Logo" height="40">
             </div>
         </div>
 
+        <!-- Right side -->
         <div class="navbar-right">
+            <!-- Notification -->
             <button class="notification-btn">
                 <i class="fas fa-bell"></i>
-                <span class="notification-badge">{{ $lamaran->total() }}</span>
+                <span class="notification-badge">3</span>
             </button>
+
+            <!-- Profile Dropdown -->
             <div class="dropdown">
-                <button class="profile-btn dropdown-toggle" data-bs-toggle="dropdown">
-                    <i class="fas fa-user-circle fa-2x"></i>
+                <button class="profile-dropdown" type="button" data-bs-toggle="dropdown">
+                    <div class="profile-avatar">D</div>
+                    <i class="fas fa-chevron-down text-muted"></i>
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end">
-                    <li><a class="dropdown-item" href="/logout"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
+                    <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>Profile</a></li>
+                    <hr class="dropdown-divider">
+                    <li><a class="dropdown-item text-danger" href="/logout"><i
+                                class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
                 </ul>
             </div>
         </div>
     </nav>
 
-    <div class="container-fluid">
-        <div class="row">
-            <!-- Sidebar -->
-            <div class="col-auto sidebar">
-                <ul class="menu-list">
-                    <li>
-                        <a href="/dashboard" data-bs-toggle="tooltip" title="Dashboard">
-                            <i class="fas fa-home"></i>
+    <!-- Overlay untuk mobile -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+    <!-- Left Sidebar -->
+    <div class="left-sidebar" id="leftSidebar">
+        <div class="sidebar-menu">
+            <a href="/dudi/dashboard" class="sidebar-item" title="Dashboard">
+                <i class="fas fa-th-large"></i>
+            </a>
+            <a href="/dudi/surat-pengajuan" class="sidebar-item" title="Surat Pengajuan">
+                <i class="fas fa-file-invoice"></i>
+            </a>
+            <a href="/dudi/surat-permohonan" class="sidebar-item" title="Surat Permohonan">
+                <i class="fas fa-file-export"></i>
+            </a>
+            <a href="/dudi/kelola-lamaran" class="sidebar-item active" title="Kelola Lamaran">
+                <i class="fas fa-envelope"></i>
+            </a>
+            <a href="/dudi/surat-pkl" class="sidebar-item" title="Surat PKL">
+                <i class="fas fa-clipboard-list"></i>
+            </a>
+        </div>
+    </div>
                         </a>
                     </li>
                     <li class="active">
@@ -249,6 +274,16 @@
         var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
             return new bootstrap.Tooltip(tooltipTriggerEl);
         });
+    </script>
+
+    <script>
+        // Toggle Sidebar
+        function toggleSidebar() {
+            const sidebar = document.getElementById('leftSidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            sidebar.classList.toggle('show');
+            overlay.classList.toggle('show');
+        }
     </script>
 </body>
 

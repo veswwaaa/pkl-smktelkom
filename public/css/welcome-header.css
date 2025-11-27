@@ -1,0 +1,121 @@
+/* ========================================
+   WELCOME HEADER COMPONENT
+   Universal component for all dashboards
+   ======================================== */
+
+/* Welcome Header */
+.welcome-header {
+    background: linear-gradient(135deg, #e74141 0%, #fe6969 100%);
+    border-radius: 20px;
+    padding: 30px;
+    margin-bottom: 30px;
+    color: white;
+    box-shadow: 0 4px 15px rgba(231, 65, 65, 0.2);
+}
+
+.welcome-header h1 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: white;
+}
+
+.welcome-header p {
+    font-size: 1rem;
+    opacity: 0.9;
+    margin: 0;
+    color: white;
+}
+
+/* User Avatars */
+.user-avatars {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.user-avatar {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    transition: transform 0.3s ease;
+}
+
+.user-avatar:hover {
+    transform: scale(1.1);
+}
+
+.avatar-orange {
+    background: #ff9800;
+}
+
+.avatar-green {
+    background: #4caf50;
+}
+
+.avatar-gray {
+    background: #9e9e9e;
+}
+
+.avatar-blue {
+    background: #2196f3;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .welcome-header {
+        padding: 20px;
+    }
+
+    .welcome-header .d-flex {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .welcome-header h1 {
+        font-size: 1.5rem;
+    }
+
+    .welcome-header p {
+        font-size: 0.9rem;
+    }
+
+    .user-avatars {
+        justify-content: flex-start;
+        margin-top: 15px;
+    }
+
+    .user-avatar {
+        width: 40px;
+        height: 40px;
+    }
+}
+
+@media (max-width: 480px) {
+    .welcome-header {
+        padding: 15px;
+    }
+
+    .welcome-header h1 {
+        font-size: 1.3rem;
+    }
+
+    .welcome-header p {
+        font-size: 0.85rem;
+    }
+
+    .user-avatars {
+        gap: 8px;
+    }
+
+    .user-avatar {
+        width: 35px;
+        height: 35px;
+    }
+}

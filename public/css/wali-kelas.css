@@ -170,60 +170,8 @@ body {
     min-height: calc(100vh - 70px);
 }
 
-/* Welcome Header */
-.welcome-header {
-    background: linear-gradient(135deg, #e74141 0%, #fe6969 100%);
-    color: white;
-    padding: 30px;
-    border-radius: 15px;
-    margin-bottom: 30px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.welcome-header h1 {
-    font-size: 28px;
-    font-weight: bold;
-    margin-bottom: 8px;
-}
-
-.welcome-header p {
-    font-size: 16px;
-    opacity: 0.95;
-    margin: 0;
-}
-
-.user-avatars {
-    display: flex;
-    gap: 10px;
-}
-
-.user-avatar {
-    width: 45px;
-    height: 45px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 18px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
-}
-
-.avatar-orange {
-    background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
-}
-
-.avatar-green {
-    background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
-}
-
-.avatar-gray {
-    background: linear-gradient(135deg, #64748b 0%, #475569 100%);
-}
-
-.avatar-blue {
-    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-}
+/* Welcome Header - Moved to welcome-header.css component */
+/* Styles now imported from welcome-header.css for consistency across all dashboards */
 
 /* Content Card */
 .content-card {

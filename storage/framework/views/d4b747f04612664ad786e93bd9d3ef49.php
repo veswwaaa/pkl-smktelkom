@@ -4,12 +4,12 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
     <title>Dashboard PKL - SMK Telkom</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="{{ asset('css/welcome-header.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/dashboard-admin.css') }}" rel="stylesheet">
+    <link href="<?php echo e(asset('css/welcome-header.css')); ?>" rel="stylesheet">
+    <link href="<?php echo e(asset('css/dashboard-admin.css')); ?>" rel="stylesheet">
 </head>
 
 <body>
@@ -23,7 +23,7 @@
             </button>
 
             <div class="telkom-logo">
-                <img src="{{ asset('img/telkom-logo.png') }}" alt="Telkom Logo" height="40">
+                <img src="<?php echo e(asset('img/telkom-logo.png')); ?>" alt="Telkom Logo" height="40">
             </div>
         </div>
 
@@ -75,12 +75,12 @@
                 <i class="fas fa-clipboard-list"></i>
             </a>
             <a href="/admin/surat-permohonan"
-                class="sidebar-item {{ request()->is('admin/surat-permohonan*') ? 'active' : '' }}"
+                class="sidebar-item <?php echo e(request()->is('admin/surat-permohonan*') ? 'active' : ''); ?>"
                 title="Surat Permohonan Data">
                 <i class="fas fa-file-invoice"></i>
             </a>
             <a href="/admin/surat-pengajuan"
-                class="sidebar-item {{ request()->is('admin/surat-pengajuan*') ? 'active' : '' }}"
+                class="sidebar-item <?php echo e(request()->is('admin/surat-pengajuan*') ? 'active' : ''); ?>"
                 title="Surat Pengajuan PKL">
                 <i class="fas fa-file-export"></i>
             </a>
@@ -88,7 +88,7 @@
                 <i class="fas fa-envelope"></i>
             </a>
             <a href="/admin/dokumen-siswa"
-                class="sidebar-item {{ request()->is('admin/dokumen-siswa*') ? 'active' : '' }}" title="Dokumen Siswa">
+                class="sidebar-item <?php echo e(request()->is('admin/dokumen-siswa*') ? 'active' : ''); ?>" title="Dokumen Siswa">
                 <i class="fas fa-folder-open"></i>
             </a>
         </div>
@@ -127,7 +127,7 @@
                 <div class="stat-icon icon-red">
                     <i class="fas fa-users"></i>
                 </div>
-                <div class="stat-number">{{ $totalSiswa }}</div>
+                <div class="stat-number"><?php echo e($totalSiswa); ?></div>
                 <div class="stat-label">Total Siswa</div>
                 <div class="stat-change positive">
                     Lihat selengkapnya
@@ -140,7 +140,7 @@
                 <div class="stat-icon icon-red">
                     <i class="fas fa-building"></i>
                 </div>
-                <div class="stat-number">{{ $totalDudi }}</div>
+                <div class="stat-number"><?php echo e($totalDudi); ?></div>
                 <div class="stat-label">Total DUDI</div>
                 <div class="stat-change positive">
                     Lihat selengkapnya
@@ -154,7 +154,7 @@
                 <div class="stat-icon icon-red">
                     <i class="fas fa-chalkboard-teacher"></i>
                 </div>
-                <div class="stat-number">{{ $totalWaliKelas }}</div>
+                <div class="stat-number"><?php echo e($totalWaliKelas); ?></div>
                 <div class="stat-label">Total Wali Kelas</div>
                 <div class="stat-change positive">
                     Lihat selengkapnya
@@ -175,9 +175,9 @@
                     <span class="activities-subtitle">Kegiatan terbaru dalam sistem PKL (Hari Ini)</span>
                 </div>
 
-                @forelse($activities as $activity)
+                <?php $__empty_1 = true; $__currentLoopData = $activities; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $activity): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                     <div class="activity-item">
-                        @php
+                        <?php
                             $dotColor = match ($activity->type) {
                                 'login' => 'blue',
                                 'create' => 'green',
@@ -188,18 +188,19 @@
                                 'info' => 'blue',
                                 default => 'gray',
                             };
-                        @endphp
-                        <div class="activity-dot {{ $dotColor }}"></div>
+                        ?>
+                        <div class="activity-dot <?php echo e($dotColor); ?>"></div>
                         <div class="activity-content">
-                            <h6>{{ $activity->title }}</h6>
-                            <p>{{ $activity->description }}</p>
+                            <h6><?php echo e($activity->title); ?></h6>
+                            <p><?php echo e($activity->description); ?></p>
                             <span class="activity-time">
-                                <i class="fas fa-user me-1"></i>{{ $activity->username }} •
-                                {{ $activity->created_at->diffForHumans() }}
+                                <i class="fas fa-user me-1"></i><?php echo e($activity->username); ?> •
+                                <?php echo e($activity->created_at->diffForHumans()); ?>
+
                             </span>
                         </div>
                     </div>
-                @empty
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                     <div class="activity-item">
                         <div class="activity-dot gray"></div>
                         <div class="activity-content">
@@ -208,7 +209,7 @@
                             <span class="activity-time">-</span>
                         </div>
                     </div>
-                @endforelse
+                <?php endif; ?>
             </div>
 
             <!-- Right Sidebar -->
@@ -254,7 +255,7 @@
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="{{ asset('js/dashboard-notes.js') }}"></script>
+    <script src="<?php echo e(asset('js/dashboard-notes.js')); ?>"></script>
 
     <script>
         // Toggle Sidebar untuk Mobile
@@ -278,3 +279,4 @@
 </body>
 
 </html>
+<?php /**PATH D:\laragon\www\pkl-smktelkom\resources\views/dashboardAdmin.blade.php ENDPATH**/ ?>

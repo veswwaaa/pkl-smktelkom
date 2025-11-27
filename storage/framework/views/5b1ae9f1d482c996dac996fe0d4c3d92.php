@@ -7,8 +7,8 @@
      <title>Dashboard PKL - SMK Telkom Banjarbaru</title>
      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-     <link href="{{ asset('css/welcome-header.css') }}" rel="stylesheet">
-     <link rel="stylesheet" href="{{ asset('css/dashboard-siswa-new.css') }}">
+     <link href="<?php echo e(asset('css/welcome-header.css')); ?>" rel="stylesheet">
+     <link rel="stylesheet" href="<?php echo e(asset('css/dashboard-siswa-new.css')); ?>">
      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
  </head>
 
@@ -22,27 +22,28 @@
              </button>
 
              <div class="telkom-logo">
-                 <img src="{{ asset('img/telkom-logo.png') }}" alt="Telkom Schools" onerror="this.style.display='none'">
+                 <img src="<?php echo e(asset('img/telkom-logo.png')); ?>" alt="Telkom Schools" onerror="this.style.display='none'">
              </div>
          </div>
 
          <div class="navbar-right">
              <button class="notification-btn" onclick="window.location.href='/siswa/pengajuan-pkl'">
                  <i class="fas fa-bell"></i>
-                 @if ($pengajuan && $pengajuan->status == 'pending')
+                 <?php if($pengajuan && $pengajuan->status == 'pending'): ?>
                      <span class="notification-badge">1</span>
-                 @endif
+                 <?php endif; ?>
              </button>
             <div class="dropdown">
                 <div class="profile-dropdown" data-bs-toggle="dropdown">
                     <div class="user-avatar navbar-avatar">
-                        {{ substr($data->nama, 0, 1) }}
+                        <?php echo e(substr($data->nama, 0, 1)); ?>
+
                     </div>
                     <i class="fas fa-chevron-down text-muted"></i>
                 </div>
                  <ul class="dropdown-menu dropdown-menu-end">
                      <li>
-                         <h6 class="dropdown-header">{{ $data->nama }}</h6>
+                         <h6 class="dropdown-header"><?php echo e($data->nama); ?></h6>
                      </li>
                      <li>
                          <hr class="dropdown-divider">
@@ -107,14 +108,14 @@
 
          <!-- Pilihan PKL yang Tersedia -->
          <div class="d-flex justify-content-between align-items-center mb-3">
-             <h3 class="section-title mb-0">Pilihan PKL yang Tersedia untuk Jurusan {{ $data->jurusan }}</h3>
+             <h3 class="section-title mb-0">Pilihan PKL yang Tersedia untuk Jurusan <?php echo e($data->jurusan); ?></h3>
              <span class="badge" style="background: var(--primary-red); padding: 0.5rem 1rem; font-size: 0.9rem;">
-                 <i class="fas fa-building me-1"></i>{{ $dudiTersedia->count() }} DUDI
+                 <i class="fas fa-building me-1"></i><?php echo e($dudiTersedia->count()); ?> DUDI
              </span>
          </div>
 
          <div class="row">
-             @forelse($dudiTersedia as $dudi)
+             <?php $__empty_1 = true; $__currentLoopData = $dudiTersedia; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $dudi): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                  <div class="col-md-4">
                      <div class="dudi-card"
                          onmouseover="this.style.transform='translateY(-8px)'; this.style.boxShadow='0 8px 20px rgba(0, 0, 0, 0.15)';"
@@ -123,30 +124,31 @@
                          <div class="dudi-logo">
                              <i class="fas fa-building"></i>
                          </div>
-                         <h4 class="dudi-name">{{ $dudi->nama_dudi }}</h4>
+                         <h4 class="dudi-name"><?php echo e($dudi->nama_dudi); ?></h4>
                          <p class="dudi-description">
-                             {{ Str::limit($dudi->jobdesk, 100) }}
+                             <?php echo e(Str::limit($dudi->jobdesk, 100)); ?>
+
                          </p>
 
                          <div class="dudi-contact">
-                             @if ($dudi->nomor_telpon)
+                             <?php if($dudi->nomor_telpon): ?>
                                  <div class="contact-item">
                                      <i class="fas fa-phone"></i>
-                                     <span>{{ $dudi->nomor_telpon }}</span>
+                                     <span><?php echo e($dudi->nomor_telpon); ?></span>
                                  </div>
-                             @endif
-                             @if ($dudi->alamat)
+                             <?php endif; ?>
+                             <?php if($dudi->alamat): ?>
                                  <div class="contact-item">
                                      <i class="fas fa-map-marker-alt"></i>
-                                     <span>{{ Str::limit($dudi->alamat, 50) }}</span>
+                                     <span><?php echo e(Str::limit($dudi->alamat, 50)); ?></span>
                                  </div>
-                             @endif
+                             <?php endif; ?>
                          </div>
 
-                         @if ($dudi->jurusan_diterima && count($dudi->jurusan_diterima) > 0)
+                         <?php if($dudi->jurusan_diterima && count($dudi->jurusan_diterima) > 0): ?>
                              <div class="jurusan-badges">
-                                 @foreach ($dudi->jurusan_diterima as $jurusan)
-                                     @php
+                                 <?php $__currentLoopData = $dudi->jurusan_diterima; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $jurusan): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                     <?php
                                          $badgeColor = '';
                                          switch ($jurusan) {
                                              case 'RPL':
@@ -167,39 +169,41 @@
                                              default:
                                                  $badgeColor = 'background: #6b7280; color: white;';
                                          }
-                                     @endphp
-                                     <span class="jurusan-badge" style="{{ $badgeColor }}">
-                                         <i class="fas fa-check-circle"></i>{{ $jurusan }}
+                                     ?>
+                                     <span class="jurusan-badge" style="<?php echo e($badgeColor); ?>">
+                                         <i class="fas fa-check-circle"></i><?php echo e($jurusan); ?>
+
                                      </span>
-                                 @endforeach
+                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                              </div>
-                             @endif @if ($dudi->jobdesk)
+                             <?php endif; ?> <?php if($dudi->jobdesk): ?>
                                  <div class="jobdesk-section">
                                      <div class="jobdesk-title">
                                          <i class="fas fa-briefcase me-2"></i>Jobdesk Siswa PKL:
                                      </div>
                                      <div class="jobdesk-text">
-                                         {{ $dudi->jobdesk }}
+                                         <?php echo e($dudi->jobdesk); ?>
+
                                      </div>
                                  </div>
-                             @endif
+                             <?php endif; ?>
                      </div>
                  </div>
-             @empty
+             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                  <div class="col-12">
                      <div class="empty-state">
                          <i class="fas fa-inbox"></i>
-                         <h5>Belum Ada DUDI Tersedia untuk Jurusan {{ $data->jurusan }}</h5>
+                         <h5>Belum Ada DUDI Tersedia untuk Jurusan <?php echo e($data->jurusan); ?></h5>
                          <p class="text-muted">Saat ini belum ada DUDI yang membuka lowongan PKL untuk jurusan Anda.
                          </p>
                      </div>
                  </div>
-             @endforelse
+             <?php endif; ?>
          </div>
      </div>
 
      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-     <script src="{{ asset('js/dashboard-siswa.js') }}"></script>
+     <script src="<?php echo e(asset('js/dashboard-siswa.js')); ?>"></script>
      <script>
          // Toggle Sidebar untuk Mobile
          function toggleSidebar() {
@@ -241,3 +245,4 @@
  </body>
 
  </html>
+<?php /**PATH D:\laragon\www\pkl-smktelkom\resources\views/dashboardSiswa.blade.php ENDPATH**/ ?>

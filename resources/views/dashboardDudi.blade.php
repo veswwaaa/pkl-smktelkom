@@ -8,6 +8,7 @@
     <title>Dashboard DUDI - {{ $data->nama_dudi }}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="{{ asset('css/welcome-header.css') }}" rel="stylesheet">
     <link href="{{ asset('css/kelola-dudi.css') }}" rel="stylesheet">
 </head>
 
@@ -75,15 +76,30 @@
             </div>
 
             <!-- Main Content -->
-            <div class="col main-content">
-                <!-- Welcome Section -->
-                <div class="row mb-4">
-                    <div class="col-12">
-                        <h2>Dashboard DUDI</h2>
-                        <p class="text-muted">Selamat datang di sistem manajemen PKL SMK Telkom Banjarbaru</p>
+           <div class="main-content">
+        <!-- Welcome Header -->
+        <div class="welcome-header">
+            <div class="d-flex justify-content-between align-items-start">
+                <div>
+                    <h1>Selamat Datang Di Dashboard PKL</h1>
+                    <p>Kelola program Praktik Kerja Lapangan SMK Telkom Banjarbaru dengan mudah dan efisien</p>
+                </div>
+                <div class="user-avatars">
+                    <div class="user-avatar avatar-orange">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="user-avatar avatar-green">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="user-avatar avatar-gray">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="user-avatar avatar-blue">
+                        <i class="fas fa-user"></i>
                     </div>
                 </div>
-
+            </div>
+        </div>
                 <!-- Statistics Cards -->
                 <div class="row mb-4">
                     <div class="col-md-4 mb-3">

@@ -4,13 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard DUDI - {{ $dudi->nama_dudi }}</title>
+    <title>Dashboard DUDI - <?php echo e($dudi->nama_dudi); ?></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="{{ asset('css/welcome-header.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/kelola-dudi.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/dudi-pages.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/shared-components.css') }}" rel="stylesheet">
+    <link href="<?php echo e(asset('css/welcome-header.css')); ?>" rel="stylesheet">
+    <link href="<?php echo e(asset('css/kelola-dudi.css')); ?>" rel="stylesheet">
+    <link href="<?php echo e(asset('css/dudi-pages.css')); ?>" rel="stylesheet">
+    <link href="<?php echo e(asset('css/shared-components.css')); ?>" rel="stylesheet">
 </head>
 
 <body>
@@ -24,7 +24,7 @@
             </button>
 
             <div class="telkom-logo">
-                <img src="{{ asset('img/telkom-logo.png') }}" alt="Telkom Logo" height="40">
+                <img src="<?php echo e(asset('img/telkom-logo.png')); ?>" alt="Telkom Logo" height="40">
             </div>
         </div>
 
@@ -100,21 +100,21 @@
         </div>
 
         <!-- Alert Warning -->
-        @if ($surat && !$surat->file_surat_balasan && $surat->file_surat_pengajuan)
+        <?php if($surat && !$surat->file_surat_balasan && $surat->file_surat_pengajuan): ?>
             <div class="alert-warning-custom">
                 <i class="fas fa-exclamation-circle"></i>
                 <span>Data pencarian Anda belum lengkap. Silakan lengkapi data pada halaman <strong>Surat
                         Pengajuan</strong> untuk dapat menerima pengajuan PKL dari siswa.</span>
             </div>
-        @endif
+        <?php endif; ?>
 
-        @if ($surat && !$surat->file_balasan_permohonan && $surat->file_surat_permohonan)
+        <?php if($surat && !$surat->file_balasan_permohonan && $surat->file_surat_permohonan): ?>
             <div class="alert-warning-custom">
                 <i class="fas fa-exclamation-circle"></i>
                 <span>Data permohonan belum dilengkapi. Silakan lengkapi data pada halaman <strong>Surat
                         Permohonan</strong>.</span>
             </div>
-        @endif
+        <?php endif; ?>
 
         <!-- Notifications Section -->
         <div class="notification-section">
@@ -123,23 +123,23 @@
                 Notifikasi Pengajuan PKL
             </h5>
 
-            @if ($pengajuanList->count() > 0)
-                @foreach ($pengajuanList as $pengajuan)
+            <?php if($pengajuanList->count() > 0): ?>
+                <?php $__currentLoopData = $pengajuanList; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $pengajuan): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <div class="notification-item">
                         <div class="notification-info">
-                            <h6>{{ $pengajuan->siswa->nama ?? 'Siswa' }}</h6>
-                            <p>Jurusan: {{ $pengajuan->siswa->jurusan ?? '-' }} •
-                                {{ $pengajuan->created_at->format('d M Y') }}</p>
+                            <h6><?php echo e($pengajuan->siswa->nama ?? 'Siswa'); ?></h6>
+                            <p>Jurusan: <?php echo e($pengajuan->siswa->jurusan ?? '-'); ?> •
+                                <?php echo e($pengajuan->created_at->format('d M Y')); ?></p>
                         </div>
                         <div class="notification-badge"></div>
                     </div>
-                @endforeach
-            @else
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+            <?php else: ?>
                 <div class="text-center py-5">
                     <i class="fas fa-inbox fa-4x text-muted mb-3"></i>
                     <p class="text-muted">Belum ada pengajuan PKL dari siswa</p>
                 </div>
-            @endif
+            <?php endif; ?>
         </div>
         </div>
     </div>
@@ -163,3 +163,4 @@
 </body>
 
 </html>
+<?php /**PATH D:\laragon\www\pkl-smktelkom\resources\views/dudi/dashboard.blade.php ENDPATH**/ ?>

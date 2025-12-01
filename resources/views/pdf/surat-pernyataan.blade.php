@@ -17,36 +17,13 @@
 
         .kop-surat {
             text-align: center;
-            border-bottom: 3px solid #000;
-            padding-bottom: 10px;
-            margin-bottom: 20px;
-        }
-
-        .kop-surat table {
-            width: 100%;
-            border-collapse: collapse;
+            margin-bottom: 30px;
         }
 
         .kop-surat img {
-            width: 70px;
+            width: 100%;
             height: auto;
-        }
-
-        .kop-surat h2 {
-            margin: 0;
-            font-size: 16pt;
-            font-weight: bold;
-        }
-
-        .kop-surat .subtitle {
-            font-size: 11pt;
-            font-weight: bold;
-            margin: 3px 0;
-        }
-
-        .kop-surat p {
-            margin: 2px 0;
-            font-size: 9pt;
+            display: block;
         }
 
         .judul {
@@ -161,24 +138,21 @@
 <body>
     <!-- Kop Surat -->
     <div class="kop-surat">
-        <table>
-            <tr>
-                <td width="15%" style="text-align: center;">
-                    <img src="{{ public_path('img/telkom-logo.png') }}" alt="Logo" onerror="this.style.display='none'">
-                </td>
-                <td width="85%" style="text-align: center;">
-                    <h2>SMK Telkom Banjarbaru</h2>
-                    <p class="subtitle">Terakreditasi A</p>
-                    <p><strong>Program Keahlian :</strong></p>
-                    <p>(1) Teknik Jaringan Komputer dan Telekomunikasi (2) Desain Komunikasi Visual</p>
-                    <p>(3) Pengembangan Perangkat Lunak dan Gim (4) Animasi</p>
-                    <p><strong>Jl. Pangeran Suriansyah No. 3 Banjarbaru, 70711 – Telp/Fax : 0511-4772818 /
-                            4772700</strong></p>
-                    <p><strong>w :</strong> www.smktelkom-bjb.sch.id &nbsp;&nbsp; <strong>e :</strong>
-                        smktelbjb@ypt.or.id</p>
-                </td>
-            </tr>
-        </table>
+        <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('img/kop-surat.png'))) }}"
+            alt="Kop Surat SMK Telkom Banjarbaru">
+    </div>
+
+    <!-- Judul Surat -->
+    <p><strong>Program Keahlian :</strong></p>
+    <p>(1) Teknik Jaringan Komputer dan Telekomunikasi (2) Desain Komunikasi Visual</p>
+    <p>(3) Pengembangan Perangkat Lunak dan Gim (4) Animasi</p>
+    <p><strong>Jl. Pangeran Suriansyah No. 3 Banjarbaru, 70711 – Telp/Fax : 0511-4772818 /
+            4772700</strong></p>
+    <p><strong>w :</strong> www.smktelkom-bjb.sch.id &nbsp;&nbsp; <strong>e :</strong>
+        smktelbjb@ypt.or.id</p>
+    </td>
+    </tr>
+    </table>
     </div>
 
     <!-- Judul -->
@@ -225,25 +199,16 @@
 
     <!-- Kop Surat Halaman 2 -->
     <div class="kop-surat">
-        <table>
-            <tr>
-                <td width="15%" style="text-align: center;">
-                    <img src="{{ public_path('img/telkom-logo.png') }}" alt="Logo"
-                        onerror="this.style.display='none'">
-                </td>
-                <td width="85%" style="text-align: center;">
-                    <h2>SMK Telkom Banjarbaru</h2>
-                    <p class="subtitle">Terakreditasi A</p>
-                    <p><strong>Program Keahlian :</strong></p>
-                    <p>(1) Teknik Jaringan Komputer dan Telekomunikasi (2) Desain Komunikasi Visual</p>
-                    <p>(3) Pengembangan Perangkat Lunak dan Gim (4) Animasi</p>
-                    <p><strong>Jl. Pangeran Suriansyah No. 3 Banjarbaru, 70711 – Telp/Fax : 0511-4772818 /
-                            4772700</strong></p>
-                    <p><strong>w :</strong> www.smktelkom-bjb.sch.id &nbsp;&nbsp; <strong>e :</strong>
-                        smktelbjb@ypt.or.id</p>
-                </td>
-            </tr>
-        </table>
+        <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('img/kop-surat.png'))) }}"
+            alt="Kop Surat SMK Telkom Banjarbaru">
+    </div>
+    <p><strong>Jl. Pangeran Suriansyah No. 3 Banjarbaru, 70711 – Telp/Fax : 0511-4772818 /
+            4772700</strong></p>
+    <p><strong>w :</strong> www.smktelkom-bjb.sch.id &nbsp;&nbsp; <strong>e :</strong>
+        smktelbjb@ypt.or.id</p>
+    </td>
+    </tr>
+    </table>
     </div>
 
     <!-- Judul Halaman 2 -->

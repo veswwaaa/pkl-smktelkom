@@ -5,19 +5,36 @@
     <meta charset="utf-8">
     <title>Surat Permohonan Data PKL</title>
     <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 12pt;
+            line-height: 1.5;
+        }
+
+        .kop-surat {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .kop-surat img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
         .header {
             display: flex;
             align-items: center;
             gap: 15px;
-            margin-top: 12px; /* push header slightly down */
+            margin-top: 12px;
             margin-bottom: 28px;
             border-bottom: 3px solid #000;
             padding-bottom: 10px;
-            padding-left: 6px; /* nudge everything a bit to the left */
+            padding-left: 6px;
         }
 
         .header .logo img {
-            height: 50px; /* slightly larger logo to match sample */
+            height: 50px;
             width: auto;
             display: block;
         }
@@ -25,15 +42,9 @@
         .header .brand {
             flex: 1;
             text-align: center;
-            transform: translateX(8px); /* shift brand a little left */
+            transform: translateX(8px);
             width: auto;
             display: block;
-        }
-
-
-        .header .brand {
-            flex: 1;
-            text-align: center;
         }
 
         .header h2 {
@@ -104,17 +115,10 @@
 </head>
 
 <body>
-    <!-- Header -->
-    <div class="header">
-        <div class="logo">
-            
-            <img src="data:image/png;base64,<?php echo e(base64_encode(file_get_contents(public_path('img/telkom-logo.png')))); ?>" alt="Telkom Logo">
-        </div>
-        <div class="brand">
-            <h2>SMK TELKOM BANJARBARU</h2>
-            <p>Jl. A YANI No.128, Banjarbaru</p>
-            <p>Telp: (0281) 641629 | Email: smktelkom-bjb@telkom.co.id</p>
-        </div>
+    <!-- Kop Surat -->
+    <div class="kop-surat">
+        <img src="data:image/png;base64,<?php echo e(base64_encode(file_get_contents(public_path('img/kop-surat.png')))); ?>"
+            alt="Kop Surat SMK Telkom Banjarbaru">
     </div>
     <!-- Nomor Surat -->
     <div class="nomor-surat">

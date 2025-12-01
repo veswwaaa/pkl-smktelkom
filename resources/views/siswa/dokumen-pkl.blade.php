@@ -518,6 +518,29 @@
                 return;
             }
 
+            // Validasi ukuran file (5MB = 5 * 1024 * 1024 bytes)
+            const maxSize = 5 * 1024 * 1024;
+
+            if (fileCV.size > maxSize) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'File Terlalu Besar!',
+                    text: `Ukuran file CV (${(fileCV.size / 1024 / 1024).toFixed(2)} MB) melebihi batas maksimal 5MB`,
+                    confirmButtonColor: '#ee1c25'
+                });
+                return;
+            }
+
+            if (filePortofolio.size > maxSize) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'File Terlalu Besar!',
+                    text: `Ukuran file Portofolio (${(filePortofolio.size / 1024 / 1024).toFixed(2)} MB) melebihi batas maksimal 5MB`,
+                    confirmButtonColor: '#ee1c25'
+                });
+                return;
+            }
+
             const formData = new FormData();
             formData.append('file_cv', fileCV);
             formData.append('file_portofolio', filePortofolio);
@@ -531,7 +554,20 @@
                     method: 'POST',
                     body: formData
                 })
-                .then(response => response.json())
+                .then(async response => {
+                    const contentType = response.headers.get('content-type');
+
+                    // Cek apakah response adalah JSON
+                    if (contentType && contentType.includes('application/json')) {
+                        return response.json();
+                    } else {
+                        // Jika bukan JSON, kemungkinan error dari server
+                        const text = await response.text();
+                        throw new Error(
+                            'Server mengembalikan error. Pastikan ukuran file tidak melebihi 5MB dan format file valid (PDF, DOC, DOCX)'
+                            );
+                    }
+                })
                 .then(data => {
                     if (data.success) {
                         Swal.fire({

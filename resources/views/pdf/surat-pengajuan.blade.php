@@ -12,19 +12,30 @@
             margin: 40px;
         }
 
+        .kop-surat {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .kop-surat img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
         .header {
             display: flex;
             align-items: center;
             gap: 15px;
-            margin-top: 12px; /* push header slightly down */
+            margin-top: 12px;
             margin-bottom: 28px;
             border-bottom: 3px solid #000;
             padding-bottom: 10px;
-            padding-left: 6px; /* nudge everything a bit to the left */
+            padding-left: 6px;
         }
 
         .header .logo img {
-            height: 80px; /* slightly larger logo to match sample */
+            height: 80px;
             width: auto;
             display: block;
         }
@@ -32,7 +43,7 @@
         .header .brand {
             flex: 1;
             text-align: center;
-            transform: translateX(-8px); /* shift brand a little left */
+            transform: translateX(-8px);
         }
 
         .header h2 {
@@ -101,17 +112,10 @@
 </head>
 
 <body>
-    <!-- Header -->
-    <div class="header">
-        <div class="logo">
-            {{-- Embed logo as base64 to ensure it appears in generated PDFs --}}
-            <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('img/telkom-logo.png'))) }}" alt="Telkom Logo">
-        </div>
-        <div class="brand">
-            <h2>SMK TELKOM PURWOKERTO</h2>
-            <p>Jl. D.I. Panjaitan No.128, Purwokerto</p>
-            <p>Telp: (0281) 641629 | Email: smktelkom-pwt@telkom.co.id</p>
-        </div>
+    <!-- Kop Surat -->
+    <div class="kop-surat">
+        <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('img/kop-surat.png'))) }}"
+            alt="Kop Surat SMK Telkom Banjarbaru">
     </div>
 
     <!-- Nomor Surat -->
@@ -121,7 +125,7 @@
 
     <!-- Tanggal -->
     <p style="margin: 20px 0;">
-        Purwokerto, {{ \Carbon\Carbon::parse($tanggal)->locale('id')->isoFormat('D MMMM Y') }}
+        Banjarbaru, {{ \Carbon\Carbon::parse($tanggal)->locale('id')->isoFormat('D MMMM Y') }}
     </p>
 
     <!-- Kepada -->
@@ -142,7 +146,7 @@
         <p>Dengan hormat,</p>
 
         <p>
-            Dalam rangka melaksanakan Program Praktek Kerja Lapangan (PKL) siswa SMK Telkom Purwokerto tahun ajaran
+            Dalam rangka melaksanakan Program Praktek Kerja Lapangan (PKL) siswa SMK Telkom Banjarbaru tahun ajaran
             {{ date('Y') }}/{{ date('Y') + 1 }},
             bersama ini kami mengajukan permohonan untuk dapat menerima siswa kami melaksanakan PKL di
             {{ $dudi->nama_dudi }}.
@@ -206,7 +210,7 @@
 
     <!-- Footer -->
     <div class="footer">
-        <p>Dokumen ini dibuat secara otomatis oleh Sistem Informasi PKL SMK Telkom Purwokerto</p>
+        <p>Dokumen ini dibuat secara otomatis oleh Sistem Informasi PKL SMK Telkom Banjarbaru</p>
     </div>
 </body>
 

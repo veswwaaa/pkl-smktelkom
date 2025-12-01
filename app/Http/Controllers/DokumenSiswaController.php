@@ -44,51 +44,63 @@ class DokumenSiswaController extends Controller
     // Upload CV dan Portofolio
     public function uploadCvPortofolio(Request $request)
     {
-        $request->validate([
-            'file_cv' => 'required|mimes:pdf,doc,docx|max:5120', // 5MB
-            'file_portofolio' => 'required|mimes:pdf,doc,docx|max:5120'
-        ], [
-            'file_cv.required' => 'File CV wajib diupload',
-            'file_cv.mimes' => 'File CV harus berformat PDF, DOC, atau DOCX',
-            'file_cv.max' => 'Ukuran file CV maksimal 5MB',
-            'file_portofolio.required' => 'File Portofolio wajib diupload',
-            'file_portofolio.mimes' => 'File Portofolio harus berformat PDF, DOC, atau DOCX',
-            'file_portofolio.max' => 'Ukuran file Portofolio maksimal 5MB'
-        ]);
+        try {
+            $request->validate([
+                'file_cv' => 'required|mimes:pdf,doc,docx|max:5120', // 5MB
+                'file_portofolio' => 'required|mimes:pdf,doc,docx|max:5120'
+            ], [
+                'file_cv.required' => 'File CV wajib diupload',
+                'file_cv.mimes' => 'File CV harus berformat PDF, DOC, atau DOCX',
+                'file_cv.max' => 'Ukuran file CV maksimal 5MB',
+                'file_portofolio.required' => 'File Portofolio wajib diupload',
+                'file_portofolio.mimes' => 'File Portofolio harus berformat PDF, DOC, atau DOCX',
+                'file_portofolio.max' => 'Ukuran file Portofolio maksimal 5MB'
+            ]);
 
-        $idSiswa = session('id_siswa');
-        $dokumen = DokumenSiswa::where('id_siswa', $idSiswa)->first();
+            $idSiswa = session('id_siswa');
+            $dokumen = DokumenSiswa::where('id_siswa', $idSiswa)->first();
 
-        // Hapus file lama jika ada
-        if ($dokumen && $dokumen->file_cv) {
-            Storage::disk('public')->delete($dokumen->file_cv);
+            // Hapus file lama jika ada
+            if ($dokumen && $dokumen->file_cv) {
+                Storage::disk('public')->delete($dokumen->file_cv);
+            }
+            if ($dokumen && $dokumen->file_portofolio) {
+                Storage::disk('public')->delete($dokumen->file_portofolio);
+            }
+
+            // Upload file baru
+            $cvPath = $request->file('file_cv')->store('dokumen-siswa/cv', 'public');
+            $portofolioPath = $request->file('file_portofolio')->store('dokumen-siswa/portofolio', 'public');
+
+            // Update atau create record
+            DokumenSiswa::updateOrCreate(
+                ['id_siswa' => $idSiswa],
+                [
+                    'file_cv' => $cvPath,
+                    'file_portofolio' => $portofolioPath,
+                    'tanggal_upload_cv_portofolio' => now(),
+                    'status_cv_portofolio' => 'sudah'
+                ]
+            );
+
+            // Log activity
+            logActivity('success', 'Upload CV & Portofolio', 'Siswa ' . session('nama') . ' mengupload CV dan Portofolio');
+
+            return response()->json([
+                'success' => true,
+                'message' => 'CV dan Portofolio berhasil diupload!'
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->validator->errors()->first()
+            ], 422);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan saat mengupload file: ' . $e->getMessage()
+            ], 500);
         }
-        if ($dokumen && $dokumen->file_portofolio) {
-            Storage::disk('public')->delete($dokumen->file_portofolio);
-        }
-
-        // Upload file baru
-        $cvPath = $request->file('file_cv')->store('dokumen-siswa/cv', 'public');
-        $portofolioPath = $request->file('file_portofolio')->store('dokumen-siswa/portofolio', 'public');
-
-        // Update atau create record
-        DokumenSiswa::updateOrCreate(
-            ['id_siswa' => $idSiswa],
-            [
-                'file_cv' => $cvPath,
-                'file_portofolio' => $portofolioPath,
-                'tanggal_upload_cv_portofolio' => now(),
-                'status_cv_portofolio' => 'sudah'
-            ]
-        );
-
-        // Log activity
-        logActivity('success', 'Upload CV & Portofolio', 'Siswa ' . session('nama') . ' mengupload CV dan Portofolio');
-
-        return response()->json([
-            'success' => true,
-            'message' => 'CV dan Portofolio berhasil diupload!'
-        ]);
     }
 
     // Halaman admin untuk melihat dokumen siswa

@@ -19,52 +19,13 @@
 
         .kop-surat {
             text-align: center;
-            border-bottom: 3px solid #000;
-            padding-bottom: 10px;
             margin-bottom: 30px;
-            position: relative;
         }
 
         .kop-surat img {
-            width: 70px;
+            width: 100%;
             height: auto;
-            position: absolute;
-            left: 0;
-            top: 0;
-        }
-
-        .kop-surat .text {
-            padding-left: 0;
-        }
-
-        .kop-surat .judul {
-            margin: 0;
-            font-size: 11pt;
-            font-weight: normal;
-            letter-spacing: 2px;
-        }
-
-        .kop-surat h2 {
-            margin: 5px 0;
-            font-size: 20pt;
-            font-weight: bold;
-        }
-
-        .kop-surat .sub-judul {
-            margin: 5px 0;
-            font-size: 11pt;
-            font-weight: bold;
-        }
-
-        .kop-surat .program {
-            margin: 3px 0;
-            font-size: 9pt;
-            font-weight: bold;
-        }
-
-        .kop-surat .alamat {
-            margin: 3px 0;
-            font-size: 8pt;
+            display: block;
         }
 
         .nomor-surat {
@@ -144,20 +105,17 @@
 
 <body>
     <div class="kop-surat">
-        <img src="{{ public_path('img/logo-telkom-schools.png') }}" alt="Logo Telkom Schools">
-        <div class="text">
-            <p class="judul">YAYASAN PENDIDIKAN TELKOM</p>
-            <h2>SMK Telkom Banjarbaru</h2>
-            <p class="sub-judul">Terakreditasi A</p>
-            <p class="program">Program Keahlian :<br>
-                (1) Teknik Jaringan Komputer dan Telekomunikasi (2) Desain Komunikasi Visual<br>
-                (3) Pengembangan Perangkat Lunak dan Gim (4) Animasi
-            </p>
-            <p class="alamat">Jl. Pangeran Suriansyah No. 3 Banjarbaru, 70711 – Telp/Fax : 0511-4772818 /
-                4772700<br>
-                w : www.smktelkom-bjb.sch.id &nbsp;&nbsp; e : smktelbjb@ypt.or.id
-            </p>
-        </div>
+        <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('img/kop-surat.png'))) }}"
+            alt="Kop Surat SMK Telkom Banjarbaru">
+    </div>
+
+    <div class="nomor-surat">
+        Jl. Pangeran Suriansyah No. 3 Banjarbaru, 70711 – Telepon : 0511-4772818<br>
+        <span>w : www.smktelkom-bjb.sch.id</span> &nbsp;&nbsp; <span>e :
+            smktelbjb@smktelkom-bjb.sch.id</span>
+        </p>
+    </div>
+    </div>
     </div>
 
     <div class="nomor-surat">

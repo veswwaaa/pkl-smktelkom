@@ -90,7 +90,7 @@
 
          <!-- Pilihan PKL yang Tersedia -->
          <div class="d-flex justify-content-between align-items-center mb-3">
-             <h3 class="section-title mb-0">Pilihan PKL yang Tersedia untuk Jurusan {{ $data->jurusan }}</h3>
+             <h3 class="section-title mb-0">Rekomendasi Tempat PKL untuk Jurusan {{ $data->jurusan }}</h3>
              <span class="badge" style="background: var(--primary-red); padding: 0.5rem 1rem; font-size: 0.9rem;">
                  <i class="fas fa-building me-1"></i>{{ $dudiTersedia->count() }} DUDI
              </span>

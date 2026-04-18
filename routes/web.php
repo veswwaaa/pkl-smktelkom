@@ -15,6 +15,10 @@ use App\Http\Controllers\InfoPklSiswaController;
 use App\Http\Controllers\DokumenSiswaController;
 use App\Http\Controllers\WaliKelasController;
 use App\Http\Controllers\WaliKelasAdminController;
+use App\Http\Controllers\Admin\TemplateController;
+use App\Http\Controllers\Admin\BulkSiswaController;
+
+use App\Http\Controllers\Admin\SettingController;
 
 Route::redirect('/', '/login');
 
@@ -62,7 +66,12 @@ Route::middleware('isLoggedIn')->group(function () {
     Route::put('/admin/siswa/{id}', [SiswaController::class, 'update']);
     Route::delete('/admin/siswa/{id}', [SiswaController::class, 'destroy']);
     Route::post('/admin/siswa/import', [SiswaController::class, 'import']);
+    Route::post('/admin/siswa/bulk-delete', [BulkSiswaController::class, 'bulkDelete']);
+    Route::get('/admin/siswa/template', [TemplateController::class, 'downloadSiswaTemplate']);
     Route::post('/admin/siswa/{id}/grade', [SiswaController::class, 'updateGrade']);
+
+    // Route untuk set tanggal PKL Global
+    Route::post('/admin/settings/update-pkl-dates', [SettingController::class, 'updatePklDates']);
 
     // Route untuk assign/cancel penempatan PKL
     Route::post('/admin/siswa/{id}/assign', [SiswaController::class, 'assignDudi']);

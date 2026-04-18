@@ -76,7 +76,7 @@ function openEditSiswaModal(id, siswaData) {
     document.getElementById("edit_nis").value = siswaItem.nis;
     document.getElementById("edit_nama").value = siswaItem.nama;
     document.getElementById("edit_kelas").value = siswaItem.kelas;
-    document.getElementById("edit_angkatan").value = siswaItem.angkatan;
+    document.getElementById("edit_tahun_ajaran").value = siswaItem.tahun_ajaran;
     document.getElementById("edit_jurusan").value = siswaItem.jurusan;
     document.getElementById("edit_jenis_kelamin").value =
         siswaItem.jenis_kelamin;
@@ -86,13 +86,13 @@ function openEditSiswaModal(id, siswaData) {
 
     // Show modal
     const editSiswaModal = new bootstrap.Modal(
-        document.getElementById("editSiswaModal")
+        document.getElementById("editSiswaModal"),
     );
     editSiswaModal.show();
 }
 
 // Function untuk edit siswa
-function editSiswa(id, nis, nama, kelas, jenis_kelamin, angkatan, jurusan) {
+function editSiswa(id, nis, nama, kelas, jenis_kelamin, tahun_ajaran, jurusan) {
     // Set form action URL
     document.getElementById("editSiswaForm").action = "/admin/siswa/" + id;
 
@@ -101,28 +101,14 @@ function editSiswa(id, nis, nama, kelas, jenis_kelamin, angkatan, jurusan) {
     document.getElementById("edit_nama").value = nama;
     document.getElementById("edit_kelas").value = kelas;
     document.getElementById("edit_jenis_kelamin").value = jenis_kelamin;
-    document.getElementById("edit_angkatan").value = angkatan;
+    document.getElementById("edit_tahun_ajaran").value = tahun_ajaran;
     document.getElementById("edit_jurusan").value = jurusan;
 
     // Tampilkan modal
     var editModal = new bootstrap.Modal(
-        document.getElementById("editSiswaModal")
+        document.getElementById("editSiswaModal"),
     );
     editModal.show();
-}
-
-// Function untuk membuka modal assign DUDI
-function openAssignModal(id, nama, nis) {
-    document.getElementById("assignSiswaName").textContent = nama;
-    document.getElementById("assignSiswaNis").textContent = nis;
-    document.getElementById("assignDudiForm").action =
-        "/admin/siswa/" + id + "/assign";
-    document.getElementById("assignDudiForm").reset();
-
-    var assignModal = new bootstrap.Modal(
-        document.getElementById("assignDudiModal")
-    );
-    assignModal.show();
 }
 
 // Function untuk lihat detail PKL
@@ -135,7 +121,7 @@ function viewPklDetail(id, nama, dudi, tanggalMulai, tanggalSelesai) {
         tanggalSelesai || "-";
 
     var detailModal = new bootstrap.Modal(
-        document.getElementById("pklDetailModal")
+        document.getElementById("pklDetailModal"),
     );
     detailModal.show();
 }
@@ -151,7 +137,7 @@ function openSetTanggalModal(id, nama, tanggalMulai, tanggalSelesai) {
     document.getElementById("tanggal_selesai_pkl").value = tanggalSelesai || "";
 
     var setTanggalModal = new bootstrap.Modal(
-        document.getElementById("setTanggalModal")
+        document.getElementById("setTanggalModal"),
     );
     setTanggalModal.show();
 }
@@ -184,6 +170,81 @@ function confirmCancelAssignment(id, nama) {
             csrfInput.value = csrfToken;
 
             form.appendChild(csrfInput);
+            document.body.appendChild(form);
+            form.submit();
+        }
+    });
+}
+
+// --- Fungsi Bulk Delete Siswa ---
+
+function toggleSelectAll() {
+    const selectAll = document.getElementById("selectAll");
+    const checkboxes = document.querySelectorAll(".siswa-checkbox");
+    checkboxes.forEach((cb) => {
+        cb.checked = selectAll.checked;
+    });
+    updateSelectedCount();
+}
+
+function updateSelectedCount() {
+    const checkboxes = document.querySelectorAll(".siswa-checkbox:checked");
+    const count = checkboxes.length;
+    const btnBulkDelete = document.getElementById("btnBulkDelete");
+    const selectedCountSpan = document.getElementById("selectedCount");
+
+    if (selectedCountSpan) selectedCountSpan.innerText = count;
+
+    if (count > 0) {
+        if (btnBulkDelete) btnBulkDelete.style.display = "inline-block";
+    } else {
+        if (btnBulkDelete) btnBulkDelete.style.display = "none";
+        // Reset selectAll jika tidak ada yang dicentang
+        const selectAll = document.getElementById("selectAll");
+        if (selectAll) selectAll.checked = false;
+    }
+}
+
+function bulkDeleteSiswa() {
+    const checkboxes = document.querySelectorAll(".siswa-checkbox:checked");
+    const ids = Array.from(checkboxes).map((cb) => cb.value);
+
+    if (ids.length === 0) return;
+
+    Swal.fire({
+        title: "Hapus " + ids.length + " data siswa?",
+        text: "Seluruh data siswa yang dipilih akan dihapus permanen!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#6c757d",
+        confirmButtonText: "Ya, Hapus Semua!",
+        cancelButtonText: "Batal",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            const form = document.createElement("form");
+            form.method = "POST";
+            form.action = "/admin/siswa/bulk-delete";
+
+            const csrfTokenElement = document.querySelector(
+                'meta[name="csrf-token"]',
+            );
+            if (csrfTokenElement) {
+                const csrfInput = document.createElement("input");
+                csrfInput.type = "hidden";
+                csrfInput.name = "_token";
+                csrfInput.value = csrfTokenElement.getAttribute("content");
+                form.appendChild(csrfInput);
+            }
+
+            ids.forEach((id) => {
+                const input = document.createElement("input");
+                input.type = "hidden";
+                input.name = "ids[]";
+                input.value = id;
+                form.appendChild(input);
+            });
+
             document.body.appendChild(form);
             form.submit();
         }

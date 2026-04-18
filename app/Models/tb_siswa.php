@@ -14,7 +14,7 @@ class tb_siswa extends Model
         'nama',
         'kelas',
         'jenis_kelamin',
-        'angkatan',
+        'tahun_ajaran',
         'jurusan',
         'id_dudi',
         'status_penempatan',

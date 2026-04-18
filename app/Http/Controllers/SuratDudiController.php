@@ -518,13 +518,24 @@ class SuratDudiController extends Controller
                 $fileName = 'surat_pengajuan_' . $dudi->id . '_' . time() . '.' . $file->getClientOriginalExtension();
                 $file->storeAs('public/surat_dudi', $fileName);
             } else {
+                // Ambil setting tanggal PKL global
+                $tanggalMulaiPkl = \Illuminate\Support\Facades\DB::table('settings')->where('key', 'tanggal_mulai_pkl')->value('value');
+                $tanggalSelesaiPkl = \Illuminate\Support\Facades\DB::table('settings')->where('key', 'tanggal_selesai_pkl')->value('value');
+
+                $periodePkl = 'akan ditentukan kemudian';
+                if ($tanggalMulaiPkl && $tanggalSelesaiPkl) {
+                    $mulai = \Carbon\Carbon::parse($tanggalMulaiPkl)->translatedFormat('d F Y');
+                    $selesai = \Carbon\Carbon::parse($tanggalSelesaiPkl)->translatedFormat('d F Y');
+                    $periodePkl = $mulai . ' s.d ' . $selesai;
+                }
+
                 // Generate PDF from system template
                 $pdfData = [
                     'dudi' => $dudi,
                     'siswas' => $siswas,
                     'tanggal' => now(),
                     'catatan' => $request->catatan,
-                    'periode_pkl' => 'Januari - Maret ' . (date('Y') + 1),
+                    'periode_pkl' => $periodePkl,
                     'nomor_surat' => $request->nomor_surat
                 ];
 
@@ -630,12 +641,16 @@ class SuratDudiController extends Controller
                 $fileName = 'surat_permohonan_' . $dudi->id . '_' . time() . '.' . $file->getClientOriginalExtension();
                 $file->storeAs('public/surat_dudi', $fileName);
             } else {
+                // Ambil tahun ajaran dari siswa pertama (atau fallback ke tahun sekarang)
+                $tahunAjaran = \App\Models\tb_siswa::orderBy('id', 'desc')->value('tahun_ajaran') ?? (date('Y') . '/' . (date('Y') + 1));
+
                 // Generate PDF from system template
                 $pdfData = [
                     'dudi' => $dudi,
                     'tanggal' => now(),
                     'catatan' => $request->catatan,
-                    'nomor_surat' => $request->nomor_surat
+                    'nomor_surat' => $request->nomor_surat,
+                    'tahun_ajaran' => $tahunAjaran
                 ];
 
                 $pdf = Pdf::loadView('pdf.surat-permohonan', $pdfData);

@@ -199,6 +199,40 @@
 
             <!-- Right Sidebar -->
             <div class="right-sidebar">
+                <!-- Global PKL Dates Settings -->
+                <div class="calendar-card mb-4">
+                    <div class="calendar-header d-flex align-items-center justify-content-between">
+                        <div>
+                            <i class="fas fa-calendar-check text-success"></i>
+                            <h6 class="d-inline ms-1">Periode PKL Global</h6>
+                        </div>
+                    </div>
+                    <div class="p-3">
+                        <form action="/admin/settings/update-pkl-dates" method="POST">
+                            @csrf
+                            <div class="mb-3">
+                                <label class="form-label small fw-bold">Tanggal Mulai PKL</label>
+                                <input type="date" name="tanggal_mulai_pkl" class="form-control form-control-sm"
+                                    value="{{ $tanggalMulaiPkl }}" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label small fw-bold">Tanggal Selesai PKL</label>
+                                <input type="date" name="tanggal_selesai_pkl" class="form-control form-control-sm"
+                                    value="{{ $tanggalSelesaiPkl }}" required>
+                            </div>
+                            <button type="submit" class="btn btn-success btn-sm w-100">
+                                <i class="fas fa-save me-1"></i> Simpan Periode
+                            </button>
+                        </form>
+                        <hr>
+                        <div class="alert alert-info py-2 px-3 m-0 small">
+                            <i class="fas fa-info-circle me-1"></i>
+                            Tanggal ini akan digunakan secara otomatis pada <strong>Surat Tugas</strong> dan
+                            <strong>Informasi Siswa</strong>.
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Calendar -->
                 <div class="calendar-card">
                     <div class="calendar-header">

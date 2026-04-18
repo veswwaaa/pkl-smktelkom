@@ -114,25 +114,27 @@
 <body>
     <!-- Kop Surat -->
     <div class="kop-surat">
-        <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('img/kop-surat.png'))) }}"
+        <img src="data:image/png;base64,<?php echo e(base64_encode(file_get_contents(public_path('img/kop-surat.png')))); ?>"
             alt="Kop Surat SMK Telkom Banjarbaru">
     </div>
 
     <!-- Nomor Surat -->
     <div class="nomor-surat">
-        Nomor: {{ $nomor_surat ?? '___/PKL/SMK-TELKOM/' . date('Y') }}
+        Nomor: <?php echo e($nomor_surat ?? '___/PKL/SMK-TELKOM/' . date('Y')); ?>
+
     </div>
 
     <!-- Tanggal -->
     <p style="margin: 20px 0;">
-        Banjarbaru, {{ \Carbon\Carbon::parse($tanggal)->locale('id')->isoFormat('D MMMM Y') }}
+        Banjarbaru, <?php echo e(\Carbon\Carbon::parse($tanggal)->locale('id')->isoFormat('D MMMM Y')); ?>
+
     </p>
 
     <!-- Kepada -->
     <p>
         Kepada Yth,<br>
-        <strong>{{ $dudi->nama_dudi }}</strong><br>
-        {{ $dudi->alamat ?? 'Alamat tidak tersedia' }}<br>
+        <strong><?php echo e($dudi->nama_dudi); ?></strong><br>
+        <?php echo e($dudi->alamat ?? 'Alamat tidak tersedia'); ?><br>
         di Tempat
     </p>
 
@@ -147,9 +149,9 @@
 
         <p>
             Dalam rangka melaksanakan Program Praktek Kerja Lapangan (PKL) siswa SMK Telkom Banjarbaru tahun ajaran
-            {{ $siswas->first()->tahun_ajaran ?? date('Y') . '/' . (date('Y') + 1) }},
+            <?php echo e($siswas->first()->tahun_ajaran ?? date('Y') . '/' . (date('Y') + 1)); ?>,
             bersama ini kami mengajukan permohonan untuk dapat menerima siswa kami melaksanakan PKL di
-            {{ $dudi->nama_dudi }}.
+            <?php echo e($dudi->nama_dudi); ?>.
         </p>
 
         <p>
@@ -168,29 +170,30 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($siswas as $index => $siswa)
+                <?php $__currentLoopData = $siswas; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $siswa): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <tr>
-                        <td style="text-align: center;">{{ $index + 1 }}</td>
-                        <td>{{ $siswa->nama }}</td>
-                        <td>{{ $siswa->nis }}</td>
-                        <td>{{ $siswa->jurusan }}</td>
-                        <td>{{ $siswa->kelas }}</td>
+                        <td style="text-align: center;"><?php echo e($index + 1); ?></td>
+                        <td><?php echo e($siswa->nama); ?></td>
+                        <td><?php echo e($siswa->nis); ?></td>
+                        <td><?php echo e($siswa->jurusan); ?></td>
+                        <td><?php echo e($siswa->kelas); ?></td>
                     </tr>
-                @endforeach
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </tbody>
         </table>
 
         <p>
             PKL direncanakan akan dilaksanakan pada periode
-            <strong>{{ $periode_pkl ?? 'akan ditentukan kemudian' }}</strong>.
+            <strong><?php echo e($periode_pkl ?? 'akan ditentukan kemudian'); ?></strong>.
         </p>
 
-        @if ($catatan)
+        <?php if($catatan): ?>
             <p>
                 <strong>Catatan:</strong><br>
-                {{ $catatan }}
+                <?php echo e($catatan); ?>
+
             </p>
-        @endif
+        <?php endif; ?>
 
         <p>
             Demikian surat pengajuan ini kami sampaikan. Atas perhatian dan kerjasamanya, kami ucapkan terima kasih.
@@ -203,8 +206,9 @@
         <p><strong>Kepala Sekolah</strong></p>
         <div class="ttd-space"></div>
         <p>
-            <strong><u>{{ $kepala_sekolah ?? 'Drs. H. Bambang Sutopo, M.Pd' }}</u></strong><br>
-            NIP. {{ $nip_kepala_sekolah ?? '196505121990031007' }}
+            <strong><u><?php echo e($kepala_sekolah ?? 'Drs. H. Bambang Sutopo, M.Pd'); ?></u></strong><br>
+            NIP. <?php echo e($nip_kepala_sekolah ?? '196505121990031007'); ?>
+
         </p>
     </div>
 
@@ -215,3 +219,4 @@
 </body>
 
 </html>
+<?php /**PATH C:\laragon\www\pkl-smktelkom\resources\views/pdf/surat-pengajuan.blade.php ENDPATH**/ ?>

@@ -155,6 +155,10 @@
                     <button class="excel-btn" data-bs-toggle="modal" data-bs-target="#importSiswaModal">
                         <i class="fas fa-file-excel"></i> Import Excel
                     </button>
+                    <button id="btnBulkDelete" class="btn btn-danger" style="display: none;"
+                        onclick="bulkDeleteSiswa()">
+                        <i class="fas fa-trash"></i> Hapus Terpilih (<span id="selectedCount">0</span>)
+                    </button>
                 </div>
             </div>
         </div>
@@ -164,12 +168,15 @@
             <table class="table custom-table">
                 <thead>
                     <tr>
+                        <th class="text-center" style="width: 40px;">
+                            <input type="checkbox" id="selectAll" onclick="toggleSelectAll()">
+                        </th>
                         <th>NO</th>
                         <th>NIS</th>
                         <th>Nama</th>
                         <th>Kelas</th>
                         <th>Jenis Kelamin</th>
-                        <th>Angkatan</th>
+                        <th>Tahun Ajaran</th>
                         <th>Jurusan</th>
                         <th>Grade Kesiswaan</th>
                         <th>Grade Kurikulum</th>
@@ -181,12 +188,16 @@
                 <tbody>
                     @forelse($siswa as $index => $siswaItem)
                         <tr>
+                            <td class="text-center">
+                                <input type="checkbox" class="siswa-checkbox" value="{{ $siswaItem->id }}"
+                                    onchange="updateSelectedCount()">
+                            </td>
                             <td class="text-center">{{ $index + 1 }}</td>
                             <td><span>{{ $siswaItem->nis }}</span></td>
                             <td>{{ $siswaItem->nama }}</td>
                             <td>{{ $siswaItem->kelas }}</td>
                             <td>{{ $siswaItem->jenis_kelamin }}</td>
-                            <td>{{ $siswaItem->angkatan }}</td>
+                            <td>{{ $siswaItem->tahun_ajaran }}</td>
                             <td><span>{{ $siswaItem->jurusan }}</span></td>
                             <td>
                                 @if ($siswaItem->grade_kesiswaan == 'tidak_ada')
@@ -240,14 +251,9 @@
                             </td>
                             <td>
                                 <div class="btn-group">
-                                    @if ($siswaItem->status_penempatan == 'belum')
-                                        <button class="btn btn-success btn-sm" title="Tempatkan ke DUDI"
-                                            onclick="openAssignModal({{ $siswaItem->id }}, '{{ $siswaItem->nama }}', '{{ $siswaItem->nis }}')">
-                                            <i class="fas fa-map-marker-alt"></i>
-                                        </button>
-                                    @else
+                                    @if ($siswaItem->status_penempatan != 'belum')
                                         <button class="btn btn-info btn-sm" title="Lihat Detail PKL"
-                                            onclick="viewPklDetail({{ $siswaItem->id }}, '{{ $siswaItem->nama }}', '{{ $siswaItem->dudi ? $siswaItem->dudi->nama_dudi : '' }}', '{{ $siswaItem->tanggal_mulai_pkl }}', '{{ $siswaItem->tanggal_selesai_pkl }}')">
+                                            onclick="viewPklDetail({{ $siswaItem->id }}, '{{ $siswaItem->nama }}', '{{ $siswaItem->dudi ? $siswaItem->dudi->nama_dudi : '' }}', '{{ $tanggalMulaiPkl ? \Carbon\Carbon::parse($tanggalMulaiPkl)->translatedFormat('d F Y') : '-' }}', '{{ $tanggalSelesaiPkl ? \Carbon\Carbon::parse($tanggalSelesaiPkl)->translatedFormat('d F Y') : '-' }}')">
                                             <i class="fas fa-eye"></i>
                                         </button>
                                     @endif
@@ -277,7 +283,7 @@
                                         </li>
                                         <li>
                                             <a class="dropdown-item" href="#"
-                                                onclick="event.preventDefault(); editSiswa({{ $siswaItem->id }},'{{ $siswaItem->nis }}', '{{ $siswaItem->nama }}','{{ $siswaItem->kelas }}','{{ $siswaItem->jenis_kelamin }}','{{ $siswaItem->angkatan }}','{{ $siswaItem->jurusan }}')">
+                                                onclick="event.preventDefault(); editSiswa({{ $siswaItem->id }},'{{ $siswaItem->nis }}', '{{ $siswaItem->nama }}','{{ $siswaItem->kelas }}','{{ $siswaItem->jenis_kelamin }}','{{ $siswaItem->tahun_ajaran }}','{{ $siswaItem->jurusan }}')">
                                                 <i class="fas fa-edit text-success"></i> Edit Data
                                             </a>
                                         </li>
@@ -371,11 +377,11 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label for="angkatan" class="form-label">
-                                        <i class="fas fa-calendar"></i> Angkatan
+                                    <label for="tahun_ajaran" class="form-label">
+                                        <i class="fas fa-calendar"></i> Tahun Ajaran
                                     </label>
-                                    <input type="text" class="form-control" id="angkatan" name="angkatan"
-                                        required placeholder="Contoh: angkatan 26">
+                                    <input type="text" class="form-control" id="tahun_ajaran" name="tahun_ajaran"
+                                        required placeholder="Contoh: 2024/2025">
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -480,11 +486,11 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label for="edit_angkatan" class="form-label">
-                                        <i class="fas fa-calendar text-warning"></i> Angkatan
+                                    <label for="edit_tahun_ajaran" class="form-label">
+                                        <i class="fas fa-calendar text-warning"></i> Tahun Ajaran
                                     </label>
-                                    <input type="text" class="form-control" id="edit_angkatan" name="angkatan"
-                                        required placeholder="Contoh: 2025">
+                                    <input type="text" class="form-control" id="edit_tahun_ajaran"
+                                        name="tahun_ajaran" required placeholder="Contoh: 2024/2025">
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -557,7 +563,7 @@
                                         <li><code>nama</code> (nama lengkap)</li>
                                         <li><code>kelas</code> (contoh: XII E)</li>
                                         <li><code>jenis_kelamin</code> (Laki-laki/Perempuan)</li>
-                                        <li><code>angkatan</code> (tahun angkatan)</li>
+                                        <li><code>tahun_ajaran</code> (contoh: 2024/2025)</li>
                                         <li><code>jurusan</code> (RPL/TKJ/DKV/dll)</li>
                                     </ul>
                                 </li>
@@ -577,7 +583,7 @@
                         <div class="alert alert-success">
                             <i class="fas fa-download"></i>
                             <strong>Download Template Excel:</strong><br>
-                            <a href="#" class="btn btn-sm btn-outline-success mt-2">
+                            <a href="{{ url('/admin/siswa/template') }}" class="btn btn-sm btn-outline-success mt-2">
                                 <i class="fas fa-file-download"></i> Download Template
                             </a>
                         </div>
@@ -596,71 +602,6 @@
     </div>
     </div>
 
-    {{-- Modal Assign Siswa ke DUDI --}}
-    <div class="modal fade" id="assignDudiModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header bg-success text-white">
-                    <h5 class="modal-title">
-                        <i class="fas fa-map-marker-alt"></i> Tempatkan Siswa ke DUDI
-                    </h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-                </div>
-                <form id="assignDudiForm" method="POST">
-                    @csrf
-                    <div class="modal-body">
-                        <div class="alert alert-info">
-                            <i class="fas fa-user"></i> <strong id="assignSiswaName"></strong>
-                            (<span id="assignSiswaNis"></span>)
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="id_dudi" class="form-label">
-                                <i class="fas fa-building text-success"></i> Pilih DUDI
-                            </label>
-                            <select class="form-select" id="id_dudi" name="id_dudi" required>
-                                <option value="">-- Pilih DUDI --</option>
-                                @foreach ($dudis as $dudi)
-                                    <option value="{{ $dudi->id }}">{{ $dudi->nama_dudi }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="tempatkan_tanggal_mulai_pkl" class="form-label">
-                                <i class="fas fa-calendar-alt text-success"></i> Tanggal Mulai PKL
-                            </label>
-                            <input type="date" class="form-control" id="tempatkan_tanggal_mulai_pkl"
-                                name="tanggal_mulai_pkl" required>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="tempatkan_tanggal_selesai_pkl" class="form-label">
-                                <i class="fas fa-calendar-check text-success"></i> Tanggal Selesai PKL
-                            </label>
-                            <input type="date" class="form-control" id="tempatkan_tanggal_selesai_pkl"
-                                name="tanggal_selesai_pkl" required>
-                        </div>
-
-                        <div class="alert alert-warning">
-                            <i class="fas fa-info-circle"></i>
-                            <small>Pastikan data DUDI dan tanggal PKL sudah benar sebelum menyimpan.</small>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                            <i class="fas fa-times"></i> Batal
-                        </button>
-                        <button type="submit" class="btn btn-success">
-                            <i class="fas fa-save"></i> Tempatkan
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    {{-- Modal Detail PKL --}}
     <div class="modal fade" id="pklDetailModal" tabindex="-1" aria-labelledby="pklDetailModalLabel">
         <div class="modal-dialog">
             <div class="modal-content">

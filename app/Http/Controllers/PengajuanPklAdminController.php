@@ -214,10 +214,16 @@ class PengajuanPklAdminController extends Controller
         $pengajuan->status = 'approved';
         $pengajuan->save();
 
+        // Ambil tanggal PKL dari setting global
+        $tanggalMulai = \DB::table('settings')->where('key', 'tanggal_mulai_pkl')->value('value');
+        $tanggalSelesai = \DB::table('settings')->where('key', 'tanggal_selesai_pkl')->value('value');
+
         // Update siswa
         $siswa = tb_siswa::find($pengajuan->id_siswa);
         $siswa->id_dudi = $idDudi;
         $siswa->status_penempatan = 'ditempatkan';
+        $siswa->tanggal_mulai_pkl = $tanggalMulai;
+        $siswa->tanggal_selesai_pkl = $tanggalSelesai;
         $siswa->save();
 
         logActivity(

@@ -105,7 +105,7 @@
 
 <body>
     <div class="kop-surat">
-        <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('img/kop-surat.png'))) }}"
+        <img src="data:image/png;base64,<?php echo e(base64_encode(file_get_contents(public_path('img/kop-surat.png')))); ?>"
             alt="Kop Surat SMK Telkom Banjarbaru">
     </div>
 
@@ -120,7 +120,7 @@
 
     <div class="nomor-surat">
         <h4>SURAT TUGAS</h4>
-        <p>Nomor : {{ $nomorSurat }}</p>
+        <p>Nomor : <?php echo e($nomorSurat); ?></p>
     </div>
 
     <div class="content">
@@ -131,31 +131,31 @@
             <tr>
                 <td>Nama</td>
                 <td>:</td>
-                <td>{{ strtoupper($siswa->nama) }}</td>
+                <td><?php echo e(strtoupper($siswa->nama)); ?></td>
             </tr>
             <tr>
                 <td>NIS</td>
                 <td>:</td>
-                <td>{{ $siswa->nis }}</td>
+                <td><?php echo e($siswa->nis); ?></td>
             </tr>
             <tr>
                 <td>Kelas</td>
                 <td>:</td>
-                <td>{{ $siswa->kelas }}</td>
+                <td><?php echo e($siswa->kelas); ?></td>
             </tr>
             <tr>
                 <td>Program Keahlian</td>
                 <td>:</td>
-                <td>{{ $siswa->jurusan }}</td>
+                <td><?php echo e($siswa->jurusan); ?></td>
             </tr>
             <tr>
                 <td>Tahun Ajaran</td>
                 <td>:</td>
-                <td>{{ $siswa->tahun_ajaran }}</td>
+                <td><?php echo e($siswa->tahun_ajaran); ?></td>
             </tr>
         </table>
 
-        @php
+        <?php
             $tglMulaiFormatted =
                 isset($tanggalMulaiPkl) && $tanggalMulaiPkl
                     ? \Carbon\Carbon::parse($tanggalMulaiPkl)->translatedFormat('d F Y')
@@ -166,17 +166,17 @@
                     : '...';
             $namaDudi = $siswa->dudi ? $siswa->dudi->nama_dudi : '...';
             $alamatDudi = $siswa->dudi ? $siswa->dudi->alamat : '...';
-        @endphp
+        ?>
 
-        <p>Untuk melaksanakan Praktek Kerja Lapangan (PKL) terhitung dari tanggal {{ $tglMulaiFormatted }} s.d
-            {{ $tglSelesaiFormatted }} di {{ $namaDudi }} beralamat di {{ $alamatDudi }}.</p>
+        <p>Untuk melaksanakan Praktek Kerja Lapangan (PKL) terhitung dari tanggal <?php echo e($tglMulaiFormatted); ?> s.d
+            <?php echo e($tglSelesaiFormatted); ?> di <?php echo e($namaDudi); ?> beralamat di <?php echo e($alamatDudi); ?>.</p>
 
         <p>Demikian Surat Tugas ini kami berikan agar dapat dilaksanakan dengan sebaik-baiknya.</p>
     </div>
 
     <div class="ttd-section">
         <div class="ttd-box">
-            <p>Banjarbaru, {{ $tanggalSurat }}</p>
+            <p>Banjarbaru, <?php echo e($tanggalSurat); ?></p>
             <p>Kepala SMK Telkom Banjarbaru</p>
             <div class="ttd-space"></div>
             <p><strong><u>Jatminto, M.Pd.</u></strong></p>
@@ -188,3 +188,4 @@
 </body>
 
 </html>
+<?php /**PATH C:\laragon\www\pkl-smktelkom\resources\views/pdf/surat-tugas.blade.php ENDPATH**/ ?>

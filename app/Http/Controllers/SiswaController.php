@@ -22,7 +22,11 @@ class SiswaController extends Controller
         // Ambil semua DUDI untuk dropdown di modal assign
         $dudis = \App\Models\tb_dudi::all();
 
-        return view('admin.kelola-siswa', compact('siswa', 'dudis'));
+        // Ambil tanggal PKL global
+        $tanggalMulaiPkl = \DB::table('settings')->where('key', 'tanggal_mulai_pkl')->value('value');
+        $tanggalSelesaiPkl = \DB::table('settings')->where('key', 'tanggal_selesai_pkl')->value('value');
+
+        return view('admin.kelola-siswa', compact('siswa', 'dudis', 'tanggalMulaiPkl', 'tanggalSelesaiPkl'));
     }
 
     /**
@@ -45,7 +49,7 @@ class SiswaController extends Controller
                 'nama' => 'required|string|max:255',
                 'kelas' => 'required|string|max:50',
                 'jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
-                'angkatan' => 'required|string|max:4',
+                'tahun_ajaran' => 'required|string|max:20',
                 'jurusan' => 'required|string|max:20'
             ], [
                 // pesan eror form data
@@ -63,7 +67,7 @@ class SiswaController extends Controller
             $siswa->nama = $request->nama;
             $siswa->kelas = $request->kelas;
             $siswa->jenis_kelamin = $request->jenis_kelamin;
-            $siswa->angkatan = $request->angkatan;
+            $siswa->tahun_ajaran = $request->tahun_ajaran;
             $siswa->jurusan = $request->jurusan;
             $siswa->save();
 
@@ -126,7 +130,7 @@ class SiswaController extends Controller
                 'nama' => 'required|string|max:255',
                 'kelas' => 'required|string|max:10',
                 'jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
-                'angkatan' => 'required|string|max:20',
+                'tahun_ajaran' => 'required|string|max:20',
                 'jurusan' => 'required|string|max:20'
 
             ], [
@@ -145,7 +149,7 @@ class SiswaController extends Controller
             $siswa->nama = $request->nama;
             $siswa->kelas = $request->kelas;
             $siswa->jenis_kelamin = $request->jenis_kelamin;
-            $siswa->angkatan = $request->angkatan;
+            $siswa->tahun_ajaran = $request->tahun_ajaran;
             $siswa->jurusan = $request->jurusan;
             $siswa->update();
 
@@ -274,7 +278,7 @@ class SiswaController extends Controller
             if (strpos($errorMessage, 'header') !== false || strpos($errorMessage, 'FORMAT') !== false) {
                 $errorText = $errorMessage;
                 $errorText .= "\n\n📋 FORMAT YANG BENAR:\n";
-                $errorText .= "Baris 1 (Header): nis | nama | kelas | jenis_kelamin | angkatan | jurusan\n";
+                $errorText .= "Baris 1 (Header): nis | nama | kelas | jenis_kelamin | tahun_ajaran | jurusan\n";
                 $errorText .= "Baris 2 dst: Data siswa\n\n";
                 $errorText .= "💡 TIP: Ketik header manual, jangan copy-paste!";
             } else {
@@ -293,31 +297,30 @@ class SiswaController extends Controller
         try {
             $request->validate([
                 'id_dudi' => 'required|exists:tb_dudi,id',
-                'tanggal_mulai_pkl' => 'required|date',
-                'tanggal_selesai_pkl' => 'required|date|after:tanggal_mulai_pkl'
             ], [
                 'id_dudi.required' => 'DUDI wajib dipilih',
                 'id_dudi.exists' => 'DUDI tidak ditemukan',
-                'tanggal_mulai_pkl.required' => 'Tanggal mulai PKL wajib diisi',
-                'tanggal_selesai_pkl.required' => 'Tanggal selesai PKL wajib diisi',
-                'tanggal_selesai_pkl.after' => 'Tanggal selesai harus setelah tanggal mulai'
             ]);
 
             $siswa = tb_siswa::findOrFail($id);
             $dudi = \App\Models\tb_dudi::findOrFail($request->id_dudi);
 
+            // Ambil tanggal PKL dari setting global
+            $tanggalMulai = \DB::table('settings')->where('key', 'tanggal_mulai_pkl')->value('value');
+            $tanggalSelesai = \DB::table('settings')->where('key', 'tanggal_selesai_pkl')->value('value');
+
             // Update data penempatan
             $siswa->id_dudi = $request->id_dudi;
             $siswa->status_penempatan = 'ditempatkan';
-            $siswa->tanggal_mulai_pkl = $request->tanggal_mulai_pkl;
-            $siswa->tanggal_selesai_pkl = $request->tanggal_selesai_pkl;
+            $siswa->tanggal_mulai_pkl = $tanggalMulai;
+            $siswa->tanggal_selesai_pkl = $tanggalSelesai;
             $siswa->save();
 
             // Log activity
             logActivity(
                 'update',
                 'Siswa Ditempatkan ke DUDI',
-                "Siswa {$siswa->nama} (NIS: {$siswa->nis}) ditempatkan di {$dudi->nama_dudi} untuk PKL periode {$request->tanggal_mulai_pkl} s/d {$request->tanggal_selesai_pkl}"
+                "Siswa {$siswa->nama} (NIS: {$siswa->nis}) ditempatkan di {$dudi->nama_dudi} menggunakan periode PKL global."
             );
 
             return redirect('/admin/siswa')->with('success', "Siswa {$siswa->nama} berhasil ditempatkan di {$dudi->nama_dudi}!");

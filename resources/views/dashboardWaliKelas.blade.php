@@ -143,7 +143,7 @@
                             <th>Nama</th>
                             <th>Kelas</th>
                             <th>Jenis Kelamin</th>
-                            <th>Angkatan</th>
+                            <th>Tahun Ajaran</th>
                             <th>Jurusan</th>
                             <th>Status</th>
                             <th>DUDI</th>
@@ -159,7 +159,7 @@
                                 <td>{{ $s->nama }}</td>
                                 <td>{{ $s->kelas }}</td>
                                 <td>{{ $s->jenis_kelamin }}</td>
-                                <td>{{ $s->angkatan }}</td>
+                                <td>{{ $s->tahun_ajaran }}</td>
                                 <td>{{ $s->jurusan }}</td>
                                 <td>
                                     @if ($s->status_penempatan == 'ditempatkan')

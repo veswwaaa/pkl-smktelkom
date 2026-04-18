@@ -31,7 +31,7 @@ class AuthenController extends Controller
         $siswa->nama = $request->nama;
         $siswa->kelas = $request->kelas;
         $siswa->jenis_kelamin = $request->jenis_kelamin;
-        $siswa->angkatan = $request->angkatan;
+        $siswa->tahun_ajaran = $request->tahun_ajaran;
         $siswa->jurusan = $request->jurusan;
         $siswa->save();
 
@@ -275,7 +275,7 @@ class AuthenController extends Controller
                 ->whereNotNull('jurusan_diterima')
                 ->whereNotNull('jobdesk')
                 ->get()
-                ->filter(function($dudi) use ($data) {
+                ->filter(function ($dudi) use ($data) {
                     // Jika jurusan_diterima tidak null, cek apakah jurusan siswa ada di array
                     if ($dudi->jurusan_diterima && is_array($dudi->jurusan_diterima)) {
                         return in_array($data->jurusan, $dudi->jurusan_diterima);
@@ -321,7 +321,24 @@ class AuthenController extends Controller
             // Hitung persentase
             $persenDitempatkan = $totalSiswa > 0 ? round(($siswaDitempatkan / $totalSiswa) * 100, 1) : 0;
 
-            return view('dashboardAdmin', compact('data', 'activities', 'totalSiswa', 'totalDudi', 'totalWaliKelas', 'siswaGrowth', 'dudiGrowth', 'siswaDitempatkan', 'siswaMenunggu', 'persenDitempatkan'));
+            // Ambil setting tanggal PKL
+            $tanggalMulaiPkl = DB::table('settings')->where('key', 'tanggal_mulai_pkl')->value('value');
+            $tanggalSelesaiPkl = DB::table('settings')->where('key', 'tanggal_selesai_pkl')->value('value');
+
+            return view('dashboardAdmin', compact(
+                'data',
+                'activities',
+                'totalSiswa',
+                'totalDudi',
+                'totalWaliKelas',
+                'siswaGrowth',
+                'dudiGrowth',
+                'siswaDitempatkan',
+                'siswaMenunggu',
+                'persenDitempatkan',
+                'tanggalMulaiPkl',
+                'tanggalSelesaiPkl'
+            ));
 
         } elseif ($role === 'dudi') {
             // Redirect DUDI ke dashboard khusus mereka

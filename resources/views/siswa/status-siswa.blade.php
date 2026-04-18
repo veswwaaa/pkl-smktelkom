@@ -130,14 +130,40 @@
                                 <i class="fas fa-calendar-alt fa-2x text-warning"></i>
                             </div>
                             <div>
-                                <h6 class="mb-0 text-muted">Angkatan</h6>
-                                <h4 class="mb-0">{{ $data->angkatan }}</h4>
+                                <h6 class="mb-0 text-muted">Tahun Ajaran</h6>
+                                <h4 class="mb-0">{{ $data->tahun_ajaran }}</h4>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
+        @if ($tanggalMulaiPkl && $tanggalSelesaiPkl)
+            <!-- Jadwal PKL Global -->
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card border-0 shadow-sm bg-primary bg-opacity-10 text-primary">
+                        <div class="card-body d-flex align-items-center justify-content-between">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-info-circle fa-2x me-3"></i>
+                                <div>
+                                    <h6 class="mb-1 fw-bold">Jadwal Pelaksanaan PKL Global</h6>
+                                    <p class="mb-0">
+                                        {{ \Carbon\Carbon::parse($tanggalMulaiPkl)->translatedFormat('d F Y') }}
+                                        s/d
+                                        {{ \Carbon\Carbon::parse($tanggalSelesaiPkl)->translatedFormat('d F Y') }}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="badge bg-primary text-white p-2 px-3">
+                                <i class="fas fa-calendar-check me-1"></i> Jadwal Resmi
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endif
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>

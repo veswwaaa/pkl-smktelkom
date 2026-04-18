@@ -15,7 +15,7 @@ use Maatwebsite\Excel\Concerns\SkipsFailures;
 class SiswaImport implements ToModel, WithHeadingRow, SkipsOnError, SkipsOnFailure
 {
     use SkipsErrors, SkipsFailures;
-    
+
     /**
      * @param array $row
      *
@@ -37,10 +37,10 @@ class SiswaImport implements ToModel, WithHeadingRow, SkipsOnError, SkipsOnFailu
         }
 
         // Cek apakah header Excel sesuai format
-        $requiredHeaders = ['nis', 'nama', 'kelas', 'jenis_kelamin', 'angkatan', 'jurusan'];
+        $requiredHeaders = ['nis', 'nama', 'kelas', 'jenis_kelamin', 'tahun_ajaran', 'jurusan'];
         foreach ($requiredHeaders as $header) {
             if (!array_key_exists($header, $row)) {
-                throw new \Exception("❌ FORMAT EXCEL SALAH! Header yang dibutuhkan: nis, nama, kelas, jenis_kelamin, angkatan, jurusan. Pastikan nama kolom persis sama (huruf kecil semua).");
+                throw new \Exception("❌ FORMAT EXCEL SALAH! Header yang dibutuhkan: nis, nama, kelas, jenis_kelamin, tahun_ajaran, jurusan. Pastikan nama kolom persis sama (huruf kecil semua).");
             }
         }
 
@@ -68,8 +68,8 @@ class SiswaImport implements ToModel, WithHeadingRow, SkipsOnError, SkipsOnFailu
             throw new \Exception("❌ Kelas tidak boleh kosong untuk siswa '{$row['nama']}'");
         }
 
-        if (empty($row['angkatan'])) {
-            throw new \Exception("❌ Angkatan tidak boleh kosong untuk siswa '{$row['nama']}'");
+        if (empty($row['tahun_ajaran'])) {
+            throw new \Exception("❌ Tahun ajaran tidak boleh kosong untuk siswa '{$row['nama']}'");
         }
 
         if (empty($row['jurusan'])) {
@@ -88,7 +88,7 @@ class SiswaImport implements ToModel, WithHeadingRow, SkipsOnError, SkipsOnFailu
             'nama' => trim($row['nama']),
             'kelas' => trim($row['kelas']),
             'jenis_kelamin' => trim($row['jenis_kelamin']),
-            'angkatan' => trim($row['angkatan']),
+            'tahun_ajaran' => trim($row['tahun_ajaran']),
             'jurusan' => trim($row['jurusan']),
         ]);
 

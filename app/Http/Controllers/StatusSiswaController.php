@@ -35,6 +35,10 @@ class StatusSiswaController extends Controller
             ->where('id_siswa', $data->id)
             ->first();
 
-        return view('siswa.status-siswa', compact('data', 'pengajuan'));
+        // Ambil setting tanggal PKL global
+        $tanggalMulaiPkl = \Illuminate\Support\Facades\DB::table('settings')->where('key', 'tanggal_mulai_pkl')->value('value');
+        $tanggalSelesaiPkl = \Illuminate\Support\Facades\DB::table('settings')->where('key', 'tanggal_selesai_pkl')->value('value');
+
+        return view('siswa.status-siswa', compact('data', 'pengajuan', 'tanggalMulaiPkl', 'tanggalSelesaiPkl'));
     }
 }

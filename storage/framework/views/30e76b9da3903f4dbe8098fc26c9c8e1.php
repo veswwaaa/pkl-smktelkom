@@ -49,7 +49,7 @@
                     <div class="table-header-content">
                         <div class="table-title">
                             <i class="fas fa-upload me-2"></i>
-                            <h5>Form Update Surat Permohonan</h5>
+                            <h5>Form Upload Surat Permohonan</h5>
                         </div>
                     </div>
                 </div>
@@ -150,40 +150,7 @@ unset($__errorArgs, $__bag); ?>
                             </div>
                         </div>
 
-                        <!-- Data yang Diminta -->
-                        <div class="mb-4">
-                            <label class="form-label">
-                                <strong>Data yang Diminta dari DUDI</strong>
-                            </label>
-                            <div class="card bg-light">
-                                <div class="card-body">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" checked disabled>
-                                        <label class="form-check-label">
-                                            <strong>Jurusan yang Diterima</strong>
-                                            <br><small class="text-muted">Jurusan siswa apa saja yang bisa PKL</small>
-                                        </label>
-                                    </div>
-                                    <div class="form-check mt-2">
-                                        <input class="form-check-input" type="checkbox" checked disabled>
-                                        <label class="form-check-label">
-                                            <strong>Jobdesk Siswa PKL</strong>
-                                            <br><small class="text-muted">Tugas dan tanggung jawab siswa selama PKL</small>
-                                        </label>
-                                    </div>
-                                    <div class="form-check mt-2">
-                                        <input class="form-check-input" type="checkbox" checked disabled>
-                                        <label class="form-check-label">
-                                            <strong>Kuota Penerimaan</strong>
-                                            <br><small class="text-muted">Jumlah siswa yang bisa diterima</small>
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                            <small class="text-muted">DUDI akan diminta mengirim balasan surat berisi data-data
-                                tersebut</small>
-                        </div>
-
+                       
                         <!-- Catatan -->
                         <div class="mb-4">
                             <label for="catatan" class="form-label">

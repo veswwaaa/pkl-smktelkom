@@ -329,11 +329,17 @@ class DokumenSiswaController extends Controller
         // Gunakan nomor surat dari input admin
         $nomorSurat = $request->nomor_surat;
 
+        // Ambil setting tanggal PKL global
+        $tanggalMulaiPkl = \Illuminate\Support\Facades\DB::table('settings')->where('key', 'tanggal_mulai_pkl')->value('value');
+        $tanggalSelesaiPkl = \Illuminate\Support\Facades\DB::table('settings')->where('key', 'tanggal_selesai_pkl')->value('value');
+
         // Generate PDF Surat Tugas
         $pdf = Pdf::loadView('pdf.surat-tugas', [
             'siswa' => $dokumen->siswa,
             'nomorSurat' => $nomorSurat,
-            'tanggalSurat' => now()->locale('id')->isoFormat('D MMMM Y')
+            'tanggalSurat' => now()->locale('id')->isoFormat('D MMMM Y'),
+            'tanggalMulaiPkl' => $tanggalMulaiPkl,
+            'tanggalSelesaiPkl' => $tanggalSelesaiPkl
         ]);
 
         // Simpan PDF ke storage

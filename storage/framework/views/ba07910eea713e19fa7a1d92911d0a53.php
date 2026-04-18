@@ -7,8 +7,8 @@
     <title>Dokumen PKL - SMK Telkom</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="{{ asset('css/dashboard-siswa-new.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/shared-components.css') }}">
+    <link rel="stylesheet" href="<?php echo e(asset('css/dashboard-siswa-new.css')); ?>">
+    <link rel="stylesheet" href="<?php echo e(asset('css/shared-components.css')); ?>">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
@@ -19,20 +19,21 @@
             <i class="fas fa-bars"></i>
         </button>
         <div class="telkom-logo">
-            <img src="{{ asset('img/telkom-logo.png') }}" alt="Telkom Schools" onerror="this.style.display='none'">
+            <img src="<?php echo e(asset('img/telkom-logo.png')); ?>" alt="Telkom Schools" onerror="this.style.display='none'">
         </div>
 
         <div class="navbar-right">
             <div class="dropdown">
                 <div class="profile-dropdown" data-bs-toggle="dropdown">
                     <div class="user-avatar">
-                        {{ substr($siswa->nama, 0, 1) }}
+                        <?php echo e(substr($siswa->nama, 0, 1)); ?>
+
                     </div>
                     <i class="fas fa-chevron-down text-muted"></i>
                 </div>
                 <ul class="dropdown-menu dropdown-menu-end">
                     <li>
-                        <h6 class="dropdown-header">{{ $siswa->nama }}</h6>
+                        <h6 class="dropdown-header"><?php echo e($siswa->nama); ?></h6>
                     </li>
                     <li>
                         <hr class="dropdown-divider">
@@ -93,55 +94,59 @@
 
                             <div class="timeline-step">
                                 <div
-                                    class="timeline-icon {{ $dokumen->status_cv_portofolio == 'sudah' ? 'completed' : 'active' }}">
+                                    class="timeline-icon <?php echo e($dokumen->status_cv_portofolio == 'sudah' ? 'completed' : 'active'); ?>">
                                     <i class="fas fa-file-upload"></i>
                                 </div>
                                 <div class="timeline-content">
                                     <h6 class="fw-bold">1. Upload CV & Portofolio</h6>
                                     <p class="text-muted mb-2">Upload CV dan portofolio Anda untuk proses PKL</p>
-                                    <span class="status-badge {{ $dokumen->status_cv_portofolio }}">
-                                        {{ $dokumen->status_cv_portofolio == 'sudah' ? 'Sudah Upload' : 'Belum Upload' }}
+                                    <span class="status-badge <?php echo e($dokumen->status_cv_portofolio); ?>">
+                                        <?php echo e($dokumen->status_cv_portofolio == 'sudah' ? 'Sudah Upload' : 'Belum Upload'); ?>
+
                                     </span>
                                 </div>
                             </div>
 
                             <div class="timeline-step">
                                 <div
-                                    class="timeline-icon {{ $dokumen->status_surat_pernyataan == 'terkirim' ? 'completed' : '' }}">
+                                    class="timeline-icon <?php echo e($dokumen->status_surat_pernyataan == 'terkirim' ? 'completed' : ''); ?>">
                                     <i class="fas fa-envelope"></i>
                                 </div>
                                 <div class="timeline-content">
                                     <h6 class="fw-bold">2. Surat Pernyataan dari Admin</h6>
                                     <p class="text-muted mb-2">Menunggu surat pernyataan dari admin</p>
-                                    <span class="status-badge {{ $dokumen->status_surat_pernyataan }}">
-                                        {{ $dokumen->status_surat_pernyataan == 'terkirim' ? 'Sudah Terkirim' : 'Belum Terkirim' }}
+                                    <span class="status-badge <?php echo e($dokumen->status_surat_pernyataan); ?>">
+                                        <?php echo e($dokumen->status_surat_pernyataan == 'terkirim' ? 'Sudah Terkirim' : 'Belum Terkirim'); ?>
+
                                     </span>
                                 </div>
                             </div>
 
                             <div class="timeline-step">
-                                <div class="timeline-icon {{ $dokumen->status_eviden == 'sudah' ? 'completed' : '' }}">
+                                <div class="timeline-icon <?php echo e($dokumen->status_eviden == 'sudah' ? 'completed' : ''); ?>">
                                     <i class="fas fa-camera"></i>
                                 </div>
                                 <div class="timeline-content">
                                     <h6 class="fw-bold">3. Upload Eviden (Jawaban + Foto)</h6>
                                     <p class="text-muted mb-2">Upload jawaban dan foto dengan orang tua</p>
-                                    <span class="status-badge {{ $dokumen->status_eviden }}">
-                                        {{ $dokumen->status_eviden == 'sudah' ? 'Sudah Upload' : 'Belum Upload' }}
+                                    <span class="status-badge <?php echo e($dokumen->status_eviden); ?>">
+                                        <?php echo e($dokumen->status_eviden == 'sudah' ? 'Sudah Upload' : 'Belum Upload'); ?>
+
                                     </span>
                                 </div>
                             </div>
 
                             <div class="timeline-step">
                                 <div
-                                    class="timeline-icon {{ $dokumen->status_surat_tugas == 'terkirim' ? 'completed' : '' }}">
+                                    class="timeline-icon <?php echo e($dokumen->status_surat_tugas == 'terkirim' ? 'completed' : ''); ?>">
                                     <i class="fas fa-file-signature"></i>
                                 </div>
                                 <div class="timeline-content">
                                     <h6 class="fw-bold">4. Surat Tugas dari Admin</h6>
                                     <p class="text-muted mb-2">Menunggu surat tugas dari admin</p>
-                                    <span class="status-badge {{ $dokumen->status_surat_tugas }}">
-                                        {{ $dokumen->status_surat_tugas == 'terkirim' ? 'Sudah Terkirim' : 'Belum Terkirim' }}
+                                    <span class="status-badge <?php echo e($dokumen->status_surat_tugas); ?>">
+                                        <?php echo e($dokumen->status_surat_tugas == 'terkirim' ? 'Sudah Terkirim' : 'Belum Terkirim'); ?>
+
                                     </span>
                                 </div>
                             </div>
@@ -154,22 +159,24 @@
             <div class="row">
                 <div class="col-12">
                     <div
-                        class="document-card {{ $dokumen->status_cv_portofolio == 'sudah' ? 'completed' : 'active' }}">
+                        class="document-card <?php echo e($dokumen->status_cv_portofolio == 'sudah' ? 'completed' : 'active'); ?>">
                         <div class="d-flex justify-content-between align-items-center mb-3">
                             <h5 class="mb-0">
                                 <i class="fas fa-file-pdf me-2"></i>
                                 CV & Portofolio
                             </h5>
-                            <span class="status-badge {{ $dokumen->status_cv_portofolio }}">
-                                {{ $dokumen->status_cv_portofolio == 'sudah' ? 'Sudah Upload' : 'Belum Upload' }}
+                            <span class="status-badge <?php echo e($dokumen->status_cv_portofolio); ?>">
+                                <?php echo e($dokumen->status_cv_portofolio == 'sudah' ? 'Sudah Upload' : 'Belum Upload'); ?>
+
                             </span>
                         </div>
 
-                        @if ($dokumen->status_cv_portofolio == 'sudah')
+                        <?php if($dokumen->status_cv_portofolio == 'sudah'): ?>
                             <div class="alert alert-success mb-3">
                                 <i class="fas fa-check-circle me-2"></i>
                                 Dokumen sudah diupload pada
-                                {{ $dokumen->tanggal_upload_cv_portofolio->format('d F Y, H:i') }}
+                                <?php echo e($dokumen->tanggal_upload_cv_portofolio->format('d F Y, H:i')); ?>
+
                             </div>
 
                             <div class="row">
@@ -177,8 +184,8 @@
                                     <div class="card">
                                         <div class="card-body">
                                             <h6 class="fw-bold"><i class="fas fa-file-alt me-2"></i>CV</h6>
-                                            <p class="text-muted mb-2">{{ basename($dokumen->file_cv) }}</p>
-                                            <a href="{{ asset('storage/' . $dokumen->file_cv) }}" target="_blank"
+                                            <p class="text-muted mb-2"><?php echo e(basename($dokumen->file_cv)); ?></p>
+                                            <a href="<?php echo e(asset('storage/' . $dokumen->file_cv)); ?>" target="_blank"
                                                 class="btn btn-sm btn-outline-primary">
                                                 <i class="fas fa-eye me-1"></i> Lihat
                                             </a>
@@ -189,8 +196,8 @@
                                     <div class="card">
                                         <div class="card-body">
                                             <h6 class="fw-bold"><i class="fas fa-folder me-2"></i>Portofolio</h6>
-                                            <p class="text-muted mb-2">{{ basename($dokumen->file_portofolio) }}</p>
-                                            <a href="{{ asset('storage/' . $dokumen->file_portofolio) }}"
+                                            <p class="text-muted mb-2"><?php echo e(basename($dokumen->file_portofolio)); ?></p>
+                                            <a href="<?php echo e(asset('storage/' . $dokumen->file_portofolio)); ?>"
                                                 target="_blank" class="btn btn-sm btn-outline-primary">
                                                 <i class="fas fa-eye me-1"></i> Lihat
                                             </a>
@@ -203,11 +210,11 @@
                                 <i class="fas fa-sync-alt me-2"></i>
                                 Upload Ulang
                             </button>
-                        @endif
+                        <?php endif; ?>
 
                         <form id="formUploadDokumen"
-                            style="display: {{ $dokumen->status_cv_portofolio == 'sudah' ? 'none' : 'block' }};">
-                            @csrf
+                            style="display: <?php echo e($dokumen->status_cv_portofolio == 'sudah' ? 'none' : 'block'); ?>;">
+                            <?php echo csrf_field(); ?>
                             <div class="row">
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label fw-bold">
@@ -240,11 +247,11 @@
                             </div>
 
                             <div class="d-flex justify-content-end gap-2">
-                                @if ($dokumen->status_cv_portofolio == 'sudah')
+                                <?php if($dokumen->status_cv_portofolio == 'sudah'): ?>
                                     <button type="button" class="btn btn-secondary" onclick="hideUploadForm()">
                                         <i class="fas fa-times me-2"></i>Batal
                                     </button>
-                                @endif
+                                <?php endif; ?>
                                 <button type="submit" class="btn btn-telkom" id="btnSubmit">
                                     <i class="fas fa-upload me-2"></i>
                                     Upload Dokumen
@@ -259,22 +266,24 @@
             <div class="row mt-4">
                 <div class="col-12">
                     <div
-                        class="document-card {{ $dokumen->status_surat_pernyataan == 'terkirim' ? 'completed' : '' }}">
+                        class="document-card <?php echo e($dokumen->status_surat_pernyataan == 'terkirim' ? 'completed' : ''); ?>">
                         <div class="d-flex justify-content-between align-items-center mb-3">
                             <h5 class="mb-0">
                                 <i class="fas fa-envelope me-2"></i>
                                 Surat Pernyataan
                             </h5>
-                            <span class="status-badge {{ $dokumen->status_surat_pernyataan }}">
-                                {{ $dokumen->status_surat_pernyataan == 'terkirim' ? 'Sudah Terkirim' : 'Belum Terkirim' }}
+                            <span class="status-badge <?php echo e($dokumen->status_surat_pernyataan); ?>">
+                                <?php echo e($dokumen->status_surat_pernyataan == 'terkirim' ? 'Sudah Terkirim' : 'Belum Terkirim'); ?>
+
                             </span>
                         </div>
 
-                        @if ($dokumen->status_surat_pernyataan == 'terkirim')
+                        <?php if($dokumen->status_surat_pernyataan == 'terkirim'): ?>
                             <div class="alert alert-success mb-3">
                                 <i class="fas fa-check-circle me-2"></i>
                                 Surat pernyataan terkirim pada
-                                {{ $dokumen->tanggal_kirim_surat_pernyataan->format('d F Y') }}
+                                <?php echo e($dokumen->tanggal_kirim_surat_pernyataan->format('d F Y')); ?>
+
                             </div>
 
                             <a href="/siswa/dokumen-pkl/download/surat_pernyataan" class="btn btn-telkom"
@@ -282,51 +291,53 @@
                                 <i class="fas fa-download me-2"></i>
                                 Download Surat Pernyataan
                             </a>
-                        @else
+                        <?php else: ?>
                             <div class="alert alert-info">
                                 <i class="fas fa-info-circle me-2"></i>
                                 Menunggu admin mengirimkan surat pernyataan. Pastikan Anda sudah mengupload CV dan
                                 Portofolio.
                             </div>
-                        @endif
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
 
             <!-- Upload Eviden -->
-            @if ($dokumen->status_surat_pernyataan == 'terkirim')
+            <?php if($dokumen->status_surat_pernyataan == 'terkirim'): ?>
                 <div class="row mt-4">
                     <div class="col-12">
-                        <div class="document-card {{ $dokumen->status_eviden == 'sudah' ? 'completed' : 'active' }}">
+                        <div class="document-card <?php echo e($dokumen->status_eviden == 'sudah' ? 'completed' : 'active'); ?>">
                             <div class="d-flex justify-content-between align-items-center mb-3">
                                 <h5 class="mb-0">
                                     <i class="fas fa-camera me-2"></i>
                                     Eviden (Jawaban + Foto dengan Orang Tua)
                                 </h5>
-                                <span class="status-badge {{ $dokumen->status_eviden }}">
-                                    {{ $dokumen->status_eviden == 'sudah' ? 'Sudah Upload' : 'Belum Upload' }}
+                                <span class="status-badge <?php echo e($dokumen->status_eviden); ?>">
+                                    <?php echo e($dokumen->status_eviden == 'sudah' ? 'Sudah Upload' : 'Belum Upload'); ?>
+
                                 </span>
                             </div>
 
-                            @if ($dokumen->status_eviden == 'sudah')
+                            <?php if($dokumen->status_eviden == 'sudah'): ?>
                                 <div class="alert alert-success mb-3">
                                     <i class="fas fa-check-circle me-2"></i>
                                     Eviden sudah diupload pada
-                                    {{ $dokumen->tanggal_upload_eviden->format('d F Y, H:i') }}
+                                    <?php echo e($dokumen->tanggal_upload_eviden->format('d F Y, H:i')); ?>
+
                                 </div>
 
                                 <div class="card mb-3">
                                     <div class="card-body">
                                         <h6 class="fw-bold mb-3"><i class="fas fa-file-pdf me-2"></i>Surat Pernyataan:
                                         </h6>
-                                        @if ($dokumen->file_surat_pernyataan_siswa)
-                                            <a href="{{ asset('storage/' . $dokumen->file_surat_pernyataan_siswa) }}"
+                                        <?php if($dokumen->file_surat_pernyataan_siswa): ?>
+                                            <a href="<?php echo e(asset('storage/' . $dokumen->file_surat_pernyataan_siswa)); ?>"
                                                 target="_blank" class="btn btn-sm btn-outline-primary">
                                                 <i class="fas fa-eye me-1"></i> Lihat Surat Pernyataan
                                             </a>
-                                        @else
+                                        <?php else: ?>
                                             <p class="text-muted">Belum ada file</p>
-                                        @endif
+                                        <?php endif; ?>
                                     </div>
                                 </div>
 
@@ -334,7 +345,7 @@
                                     <div class="card-body">
                                         <h6 class="fw-bold mb-3"><i class="fas fa-comment-dots me-2"></i>Jawaban Anda:
                                         </h6>
-                                        <p class="text-muted">{{ $dokumen->jawaban_eviden }}</p>
+                                        <p class="text-muted"><?php echo e($dokumen->jawaban_eviden); ?></p>
                                     </div>
                                 </div>
 
@@ -342,7 +353,7 @@
                                     <div class="card-body">
                                         <h6 class="fw-bold mb-3"><i class="fas fa-image me-2"></i>Foto dengan Orang
                                             Tua:</h6>
-                                        <img src="{{ asset('storage/' . $dokumen->file_foto_dengan_ortu) }}"
+                                        <img src="<?php echo e(asset('storage/' . $dokumen->file_foto_dengan_ortu)); ?>"
                                             alt="Foto dengan Orang Tua" class="img-fluid rounded"
                                             style="max-height: 400px; object-fit: contain;">
                                     </div>
@@ -352,11 +363,11 @@
                                     <i class="fas fa-sync-alt me-2"></i>
                                     Upload Ulang
                                 </button>
-                            @endif
+                            <?php endif; ?>
 
                             <form id="formUploadEviden"
-                                style="display: {{ $dokumen->status_eviden == 'sudah' ? 'none' : 'block' }};">
-                                @csrf
+                                style="display: <?php echo e($dokumen->status_eviden == 'sudah' ? 'none' : 'block'); ?>;">
+                                <?php echo csrf_field(); ?>
                                 <div class="alert alert-info mb-3">
                                     <i class="fas fa-info-circle me-2"></i>
                                     <strong>Instruksi:</strong> Silakan upload surat pernyataan yang sudah diisi &
@@ -390,7 +401,7 @@
                                         PKL?
                                     </label>
                                     <textarea class="form-control" name="jawaban_surat_pernyataan" rows="4"
-                                        placeholder="Tuliskan jawaban Anda di sini...">{{ $dokumen->jawaban_surat_pernyataan ?? '' }}</textarea>
+                                        placeholder="Tuliskan jawaban Anda di sini..."><?php echo e($dokumen->jawaban_surat_pernyataan ?? ''); ?></textarea>
                                     <small class="text-muted">Contoh: "Ya, orang tua saya sudah mengetahui dan
                                         menyetujui saya untuk melaksanakan PKL di..."</small>
                                 </div>
@@ -412,11 +423,11 @@
                                 </div>
 
                                 <div class="d-flex justify-content-end gap-2">
-                                    @if ($dokumen->status_eviden == 'sudah')
+                                    <?php if($dokumen->status_eviden == 'sudah'): ?>
                                         <button type="button" class="btn btn-secondary" onclick="hideEvidenForm()">
                                             <i class="fas fa-times me-2"></i>Batal
                                         </button>
-                                    @endif
+                                    <?php endif; ?>
                                     <button type="submit" class="btn btn-telkom" id="btnSubmitEviden">
                                         <i class="fas fa-upload me-2"></i>
                                         Upload Eviden
@@ -426,10 +437,10 @@
                         </div>
                     </div>
                 </div>
-            @endif
+            <?php endif; ?>
 
-            {{-- Section 4: Surat Tugas --}}
-            @if ($dokumen->status_surat_tugas == 'terkirim')
+            
+            <?php if($dokumen->status_surat_tugas == 'terkirim'): ?>
                 <div class="col-12 mb-4">
                     <div class="document-card completed">
                         <div class="d-flex justify-content-between align-items-center mb-3">
@@ -443,12 +454,14 @@
                         <div class="alert alert-info mb-3">
                             <i class="fas fa-info-circle me-2"></i>
                             Surat tugas telah dikirim pada
-                            {{ $dokumen->tanggal_kirim_surat_tugas->format('d F Y, H:i') }}
+                            <?php echo e($dokumen->tanggal_kirim_surat_tugas->format('d F Y, H:i')); ?>
+
                         </div>
 
                         <p class="text-muted mb-3">
                             <i class="fas fa-file-pdf me-2"></i>
-                            Nomor: {{ $dokumen->nomor_surat_tugas }}
+                            Nomor: <?php echo e($dokumen->nomor_surat_tugas); ?>
+
                         </p>
 
                         <a href="/siswa/dokumen-pkl/download/surat_tugas" class="btn btn-telkom" target="_blank">
@@ -457,7 +470,7 @@
                         </a>
                     </div>
                 </div>
-            @endif
+            <?php endif; ?>
         </div>
     </div>
 
@@ -544,7 +557,7 @@
             const formData = new FormData();
             formData.append('file_cv', fileCV);
             formData.append('file_portofolio', filePortofolio);
-            formData.append('_token', '{{ csrf_token() }}');
+            formData.append('_token', '<?php echo e(csrf_token()); ?>');
 
             const btnSubmit = document.getElementById('btnSubmit');
             btnSubmit.disabled = true;
@@ -669,7 +682,7 @@
                 formData.append('file_surat_pernyataan_siswa', fileSuratPernyataan);
                 formData.append('jawaban_surat_pernyataan', jawaban);
                 formData.append('file_foto_ortu', fileFoto);
-                formData.append('_token', '{{ csrf_token() }}');
+                formData.append('_token', '<?php echo e(csrf_token()); ?>');
 
                 const btnSubmitEviden = document.getElementById('btnSubmitEviden');
                 btnSubmitEviden.disabled = true;
@@ -742,3 +755,4 @@
 </body>
 
 </html>
+<?php /**PATH D:\laragon\www\pkl-smktelkom\resources\views/siswa/dokumen-pkl.blade.php ENDPATH**/ ?>

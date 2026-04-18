@@ -59,9 +59,6 @@
             <a href="/siswa/status-pengajuan" class="sidebar-item" title="Status Pengajuan PKL">
                 <i class="fas fa-tasks"></i>
             </a>
-            <a href="/siswa/info-pkl" class="sidebar-item" title="Info PKL">
-                <i class="fas fa-info-circle"></i>
-            </a>
             <a href="/siswa/upload-dokumen" class="sidebar-item active" title="Upload Dokumen">
                 <i class="fas fa-upload"></i>
             </a>
@@ -70,10 +67,16 @@
 
     <!-- Main Content -->
     <div class="main-content">
-        <div class="row mb-4">
-            <div class="col-12">
-                <h2><i class="fas fa-upload me-2 text-primary"></i>Upload Dokumen PKL</h2>
-                <p class="text-muted">Upload dokumen-dokumen yang diperlukan untuk PKL Anda</p>
+        <!-- Page Header -->
+        <div class="page-header">
+            <div class="page-title">
+                <div>
+                    <i class="fas fa-upload"></i>
+                </div>
+                <div>
+                    <h1>Upload Dokumen PKL</h1>
+                    <p>Upload dokumen-dokumen yang diperlukan untuk PKL Anda</p>
+                </div>
             </div>
         </div>
 

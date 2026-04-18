@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+{{-- <!DOCTYPE html>
 <html lang="id">
 
 <head>
@@ -86,15 +86,20 @@
 
     <!-- Main Content -->
     <div class="main-content">
-        <!-- Header -->
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <div>
-                <h2><i class="fas fa-briefcase me-2 text-success"></i>Informasi PKL</h2>
-                <p class="text-muted">Detail tempat dan jadwal Praktik Kerja Lapangan Anda</p>
+        <!-- Page Header -->
+        <div class="page-header">
+            <div class="page-title">
+                <div>
+                    <i class="fas fa-briefcase"></i>
+                </div>
+                <div>
+                    <h1>Informasi PKL</h1>
+                    <p>Detail tempat dan jadwal Praktik Kerja Lapangan Anda</p>
+                </div>
             </div>
-            <div class="text-end">
-                <small class="text-muted">NIS: {{ $siswa->nis }}</small><br>
-                <small class="text-muted">{{ $siswa->nama }}</small>
+            <div class="text-end d-none d-md-block">
+                <small class="text-muted fw-bold">NIS: {{ $siswa->nis }}</small><br>
+                <small class="text-muted fw-bold">{{ $siswa->nama }}</small>
             </div>
         </div>
 
@@ -236,4 +241,4 @@
     </script>
 </body>
 
-</html>
+</html> --}}

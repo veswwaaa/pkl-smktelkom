@@ -7,7 +7,7 @@
     <title>Pengajuan PKL - SMK Telkom</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="{{ asset('css/dashboard-siswa-new.css') }}">
+    <link rel="stylesheet" href="<?php echo e(asset('css/dashboard-siswa-new.css')); ?>">
 </head>
 
 <body>
@@ -18,7 +18,7 @@
                 <i class="fas fa-bars"></i>
             </button>
             <div class="telkom-logo">
-                <img src="{{ asset('img/telkom-logo.png') }}" alt="Telkom Schools" onerror="this.style.display='none'">
+                <img src="<?php echo e(asset('img/telkom-logo.png')); ?>" alt="Telkom Schools" onerror="this.style.display='none'">
             </div>
         </div>
 
@@ -28,11 +28,12 @@
             </button>
             <div class="dropdown">
                 <div class="user-avatar" data-bs-toggle="dropdown">
-                    {{ substr($data->nama, 0, 1) }}
+                    <?php echo e(substr($data->nama, 0, 1)); ?>
+
                 </div>
                 <ul class="dropdown-menu dropdown-menu-end">
                     <li>
-                        <h6 class="dropdown-header">{{ $data->nama }}</h6>
+                        <h6 class="dropdown-header"><?php echo e($data->nama); ?></h6>
                     </li>
                     <li>
                         <hr class="dropdown-divider">
@@ -80,8 +81,8 @@
         </div>
 
         <!-- Success/Error Messages -->
-        <div id="successMessage" data-message="{{ session('success') }}" style="display:none;"></div>
-        <div id="errorMessage" data-message="{{ session('error') }}" style="display:none;"></div>
+        <div id="successMessage" data-message="<?php echo e(session('success')); ?>" style="display:none;"></div>
+        <div id="errorMessage" data-message="<?php echo e(session('error')); ?>" style="display:none;"></div>
 
         <!-- Tabs -->
         <ul class="nav nav-tabs mb-4" id="pengajuanTabs" role="tablist">
@@ -108,7 +109,7 @@
                         <p class="text-muted">Tambahkan DUDI yang belum terdaftar di sistem sekolah</p>
 
                         <form action="/siswa/dudi-mandiri" method="POST" id="formDudiMandiri">
-                            @csrf
+                            <?php echo csrf_field(); ?>
 
                             <div class="mb-3">
                                 <label for="nama_dudi" class="form-label">Nama DUDI</label>
@@ -146,34 +147,38 @@
                     <div class="card-body">
                         <h5 class="card-title mb-4">Data Pengajuan PKL</h5>
 
-                        @if ($pengajuan)
+                        <?php if($pengajuan): ?>
                             <div class="alert alert-info">
                                 <i class="fas fa-info-circle me-2"></i>
                                 Anda sudah mengajukan PKL. Status:
-                                <strong>{{ ucfirst($pengajuan->status) }}</strong>
+                                <strong><?php echo e(ucfirst($pengajuan->status)); ?></strong>
                             </div>
-                        @else
+                        <?php else: ?>
                             <!-- Info Siswa -->
                             <div class="alert alert-primary mb-4">
                                 <h6 class="mb-2"><i class="fas fa-user me-2"></i>Informasi Pengaju</h6>
                                 <div class="row">
                                     <div class="col-md-3">
-                                        <strong>NIS:</strong> {{ $data->nis }}
+                                        <strong>NIS:</strong> <?php echo e($data->nis); ?>
+
                                     </div>
                                     <div class="col-md-4">
-                                        <strong>Nama:</strong> {{ $data->nama }}
+                                        <strong>Nama:</strong> <?php echo e($data->nama); ?>
+
                                     </div>
                                     <div class="col-md-3">
-                                        <strong>Kelas:</strong> {{ $data->kelas }}
+                                        <strong>Kelas:</strong> <?php echo e($data->kelas); ?>
+
                                     </div>
                                     <div class="col-md-2">
-                                        <strong>Jurusan:</strong> {{ $data->jurusan }}
+                                        <strong>Jurusan:</strong> <?php echo e($data->jurusan); ?>
+
                                     </div>
                                 </div>
                             </div>
 
                             <form action="/siswa/pengajuan-pkl" method="POST" id="formPengajuanPkl">
-                                @csrf
+                                <?php echo csrf_field(); ?>
 
                                 <!-- Pilihan 1 -->
                                 <div class="mb-3">
@@ -181,27 +186,27 @@
                                     <select class="form-select" id="pilihan1" name="pilihan_1" required>
                                         <option value="">Pilih DUDI</option>
                                         <optgroup label="🏫 DUDI Sekolah">
-                                            @foreach ($dudiSekolah as $dudi)
-                                                <option value="sekolah-{{ $dudi->id }}">
-                                                    {{ $dudi->nama_dudi }}</option>
-                                            @endforeach
+                                            <?php $__currentLoopData = $dudiSekolah; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $dudi): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                <option value="sekolah-<?php echo e($dudi->id); ?>">
+                                                    <?php echo e($dudi->nama_dudi); ?></option>
+                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                         </optgroup>
-                                        @if ($dudiMandiriApproved->count() > 0)
+                                        <?php if($dudiMandiriApproved->count() > 0): ?>
                                             <optgroup label="👨‍🎓 DUDI Mandiri (Approved)">
-                                                @foreach ($dudiMandiriApproved as $dudi)
-                                                    <option value="sekolah-{{ $dudi->id }}">
-                                                        {{ $dudi->nama_dudi }}</option>
-                                                @endforeach
+                                                <?php $__currentLoopData = $dudiMandiriApproved; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $dudi): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                    <option value="sekolah-<?php echo e($dudi->id); ?>">
+                                                        <?php echo e($dudi->nama_dudi); ?></option>
+                                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                             </optgroup>
-                                        @endif
-                                        @if ($dudiMandiri->count() > 0)
+                                        <?php endif; ?>
+                                        <?php if($dudiMandiri->count() > 0): ?>
                                             <optgroup label="⏳ DUDI Mandiri Anda (Belum Approved)">
-                                                @foreach ($dudiMandiri as $dudi)
-                                                    <option value="mandiri-{{ $dudi->id }}">
-                                                        {{ $dudi->nama_dudi }} (Pilihan Mandiri)</option>
-                                                @endforeach
+                                                <?php $__currentLoopData = $dudiMandiri; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $dudi): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                    <option value="mandiri-<?php echo e($dudi->id); ?>">
+                                                        <?php echo e($dudi->nama_dudi); ?> (Pilihan Mandiri)</option>
+                                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                             </optgroup>
-                                        @endif
+                                        <?php endif; ?>
                                     </select>
                                 </div>
 
@@ -211,27 +216,27 @@
                                     <select class="form-select" id="pilihan2" name="pilihan_2" required>
                                         <option value="">Pilih DUDI</option>
                                         <optgroup label="🏫 DUDI Sekolah">
-                                            @foreach ($dudiSekolah as $dudi)
-                                                <option value="sekolah-{{ $dudi->id }}">
-                                                    {{ $dudi->nama_dudi }}</option>
-                                            @endforeach
+                                            <?php $__currentLoopData = $dudiSekolah; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $dudi): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                <option value="sekolah-<?php echo e($dudi->id); ?>">
+                                                    <?php echo e($dudi->nama_dudi); ?></option>
+                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                         </optgroup>
-                                        @if ($dudiMandiriApproved->count() > 0)
+                                        <?php if($dudiMandiriApproved->count() > 0): ?>
                                             <optgroup label="👨‍🎓 DUDI Mandiri (Approved)">
-                                                @foreach ($dudiMandiriApproved as $dudi)
-                                                    <option value="sekolah-{{ $dudi->id }}">
-                                                        {{ $dudi->nama_dudi }}</option>
-                                                @endforeach
+                                                <?php $__currentLoopData = $dudiMandiriApproved; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $dudi): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                    <option value="sekolah-<?php echo e($dudi->id); ?>">
+                                                        <?php echo e($dudi->nama_dudi); ?></option>
+                                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                             </optgroup>
-                                        @endif
-                                        @if ($dudiMandiri->count() > 0)
+                                        <?php endif; ?>
+                                        <?php if($dudiMandiri->count() > 0): ?>
                                             <optgroup label="⏳ DUDI Mandiri Anda (Belum Approved)">
-                                                @foreach ($dudiMandiri as $dudi)
-                                                    <option value="mandiri-{{ $dudi->id }}">
-                                                        {{ $dudi->nama_dudi }} (Menunggu Persetujuan)</option>
-                                                @endforeach
+                                                <?php $__currentLoopData = $dudiMandiri; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $dudi): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                    <option value="mandiri-<?php echo e($dudi->id); ?>">
+                                                        <?php echo e($dudi->nama_dudi); ?> (Menunggu Persetujuan)</option>
+                                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                             </optgroup>
-                                        @endif
+                                        <?php endif; ?>
                                     </select>
                                 </div>
 
@@ -239,7 +244,7 @@
                                     <i class="fas fa-paper-plane me-2"></i> Kirim Pengajuan
                                 </button>
                             </form>
-                        @endif
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
@@ -248,7 +253,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="{{ asset('js/pengajuan-pkl.js') }}"></script>
+    <script src="<?php echo e(asset('js/pengajuan-pkl.js')); ?>"></script>
     <script>
         function toggleSidebar() {
             document.getElementById('leftSidebar').classList.toggle('show');
@@ -263,3 +268,4 @@
 </body>
 
 </html>
+<?php /**PATH D:\laragon\www\pkl-smktelkom\resources\views/siswa/pengajuan-pkl.blade.php ENDPATH**/ ?>

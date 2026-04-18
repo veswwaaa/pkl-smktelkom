@@ -157,7 +157,7 @@ body {
     left: 0;
     width: 90px;
     height: calc(100vh - 70px);
-    background: #e53e3e !important;
+    background: #B32A2F;
     z-index: 1040;
     padding: 20px 0;
 }
@@ -573,5 +573,54 @@ body {
     .badge {
         font-size: 0.75rem;
         padding: 0.3rem 0.6rem;
+    }
+}
+
+/* Page Header */
+.page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 30px;
+    background: white;
+    padding: 20px 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+}
+
+.page-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.page-title i {
+    color: #EE1C25;
+    font-size: 28px;
+}
+
+.page-title h1 {
+    font-size: 24px;
+    font-weight: 700;
+    margin: 0;
+    color: #2c3e50;
+}
+
+.page-title p {
+    margin: 0;
+    color: #6c757d;
+    font-size: 14px;
+}
+
+@media (max-width: 768px) {
+    .page-header {
+        flex-direction: column;
+        gap: 15px;
+        align-items: flex-start !important;
+        padding: 15px;
+    }
+
+    .page-title h1 {
+        font-size: 1.3rem;
     }
 }

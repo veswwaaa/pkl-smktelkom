@@ -14,10 +14,6 @@
                 <p>Kirim surat pengajuan siswa PKL ke DUDI</p>
             </div>
         </div>
-        <a href="/admin/surat-dudi" class="back-btn">
-            <i class="fas fa-arrow-left"></i>
-            Kembali
-        </a>
     </div>
 
     <div class="container-fluid">
@@ -36,10 +32,9 @@
         @endif
 
         <!-- Info Card -->
-        <div class="alert alert-info">
+        <div class="alert alert-warning">
             <i class="fas fa-info-circle me-2"></i>
-            <strong>Informasi:</strong> Surat Pengajuan berisi daftar nama siswa yang akan PKL di DUDI. Pilih DUDI tujuan,
-            checklist siswa yang akan dikirim, dan upload file surat.
+            <strong>Informasi:</strong> Surat Pengajuan berisi daftar nama siswa yang akan melaksanakan PKL di DUDI. Silakan pilih DUDI tujuan, centang nama siswa yang akan dikirim, lalu unggah file surat pengajuan.
         </div>
 
         <!-- Form Card -->
@@ -186,11 +181,11 @@
 
                         <!-- Buttons -->
                         <div class="d-flex justify-content-end gap-2">
-                            <a href="/admin/surat-dudi" class="btn btn-secondary">
-                                <i class="fas fa-times me-2"></i>Batal
+                            <a href="/admin/surat-dudi" class="btn btn-outline-secondary">
+                                Batal
                             </a>
-                            <button type="submit" class="btn btn-danger">
-                                <i class="fas fa-paper-plane me-2"></i>Kirim Surat Pengajuan
+                            <button type="submit" class="btn btn-primary">
+                                Kirim Surat Pengajuan
                             </button>
                         </div>
                     </form>

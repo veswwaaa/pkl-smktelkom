@@ -62,7 +62,6 @@
                     <button type="submit" class="btn btn-block btn-success">Login</button>
                 </div>
                 <br>
-                <a href="registration">Registration</a>
             </form>
 
 

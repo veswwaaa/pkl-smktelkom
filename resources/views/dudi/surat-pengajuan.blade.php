@@ -31,12 +31,6 @@
 
         <!-- Right side -->
         <div class="navbar-right">
-            <!-- Notification -->
-            <button class="notification-btn">
-                <i class="fas fa-bell"></i>
-                <span class="notification-badge">3</span>
-            </button>
-
             <!-- Profile Dropdown -->
             <div class="dropdown">
                 <button class="profile-dropdown" type="button" data-bs-toggle="dropdown">
@@ -73,15 +67,23 @@
 
     <!-- Main Content -->
     <div class="main-content">
-        <div class="container-fluid py-4">
-            <div class="page-header mb-4">
-                <h4 class="mb-0"><strong>Surat Pengajuan PKL</strong></h4>
+        <!-- Page Header -->
+        <div class="page-header">
+            <div class="page-title">
+                <div>
+                    <i class="fas fa-envelope"></i>
+                </div>
+                <div>
+                    <h1>Surat Pengajuan Data</h1>
+                    <p>Unduh surat pengajuan dari sekolah dan unggah surat balasan Anda di sini</p>
+                </div>
             </div>
+        </div>
 
             @if ($surat && $surat->file_surat_pengajuan)
             <!-- Download Surat Pengajuan -->
             <div class="card">
-                <div class="card-header bg-primary text-white">
+                <div class="card-header text-black">
                     <h5 class="mb-0"><i class="fas fa-download me-2"></i>Download Surat Pengajuan dari Admin</h5>
                 </div>
                 <div class="card-body">
@@ -115,7 +117,7 @@
 
             <!-- Upload Balasan Pengajuan -->
             <div class="card">
-                <div class="card-header bg-success text-white">
+                <div class="card-header text-black">
                     <h5 class="mb-0"><i class="fas fa-upload me-2"></i>Upload Surat Balasan ke Admin</h5>
                 </div>
                 <div class="card-body">
@@ -159,7 +161,7 @@
                         <div class="row">
                             <div class="col-12 mb-3">
                                 <label for="file_balasan_pengajuan" class="form-label">
-                                    <i class="fas fa-file-upload me-1"></i>File Surat Balasan <span
+                                    File Surat Balasan <span
                                         class="text-danger">*</span>
                                 </label>
                                 <input type="file" class="form-control" id="file_balasan_pengajuan"
@@ -169,14 +171,14 @@
 
                             <div class="col-12 mb-3">
                                 <label for="catatan_pengajuan" class="form-label">
-                                    <i class="fas fa-sticky-note me-1"></i>Catatan (Opsional)
+                                    Catatan (Opsional)
                                 </label>
                                 <textarea class="form-control" id="catatan_pengajuan" name="catatan_dudi" rows="3"
                                     placeholder="Tambahkan catatan untuk admin...">{{ $surat->catatan_dudi_pengajuan ?? '' }}</textarea>
                             </div>
                         </div>
 
-                        <button type="submit" class="btn btn-success btn-lg">
+                        <button type="submit"  class="btn btn-primary">
                             <i class="fas fa-paper-plane me-2"></i>Kirim Balasan ke Admin
                         </button>
                     </form>

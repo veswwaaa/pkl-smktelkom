@@ -5,7 +5,11 @@
 
 /* Welcome Header */
 .welcome-header {
-    background: linear-gradient(135deg, #e74141 0%, #fe6969 100%);
+    background-color: transparent;
+    background-image: var(--welcome-header-bg-image, url('../img/welcome-header.png'));
+    background-repeat: no-repeat;
+    background-position: center calc(100% - -45px);
+    background-size: min(100%);
     border-radius: 20px;
     padding: 30px;
     margin-bottom: 30px;
@@ -17,15 +21,28 @@
     font-size: 2.2rem;
     font-weight: 700;
     margin-bottom: 8px;
-    color: white;
+    color: #ffffff;
 }
 
 .welcome-header p {
     font-size: 1rem;
     opacity: 0.9;
     margin: 0;
-    color: white;
+    color: #ffffff;
 }
+
+/* Per-dashboard background structure (fill image path later) */
+/* .welcome-header-admin {
+    --welcome-header-bg-image: url('../img/telkom-logo.png');
+}
+
+.welcome-header-siswa {
+    --welcome-header-bg-image: url('../img/telkom-logo.png');
+}
+
+.welcome-header-walikelas {
+    --welcome-header-bg-image: url('../img/telkom-logo.png');
+} */
 
 /* User Avatars */
 .user-avatars {
@@ -71,6 +88,8 @@
 @media (max-width: 768px) {
     .welcome-header {
         padding: 20px;
+        background-position: center calc(100% - 12px);
+        background-size: min(360px, 72%);
     }
 
     .welcome-header .d-flex {
@@ -100,6 +119,9 @@
 @media (max-width: 480px) {
     .welcome-header {
         padding: 15px;
+        padding-bottom: 120px;
+        background-position: center calc(100% - 8px);
+        background-size: min(280px, 78%);
     }
 
     .welcome-header h1 {

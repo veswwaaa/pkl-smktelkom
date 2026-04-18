@@ -14,10 +14,6 @@
                 <p>Kirim surat permohonan data jurusan/jobdesk ke DUDI</p>
             </div>
         </div>
-        <a href="/admin/surat-dudi" class="back-btn">
-            <i class="fas fa-arrow-left"></i>
-            Kembali
-        </a>
     </div>
 
     <div class="container-fluid">
@@ -183,11 +179,11 @@
 
                         <!-- Buttons -->
                         <div class="d-flex justify-content-end gap-2">
-                            <a href="/admin/surat-dudi" class="btn btn-secondary">
-                                <i class="fas fa-times me-2"></i>Batal
+                            <a href="/admin/surat-dudi" class="btn btn-outline-secondary">
+                                Batal
                             </a>
-                            <button type="submit" class="btn btn-danger text-light">
-                                <i class="fas fa-paper-plane me-2"></i>Kirim Surat Permohonan
+                            <button type="submit" class="btn btn-primary text-light">
+                                Kirim Surat Permohonan
                             </button>
                         </div>
                     </form>

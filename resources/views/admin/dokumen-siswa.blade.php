@@ -58,10 +58,6 @@
                 <p>Kelola dokumen PKL siswa</p>
             </div>
         </div>
-        <a href="/dashboard" class="back-btn">
-            <i class="fas fa-arrow-left"></i>
-            Kembali
-        </a>
     </div>
 
     <div class="container-fluid">

@@ -55,7 +55,7 @@
     <div class="left-sidebar" id="leftSidebar">
         <div class="sidebar-menu">
             <a href="/dashboard" class="sidebar-item" title="Dashboard">
-                <i class="fas fa-home"></i>
+                <i class="fas fa-th-large"></i>
             </a>
             <a href="/admin/dudi" class="sidebar-item" title="Kelola DUDI">
                 <i class="fas fa-building"></i>
@@ -144,7 +144,7 @@
 
                     <div class="col-md-2">
                         <label class="form-label">&nbsp;</label>
-                        <button type="submit" class="btn btn-danger w-100">
+                        <button type="submit" class="btn btn-primary w-100">
                             <i class="fas fa-search me-1"></i> Filter
                         </button>
                     </div>
@@ -178,7 +178,7 @@
                                         <td>{{ $item->siswa->nis }}</td>
                                         <td>{{ $item->siswa->nama }}</td>
                                         <td>{{ $item->siswa->kelas }}</td>
-                                        <td><span class="badge bg-info">{{ $item->siswa->jurusan }}</span></td>
+                                        <td><span>{{ $item->siswa->jurusan }}</span></td>
                                         <td>
                                             @php
                                                 $pilihanAktif = $item->pilihan_aktif;

@@ -7,6 +7,7 @@
     <title>Surat Permohonan - {{ $dudi->nama_dudi }}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
     <link href="{{ asset('css/kelola-dudi.css') }}" rel="stylesheet">
     <link href="{{ asset('css/dudi-pages.css') }}" rel="stylesheet">
     <link href="{{ asset('css/shared-components.css') }}" rel="stylesheet">
@@ -31,12 +32,6 @@
 
         <!-- Right side -->
         <div class="navbar-right">
-            <!-- Notification -->
-            <button class="notification-btn">
-                <i class="fas fa-bell"></i>
-                <span class="notification-badge">3</span>
-            </button>
-
             <!-- Profile Dropdown -->
             <div class="dropdown">
                 <button class="profile-dropdown" type="button" data-bs-toggle="dropdown">
@@ -57,7 +52,7 @@
     <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
 
     <!-- Left Sidebar -->
-     <div class="left-sidebar" id="leftSidebar">
+    <div class="left-sidebar" id="leftSidebar">
         <div class="sidebar-menu">
             <a href="/dudi/dashboard" class="sidebar-item" title="Dashboard">
                 <i class="fas fa-th-large"></i>
@@ -73,185 +68,192 @@
 
     <!-- Main Content -->
     <div class="main-content">
-        <div class="container-fluid py-4">
-            <div class="page-header mb-4">
-                <h4 class="mb-0"><strong>Surat Permohonan Data</strong></h4>
-            </div>
-
-            @if ($surat && $surat->file_surat_permohonan)
-            <!-- Download Surat Permohonan -->
-            <div class="card">
-                <div class="card-header bg-info text-white">
-                    <h5 class="mb-0"><i class="fas fa-download me-2"></i>Download Surat Permohonan dari Admin</h5>
+        <!-- Page Header -->
+        <div class="page-header">
+            <div class="page-title">
+                <div>
+                    <i class="fas fa-envelope"></i>
                 </div>
-                <div class="card-body">
+                <div>
+                    <h1>Surat Permohonan Data</h1>
+                    <p>Unduh surat permohonan dari sekolah dan unggah surat balasan Anda di sini</p>
+                </div>
+            </div>
+        </div>
+
+    @if ($surat && $surat->file_surat_permohonan)
+        <!-- Download Surat Permohonan -->
+        <div class="card">
+            <div class="card-header text-black">
+                <h5 class="mb-0"><i class="fas fa-download me-2"></i>Download Surat Permohonan dari Admin</h5>
+            </div>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <p class="mb-2"><strong>Tanggal Dikirim:</strong></p>
+                        <p>{{ $surat->tanggal_upload_permohonan ? $surat->tanggal_upload_permohonan->format('d M Y H:i') : '-' }}
+                        </p>
+                    </div>
+                    <div class="col-md-6">
+                        <p class="mb-2"><strong>Catatan dari Admin:</strong></p>
+                        <p>{{ $surat->catatan_admin_permohonan ?? 'Tidak ada catatan' }}</p>
+                    </div>
+                </div>
+
+                @if ($surat->file_surat_permohonan && $filePermohonanExists)
+                    <a href="/dudi/surat-pkl/{{ $surat->id }}/download?type=surat-permohonan"
+                         class="btn btn-primary">
+                        <i class="fas fa-download me-2"></i>Download Surat Permohonan
+                    </a>
+                @elseif ($surat->file_surat_permohonan && !$filePermohonanExists)
+                    <div class="alert alert-warning mb-0">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        File tidak tersedia di server. Hubungi admin untuk upload ulang.
+                    </div>
+                @else
+                    <button class="btn btn-secondary" disabled>Tidak ada file permohonan</button>
+                @endif
+            </div>
+        </div>
+
+        <!-- Upload Balasan Permohonan -->
+        <div class="card">
+            <div class="card-header text-black">
+                <h5 class="mb-0"><i class="fas fa-upload me-2"></i>Upload Surat Balasan ke Admin</h5>
+            </div>
+            <div class="card-body">
+                @if ($surat->file_balasan_permohonan)
+                    <!-- Sudah kirim balasan -->
+                    <div class="alert alert-success">
+                        <i class="fas fa-check-circle me-2"></i>
+                        <strong>Balasan sudah dikirim pada:</strong>
+                        {{ $surat->tanggal_upload_balasan_permohonan ? $surat->tanggal_upload_balasan_permohonan->format('d M Y H:i') : '-' }}
+                    </div>
+
                     <div class="row mb-3">
-                        <div class="col-md-6">
-                            <p class="mb-2"><strong>Tanggal Dikirim:</strong></p>
-                            <p>{{ $surat->tanggal_upload_permohonan ? $surat->tanggal_upload_permohonan->format('d M Y H:i') : '-' }}
-                            </p>
-                        </div>
-                        <div class="col-md-6">
-                            <p class="mb-2"><strong>Catatan dari Admin:</strong></p>
-                            <p>{{ $surat->catatan_admin_permohonan ?? 'Tidak ada catatan' }}</p>
+                        <div class="col-md-12">
+                            <p class="mb-2"><strong>Catatan:</strong></p>
+                            <p>{{ $surat->catatan_balasan_permohonan ?? 'Tidak ada catatan' }}</p>
                         </div>
                     </div>
 
-                    @if ($surat->file_surat_permohonan && $filePermohonanExists)
-                        <a href="/dudi/surat-pkl/{{ $surat->id }}/download?type=surat-permohonan"
-                            class="btn btn-info text-white">
-                            <i class="fas fa-download me-2"></i>Download Surat Permohonan
+                    @if ($surat->file_balasan_permohonan && $fileBalasanPermohonanExists)
+                        <a href="/dudi/surat-pkl/{{ $surat->id }}/download?type=balasan-permohonan"
+                            class="btn btn-secondary mb-3">
+                            <i class="fas fa-file-pdf me-2"></i>Lihat Surat Balasan
                         </a>
-                    @elseif ($surat->file_surat_permohonan && !$filePermohonanExists)
-                        <div class="alert alert-warning mb-0">
+                    @elseif ($surat->file_balasan_permohonan && !$fileBalasanPermohonanExists)
+                        <div class="alert alert-warning mb-3">
                             <i class="fas fa-exclamation-triangle me-2"></i>
-                            File tidak tersedia di server. Hubungi admin untuk upload ulang.
-                        </div>
-                    @else
-                        <button class="btn btn-secondary" disabled>Tidak ada file permohonan</button>
-                    @endif
-                </div>
-            </div>
-
-            <!-- Upload Balasan Permohonan -->
-            <div class="card">
-                <div class="card-header bg-warning">
-                    <h5 class="mb-0"><i class="fas fa-upload me-2"></i>Upload Surat Balasan ke Admin</h5>
-                </div>
-                <div class="card-body">
-                    @if ($surat->file_balasan_permohonan)
-                        <!-- Sudah kirim balasan -->
-                        <div class="alert alert-success">
-                            <i class="fas fa-check-circle me-2"></i>
-                            <strong>Balasan sudah dikirim pada:</strong>
-                            {{ $surat->tanggal_upload_balasan_permohonan ? $surat->tanggal_upload_balasan_permohonan->format('d M Y H:i') : '-' }}
-                        </div>
-
-                        <div class="row mb-3">
-                            <div class="col-md-12">
-                                <p class="mb-2"><strong>Catatan:</strong></p>
-                                <p>{{ $surat->catatan_balasan_permohonan ?? 'Tidak ada catatan' }}</p>
-                            </div>
-                        </div>
-
-                        @if ($surat->file_balasan_permohonan && $fileBalasanPermohonanExists)
-                            <a href="/dudi/surat-pkl/{{ $surat->id }}/download?type=balasan-permohonan"
-                                class="btn btn-secondary mb-3">
-                                <i class="fas fa-file-pdf me-2"></i>Lihat Surat Balasan
-                            </a>
-                        @elseif ($surat->file_balasan_permohonan && !$fileBalasanPermohonanExists)
-                            <div class="alert alert-warning mb-3">
-                                <i class="fas fa-exclamation-triangle me-2"></i>
-                                File tidak tersedia di server.
-                            </div>
-                        @endif
-
-                        <div class="alert alert-info">
-                            <i class="fas fa-info-circle me-2"></i>
-                            Jika ingin mengirim balasan baru, upload file baru di bawah ini.
+                            File tidak tersedia di server.
                         </div>
                     @endif
 
-                    <form id="formBalasanPermohonan" enctype="multipart/form-data">
-                        @csrf
-                        <input type="hidden" name="jenis_surat" value="permohonan">
 
-                        <div class="alert alert-info mb-4">
-                            <i class="fas fa-info-circle me-2"></i>
-                            <strong>Informasi:</strong> Isi form di bawah ini untuk memberikan informasi penerimaan PKL.
-                            Surat balasan akan di-generate otomatis berdasarkan data yang Anda isi.
+                @endif
+
+                <form id="formBalasanPermohonan" enctype="multipart/form-data">
+                    @csrf
+                    <input type="hidden" name="jenis_surat" value="permohonan">
+
+                    <div class="alert alert-info mb-4">
+                        <i class="fas fa-info-circle me-2"></i>
+                        <strong>Informasi:</strong> Isi form di bawah ini untuk memberikan informasi penerimaan
+                        PKL.
+                        Surat balasan akan di-generate otomatis berdasarkan data yang Anda isi.
+                    </div>
+
+                    <!-- Checkbox Jurusan -->
+                    <div class="card mb-4">
+                        <div class="card-header1 text-black">
+                            <h5 class="mb-0"><i class="fas fa-graduation-cap me-2"></i>Jurusan yang
+                                Diterima</span></h5>
                         </div>
-
-                        <!-- Checkbox Jurusan -->
-                        <div class="card mb-4">
-                            <div class="card-header bg-light">
-                                <h6 class="mb-0"><i class="fas fa-graduation-cap me-2"></i>Jurusan yang Diterima <span
-                                        class="text-danger">*</span></h6>
-                            </div>
-                            <div class="card-body">
-                                <p class="text-muted mb-3">Pilih jurusan yang bisa diterima untuk PKL di perusahaan
-                                    Anda:</p>
-                                <div class="row">
-                                    <div class="col-md-4 mb-2">
-                                        <div class="form-check">
-                                            <input class="form-check-input jurusan-checkbox" type="checkbox"
-                                                name="jurusan[]" value="RPL" id="jurusan_rpl">
-                                            <label class="form-check-label" for="jurusan_rpl">
-                                                <strong>RPL</strong> - Rekayasa Perangkat Lunak
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4 mb-2">
-                                        <div class="form-check">
-                                            <input class="form-check-input jurusan-checkbox" type="checkbox"
-                                                name="jurusan[]" value="DKV" id="jurusan_dkv">
-                                            <label class="form-check-label" for="jurusan_dkv">
-                                                <strong>DKV</strong> - Desain Komunikasi Visual
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4 mb-2">
-                                        <div class="form-check">
-                                            <input class="form-check-input jurusan-checkbox" type="checkbox"
-                                                name="jurusan[]" value="ANM" id="jurusan_anm">
-                                            <label class="form-check-label" for="jurusan_anm">
-                                                <strong>ANM</strong> - Animasi
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4 mb-2">
-                                        <div class="form-check">
-                                            <input class="form-check-input jurusan-checkbox" type="checkbox"
-                                                name="jurusan[]" value="TKJ" id="jurusan_tkj">
-                                            <label class="form-check-label" for="jurusan_tkj">
-                                                <strong>TKJ</strong> - Teknik Komputer dan Jaringan
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4 mb-2">
-                                        <div class="form-check">
-                                            <input class="form-check-input jurusan-checkbox" type="checkbox"
-                                                name="jurusan[]" value="TJAT" id="jurusan_tjat">
-                                            <label class="form-check-label" for="jurusan_tjat">
-                                                <strong>TJAT</strong> - Teknik Jaringan Akses Telekomunikasi
-                                            </label>
-                                        </div>
+                        <div class="card-body">
+                            <p class="text-muted mb-3">Pilih jurusan yang bisa diterima untuk PKL di perusahaan
+                                Anda:</p>
+                            <div class="row">
+                                <div class="col-md-4 mb-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input jurusan-checkbox" type="checkbox"
+                                            name="jurusan[]" value="RPL" id="jurusan_rpl">
+                                        <label class="form-check-label" for="jurusan_rpl">
+                                            <strong>RPL</strong> - Rekayasa Perangkat Lunak
+                                        </label>
                                     </div>
                                 </div>
-                                <small class="text-danger" id="error-jurusan" style="display: none;">Pilih minimal 1
-                                    jurusan</small>
+                                <div class="col-md-4 mb-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input jurusan-checkbox" type="checkbox"
+                                            name="jurusan[]" value="DKV" id="jurusan_dkv">
+                                        <label class="form-check-label" for="jurusan_dkv">
+                                            <strong>DKV</strong> - Desain Komunikasi Visual
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input jurusan-checkbox" type="checkbox"
+                                            name="jurusan[]" value="ANM" id="jurusan_anm">
+                                        <label class="form-check-label" for="jurusan_anm">
+                                            <strong>ANM</strong> - Animasi
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input jurusan-checkbox" type="checkbox"
+                                            name="jurusan[]" value="TKJ" id="jurusan_tkj">
+                                        <label class="form-check-label" for="jurusan_tkj">
+                                            <strong>TKJ</strong> - Teknik Komputer dan Jaringan
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input jurusan-checkbox" type="checkbox"
+                                            name="jurusan[]" value="TJAT" id="jurusan_tjat">
+                                        <label class="form-check-label" for="jurusan_tjat">
+                                            <strong>TJAT</strong> - Teknik Jaringan Akses Telekomunikasi
+                                        </label>
+                                    </div>
+                                </div>
                             </div>
+                            <small class="text-danger" id="error-jurusan" style="display: none;">Pilih
+                                minimal 1
+                                jurusan</small>
                         </div>
+                    </div>
 
-                        <!-- Detail per Jurusan (akan muncul dinamis) -->
-                        <div id="detailJurusanContainer"></div>
+                    <!-- Detail per Jurusan (akan muncul dinamis) -->
+                    <div id="detailJurusanContainer"></div>
 
-                        <!-- Catatan -->
-                        <div class="col-12 mb-3">
-                            <label for="catatan_permohonan" class="form-label">
-                                <i class="fas fa-sticky-note me-1"></i>Catatan Tambahan (Opsional)
-                            </label>
-                            <textarea class="form-control" id="catatan_permohonan" name="catatan_dudi" rows="3"
-                                placeholder="Tambahkan catatan atau persyaratan tambahan...">{{ $surat->catatan_dudi_permohonan ?? '' }}</textarea>
-                        </div>
+                    <!-- Catatan -->
+                    <div class="col-12 mb-3">
+                        <label for="catatan_permohonan" class="form-label">
+                            <i class="fas fa-sticky-note me-1"></i>Catatan Tambahan (Opsional)
+                        </label>
+                        <textarea class="form-control" id="catatan_permohonan" name="catatan_dudi" rows="3"
+                            placeholder="Tambahkan catatan atau persyaratan tambahan...">{{ $surat->catatan_dudi_permohonan ?? '' }}</textarea>
+                    </div>
 
-                        <button type="submit" class="btn btn-warning btn-lg">
-                            <i class="fas fa-paper-plane me-2"></i>Kirim Balasan ke Admin
-                        </button>
-                    </form>
-                </div>
+                    <button type="submit"  class="btn btn-primary">
+                        <i class="fas fa-paper-plane me-2"></i>Kirim Balasan ke Admin
+                    </button>
+                </form>
             </div>
-        @else
-            <!-- Belum ada surat permohonan -->
-            <div class="card">
-                <div class="card-body text-center py-5">
-                    <i class="fas fa-inbox fa-4x text-muted mb-3"></i>
-                    <h4 class="text-muted">Belum Ada Surat Permohonan</h4>
-                    <p class="text-muted">Admin belum mengirim surat permohonan untuk DUDI Anda.</p>
-                </div>
-            </div>
-        @endif
         </div>
+    @else
+        <!-- Belum ada surat permohonan -->
+        <div class="card">
+            <div class="card-body text-center py-5">
+                <i class="fas fa-inbox fa-4x text-muted mb-3"></i>
+                <h4 class="text-muted">Belum Ada Surat Permohonan</h4>
+                <p class="text-muted">Admin belum mengirim surat permohonan untuk DUDI Anda.</p>
+            </div>
+        </div>
+    @endif
+    </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
@@ -274,8 +276,8 @@
                     detailDiv.id = `detail-${jurusan}`;
                     detailDiv.className = 'card mb-4';
                     detailDiv.innerHTML = `
-                        <div class="card-header bg-primary text-white">
-                            <h6 class="mb-0"><i class="fas fa-briefcase me-2"></i>Detail untuk Jurusan ${jurusan}</h6>
+                        <div class="card-header1 text-black">
+                            <h5 class="mb-0"><i class="fas fa-briefcase me-2"></i>Detail untuk Jurusan ${jurusan}</h5>
                         </div>
                         <div class="card-body">
                             <div class="mb-3">

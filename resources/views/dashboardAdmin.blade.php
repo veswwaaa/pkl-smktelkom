@@ -103,20 +103,6 @@
                     <h1>Selamat Datang Di Dashboard PKL</h1>
                     <p>Kelola program Praktik Kerja Lapangan SMK Telkom Banjarbaru dengan mudah dan efisien</p>
                 </div>
-                <div class="user-avatars">
-                    <div class="user-avatar avatar-orange">
-                        <i class="fas fa-user"></i>
-                    </div>
-                    <div class="user-avatar avatar-green">
-                        <i class="fas fa-users"></i>
-                    </div>
-                    <div class="user-avatar avatar-gray">
-                        <i class="fas fa-user"></i>
-                    </div>
-                    <div class="user-avatar avatar-blue">
-                        <i class="fas fa-user"></i>
-                    </div>
-                </div>
             </div>
         </div>
 

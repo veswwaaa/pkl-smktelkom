@@ -13,10 +13,6 @@
                 <p>Kelola surat pengajuan dan balasan dari DUDI</p>
             </div>
         </div>
-        <a href="/admin/dudi" class="back-btn">
-            <i class="fas fa-arrow-left"></i>
-            Kembali
-        </a>
     </div>
 
     <div class="container-fluid">

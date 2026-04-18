@@ -155,17 +155,14 @@ body {
 
 /* Left Sidebar */
 .left-sidebar {
-    position: fixed !important;
-    top: 70px !important;
-    left: 0 !important;
-    width: var(--sidebar-width) !important;
-    height: calc(100vh - 70px) !important;
-    background: #e53e3e !important;
-    z-index: 1040 !important;
-    padding: 20px 0 !important;
-    display: block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
+    position: fixed;
+    top: 70px;
+    left: 0;
+    width: var(--sidebar-width);
+    height: calc(100vh - 70px);
+    background-color: #B32A2F;
+    z-index: 1040;
+    padding: 20px 0;
 }
 
 .sidebar-menu {
@@ -179,25 +176,128 @@ body {
     width: 50px;
     height: 50px;
     border-radius: 12px;
-    display: flex !important;
+    display: flex;
     align-items: center;
     justify-content: center;
-    color: white !important;
+    color: white;
     text-decoration: none;
     transition: all 0.3s;
-    background: rgba(255, 255, 255, 0.1);
+    background:  rgba(255, 255, 255, 0.1);;
 }
 
 .sidebar-item:hover,
 .sidebar-item.active {
     background: rgba(255, 255, 255, 0.2);
     transform: scale(1.05);
-    color: white !important;
+    color: white;
 }
 
 .sidebar-item i {
     font-size: 20px;
-    color: white !important;
+}
+
+/* ===================================== */
+/* Additional Styles (formerly kelola-dudi-additional.css) */
+/* ===================================== */
+
+.avatar-circle {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background: linear-gradient(45deg, #e53e3e, #ff6b6b);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.me-2 {
+    margin-right: .5rem !important;
+}
+
+.btn-reset {
+    background: #ffc107;
+    border-color: #ffc107;
+    color: #212529;
+}
+
+.btn-reset:hover {
+    background: #ffca2c;
+    border-color: #ffc720;
+    color: #212529;
+}
+
+.btn-jurusan {
+    background: #a5b7cf;
+    border-color: #a5b7cf;
+    color: white;
+}
+
+.btn-info {
+    background: #0F56B2;
+    border-color: #0F56B2;
+    color: white;
+}
+
+.btn-info:hover {
+    background: #0a3d7f;
+    border-color: #0f4ea1;
+    color: white;
+}
+
+.btn-info:active,
+.btn-info.active,
+.btn-info:focus:active {
+background: #08356e;
+border-color: #08356e;
+color: white;
+}
+
+.action-btn.btn-info:active,
+.action-btn.btn-info.active,
+.action-btn.btn-info:focus:active {
+background: #08356e;
+color: white;
+transform: translateY(0);
+}
+
+.info-group {
+    padding: 10px;
+    background: #f8f9fa;
+    border-radius: 5px;
+    border-left: 3px solid #007bff;
+}
+
+.info-group label {
+    margin-bottom: 5px;
+    display: block;
+}
+
+.password-result-container {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    border: 2px dashed #28a745;
+}
+
+.password-result-container .form-control {
+    font-family: "Courier New", monospace;
+    font-weight: bold;
+    font-size: 16px;
+    text-align: center;
+    letter-spacing: 1px;
+}
+
+/* Action Buttons Spacing - Additional Rules */
+.action-btn {
+    margin: 0 2px;
+    min-width: 35px;
+    min-height: 35px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
 /* Main Content */
@@ -271,7 +371,7 @@ body {
 }
 
 .table-header {
-    background: linear-gradient(135deg, var(--telkom-red), #ff6b6b);
+    background: #B32A2F;
     padding: 20px 30px;
     color: white;
 }
@@ -299,9 +399,9 @@ body {
     align-items: center;
     gap: 8px;
     padding: 10px 20px;
-    background: rgba(255, 255, 255, 0.2);
+    /* background: #253bff; */
     color: white;
-    border: 2px solid rgba(255, 255, 255, 0.3);
+    border: 2px solid #888888;
     border-radius: 8px;
     text-decoration: none;
     transition: all 0.3s;
@@ -310,7 +410,8 @@ body {
 }
 
 .add-btn:hover {
-    background: rgba(255, 255, 255, 0.3);
+    background: #2955f3;
+    border-color: #888888;
     color: white;
     transform: translateY(-2px);
 }
@@ -394,6 +495,42 @@ body {
     margin: 0 2px;
 }
 
+.action-btn.btn-info {
+    background: #0F56B2;
+    color: white;
+}
+
+.action-btn.btn-info:hover {
+    background: #0f4ea1;
+    transform: translateY(-1px);
+}
+
+.btn-info:active,
+.btn-info.active,
+.btn-info:focus:active {
+background: #08356e;
+border-color: #08356e;
+color: white;
+}
+
+.action-btn.btn-info:active,
+.action-btn.btn-info.active,
+.action-btn.btn-info:focus:active {
+background: #08356e;
+color: white;
+transform: translateY(0);
+}
+
+.btn-success {
+    background: #28a745;
+    color: white;
+}
+
+.btn-success:hover {
+    background: #218838;
+    transform: translateY(-1px);
+}
+
 .btn-edit {
     background: #ffc107;
     color: #212529;
@@ -401,6 +538,16 @@ body {
 
 .btn-edit:hover {
     background: #e0a800;
+    transform: translateY(-1px);
+}
+
+.btn-reset {
+    background: #ff9800;
+    color: white;
+}
+
+.btn-reset:hover {
+    background: #e67e22;
     transform: translateY(-1px);
 }
 
@@ -428,12 +575,19 @@ body {
 }
 
 .modal-header.bg-primary {
-    background: linear-gradient(135deg, #e74141 0%, #fe6969 100%);
+    background: #1E293B ;
 }
 
 .modal-header.bg-warning {
     background: linear-gradient(135deg, #ffc107, #e0a800) !important;
 }
+
+
+
+
+/* .modal-header.bg-success {
+    background: #17a2b8;
+} */
 
 .modal-body {
     padding: 30px;
@@ -459,8 +613,23 @@ body {
 }
 
 .form-control:focus {
-    border-color: var(--telkom-red);
-    box-shadow: 0 0 0 0.25rem rgba(229, 62, 62, 0.25);
+    border-color: #cecece;
+    box-shadow: 0 0 0 0.5px rgba(14, 165, 233, 0.25);
+}
+
+/* Tipiskan box shadow hijau saat validasi success */
+.form-control.is-valid,
+.was-validated .form-control:valid {
+    box-shadow: 0 0 0 0.1rem rgba(40, 167, 69, 0.15);
+    border: none;
+    background-image: none;
+}
+
+.form-control.is-valid:focus,
+.was-validated .form-control:valid:focus {
+    box-shadow: 0 0 0 0.1rem rgba(40, 167, 69, 0.15);
+    border: none;
+    background-image: none;
 }
 
 /* Alert Styles */
@@ -537,6 +706,13 @@ body {
     .table-container {
         overflow-x: auto;
     }
+
+    .action-btn {
+        margin: 1px;
+        min-width: 32px;
+        min-height: 32px;
+        font-size: 12px;
+    }
 }
 
 @media (max-width: 992px) {
@@ -546,6 +722,19 @@ body {
 
     .main-content {
         margin-left: 60px;
+    }
+
+    .action-btn {
+        margin: 1px;
+        min-width: 28px;
+        min-height: 28px;
+        font-size: 11px;
+    }
+
+    td .action-btn {
+        display: block;
+        margin: 2px auto;
+        width: 80%;
     }
 }
 

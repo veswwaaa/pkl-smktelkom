@@ -8,7 +8,6 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="{{ asset('css/kelola-dudi.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/kelola-dudi-additional.css') }}" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
@@ -100,10 +99,6 @@
                     <p>Kelola data Wali Kelas SMK Telkom Banjarbaru</p>
                 </div>
             </div>
-            <a href="/dashboard" class="back-btn">
-                <i class="fas fa-arrow-left"></i>
-                Kembali
-            </a>
         </div>
 
         <!-- Alert Messages -->
@@ -144,7 +139,7 @@
                         <i class="fas fa-table"></i>
                         <h5>Daftar Wali Kelas</h5>
                     </div>
-                    <button class="add-btn" onclick="showAddModal()">
+                    <button class="add-btn btn btn-primary" onclick="showAddModal()">
                         <i class="fas fa-plus"></i>
                         Tambah Wali Kelas
                     </button>
@@ -168,26 +163,26 @@
                     <tbody>
                         @forelse($waliKelas as $index => $wk)
                             <tr>
-                                <td class="text-center fw-bold">{{ $index + 1 }}</td>
+                                <td class="text-center">{{ $index + 1 }}</td>
                                 <td>
-                                    <code class="bg-light text-dark px-2 py-1 rounded">{{ $wk->nip }}</code>
+                                   <span>{{ $wk->nip }}</span>
                                 </td>
                                 <td>
                                     <div class="d-flex align-items-center">
-                                        <div class="avatar-circle me-2">
+                                        {{-- <div class="avatar-circle me-2">
                                             {{ substr($wk->nama_admin, 0, 1) }}
-                                        </div>
-                                        <strong class="text-primary">{{ $wk->nama_admin }}</strong>
+                                        </div> --}}
+                                        <p>{{ $wk->nama_admin }}</p>
                                     </div>
                                 </td>
                                 <td>
-                                    <span class="badge bg-primary">{{ $wk->kelas ?? '-' }}</span>
+                                    <span class=>{{ $wk->kelas ?? '-' }}</span>
                                 </td>
                                 <td>
-                                    <code class="bg-light text-dark px-2 py-1 rounded">{{ $wk->no_telpon }}</code>
+                                    <code class="text-dark">{{ $wk->no_telpon }}</code>
                                 </td>
                                 <td>
-                                    <span class="badge bg-info">{{ $wk->alamat }}</span>
+                                    <span>{{ $wk->alamat }}</span>
                                 </td>
                                 <td>
                                     <span class="badge bg-success">{{ $wk->nip }}</span>
@@ -232,8 +227,8 @@
     <div class="modal fade" id="addModal" tabindex="-1">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
-                <div class="modal-header bg-danger">
-                    <h5 class="modal-title text-white">
+               <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title">
                         <i class="fas fa-plus-circle me-2"></i>
                         Tambah Data Wali Kelas Baru
                     </h5>
@@ -312,12 +307,12 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                        <i class="fas fa-times me-1"></i>
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        {{-- <i class="fas fa-times me-1"></i> --}}
                         Batal
                     </button>
-                    <button type="button" class="btn btn-danger" onclick="submitAdd()">
-                        <i class="fas fa-save me-1"></i>
+                    <button type="button" class="btn btn-primary" onclick="submitAdd()">
+                        {{-- <i class="fas fa-save me-1"></i> --}}
                         Simpan Data
                     </button>
                 </div>
@@ -751,7 +746,7 @@
             left: 0 !important;
             width: 90px !important;
             height: calc(100vh - 70px) !important;
-            background: #e53e3e !important;
+            background: #B32A2F !important;
             z-index: 1040 !important;
             padding: 20px 0 !important;
             visibility: visible !important;
@@ -778,7 +773,7 @@
                 background: none !important;
                 border: none !important;
                 font-size: 1.5rem !important;
-                color: #e53e3e !important;
+                color: #B32A2F !important;
                 cursor: pointer !important;
                 padding: 8px !important;
             }

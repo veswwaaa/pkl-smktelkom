@@ -106,10 +106,6 @@
                     <p>Kelola data siswa PKL SMK Telkom Banjarbaru</p>
                 </div>
             </div>
-            <a href="/dashboard" class="back-btn">
-                <i class="fas fa-arrow-left"></i>
-                Kembali
-            </a>
         </div>
 
 
@@ -152,7 +148,7 @@
                         <i class="fas fa-table"></i>
                         <h5>Daftar Siswa</h5>
                     </div>
-                    <button class="add-btn" data-bs-toggle="modal" data-bs-target="#addSiswaModal">
+                    <button class="add-btn btn btn-primary" data-bs-toggle="modal" data-bs-target="#addSiswaModal">
                         <i class="fas fa-plus"></i>
                         Tambah Siswa
                     </button>
@@ -185,13 +181,13 @@
                 <tbody>
                     @forelse($siswa as $index => $siswaItem)
                         <tr>
-                            <td>{{ $index + 1 }}</td>
-                            <td><span class="badge bg-info">{{ $siswaItem->nis }}</span></td>
-                            <td><strong>{{ $siswaItem->nama }}</strong></td>
+                            <td class="text-center">{{ $index + 1 }}</td>
+                            <td><span>{{ $siswaItem->nis }}</span></td>
+                            <td><p>{{ $siswaItem->nama }}</p></td>
                             <td>{{ $siswaItem->kelas }}</td>
                             <td>{{ $siswaItem->jenis_kelamin }}</td>
                             <td>{{ $siswaItem->angkatan }}</td>
-                            <td><span class="badge bg-success">{{ $siswaItem->jurusan }}</span></td>
+                            <td><span>{{ $siswaItem->jurusan }}</span></td>
                             <td>
                                 @if ($siswaItem->grade_kesiswaan == 'tidak_ada')
                                     <span class="badge bg-primary">Tidak Ada</span>
@@ -231,7 +227,7 @@
                                     </span>
                                 @else
                                     <span class="badge bg-warning">
-                                        <i class="fas fa-clock"></i> Belum
+                                        <i class="fas fa-clock"></i> Pending
                                     </span>
                                 @endif
                             </td>
@@ -318,7 +314,7 @@
     <div class="modal fade" id="addSiswaModal" tabindex="-1">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
-                <div class="modal-header bg-danger text-white">
+                <div class="modal-header bg-primary text-white">
                     <h5 class="modal-title">
                         <i class="fas fa-user-plus"></i> Tambah Siswa Baru
                     </h5>
@@ -331,7 +327,7 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="nis" class="form-label">
-                                        <i class="fas fa-id-card text-danger"></i> NIS
+                                        <i class="fas fa-id-card"></i> NIS
                                     </label>
                                     <input type="text" class="form-control" id="nis" name="nis"
                                         required placeholder="Masukkan NIS siswa">
@@ -340,7 +336,7 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="nama" class="form-label">
-                                        <i class="fas fa-user text-danger"></i> Nama Lengkap
+                                        <i class="fas fa-user"></i> Nama Lengkap
                                     </label>
                                     <input type="text" class="form-control" id="nama" name="nama"
                                         required placeholder="Masukkan nama lengkap">
@@ -352,7 +348,7 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="kelas" class="form-label">
-                                        <i class="fas fa-school text-danger"></i> Kelas
+                                        <i class="fas fa-school"></i> Kelas
                                     </label>
                                     <input type="text" class="form-control" id="kelas" name="kelas"
                                         required placeholder="Contoh: XII E">
@@ -361,7 +357,7 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="jenis_kelamin" class="form-label">
-                                        <i class="fas fa-venus-mars text-danger"></i> Jenis Kelamin
+                                        <i class="fas fa-venus-mars"></i> Jenis Kelamin
                                     </label>
                                     <select class="form-select" id="jenis_kelamin" name="jenis_kelamin" required>
                                         <option value="">Pilih Jenis Kelamin</option>
@@ -376,7 +372,7 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="angkatan" class="form-label">
-                                        <i class="fas fa-calendar text-danger"></i> Angkatan
+                                        <i class="fas fa-calendar"></i> Angkatan
                                     </label>
                                     <input type="text" class="form-control" id="angkatan" name="angkatan"
                                         required placeholder="Contoh: angkatan 26">
@@ -385,7 +381,7 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="jurusan" class="form-label">
-                                        <i class="fas fa-graduation-cap text-danger"></i> Jurusan
+                                        <i class="fas fa-graduation-cap"></i> Jurusan
                                     </label>
                                     {{-- buat ngedit option jurusannya --}}
                                     <select class="form-select" id="jurusan" name="jurusan" required>
@@ -409,11 +405,11 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                            <i class="fas fa-times"></i> Batal
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                            Batal
                         </button>
-                        <button type="submit" class="btn btn-danger">
-                            <i class="fas fa-save"></i> Simpan Siswa
+                        <button type="submit" class="btn btn-primary">
+                            Simpan Siswa
                         </button>
                     </div>
                 </form>

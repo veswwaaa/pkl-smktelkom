@@ -82,7 +82,7 @@
      <!-- Main Content -->
     <div class="main-content">
         <!-- Welcome Header -->
-        <div class="welcome-header">
+        <div class="welcome-header welcome-header-siswa">
             <div class="d-flex justify-content-between align-items-start">
                 <div>
                     <h1>Selamat Datang Di Dashboard PKL</h1>

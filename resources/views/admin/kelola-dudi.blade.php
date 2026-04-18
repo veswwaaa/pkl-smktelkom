@@ -8,7 +8,6 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="{{ asset('css/kelola-dudi.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/kelola-dudi-additional.css') }}" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
@@ -56,7 +55,7 @@
     <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
 
     <!-- Left Sidebar -->
-    <div class="left-sidebar" id="leftSidebar">
+     <div class="left-sidebar" id="leftSidebar">
         <div class="sidebar-menu">
             <a href="/dashboard" class="sidebar-item" title="Dashboard">
                 <i class="fas fa-th-large"></i>
@@ -64,7 +63,7 @@
             <a href="/admin/dudi" class="sidebar-item active" title="Kelola DUDI">
                 <i class="fas fa-building"></i>
             </a>
-            <a href="/admin/siswa" class="sidebar-item" title="Kelola Siswa">
+            <a href="/admin/siswa" class="sidebar-item" title="kelola Siswa">
                 <i class="fas fa-users"></i>
             </a>
             <a href="/admin/wali-kelas" class="sidebar-item" title="Kelola Wali Kelas">
@@ -92,7 +91,6 @@
             </a>
         </div>
     </div>
-
     <!-- Main Content -->
     <div class="main-content">
         <!-- Page Header -->
@@ -106,10 +104,6 @@
                     <p>Kelola data DUDI yang bermitra dengan SMK Telkom Banjarbaru</p>
                 </div>
             </div>
-            <a href="/dashboard" class="back-btn">
-                <i class="fas fa-arrow-left"></i>
-                Kembali
-            </a>
         </div>
 
         <!-- Alert Messages -->
@@ -164,9 +158,9 @@
                                 </option>
                             </select>
                         </div>
-                        <button class="add-btn" onclick="showAddModal()">
+                        <button class="add-btn btn btn-primary" onclick="showAddModal()">
                             <i class="fas fa-plus"></i>
-                            Tambah DUDI
+                            Tambah Data
                         </button>
                     </div>
                 </div>
@@ -189,23 +183,23 @@
                     <tbody>
                         @forelse($dudi as $index => $dudiItem)
                             <tr>
-                                <td class="text-center fw-bold">{{ $index + 1 }}</td>
+                                <td class="text-center">{{ $index + 1 }}</td>
                                 <td>
                                     <div class="d-flex align-items-center">
-                                        <div class="avatar-circle me-2">
+                                        {{-- <div class="avatar-circle me-2">
                                             {{ substr($dudiItem->nama_dudi, 0, 1) }}
-                                        </div>
+                                        </div> --}}
                                         <div>
-                                            <strong class="text-primary">{{ $dudiItem->nama_dudi }}</strong>
+                                            <p>{{ $dudiItem->nama_dudi }}</p>
                                         </div>
                                     </div>
                                 </td>
                                 <td>
                                     <code
-                                        class="bg-light text-dark px-2 py-1 rounded">{{ $dudiItem->nomor_telpon }}</code>
+                                        class="text-dark px-2 py-1 rounded">{{ $dudiItem->nomor_telpon }}</code>
                                 </td>
                                 <td>
-                                    <span class="badge bg-info">{{ $dudiItem->alamat }}</span>
+                                    <span class="">{{ $dudiItem->alamat }}</span>
                                 </td>
                                 <td>{{ $dudiItem->person_in_charge }}</td>
                                 <td>
@@ -225,33 +219,48 @@
                                     </span>
                                 </td>
                                 <td class="text-center">
-                                    @if ($dudiItem->jenis_dudi == 'sekolah')
-                                        <button class="action-btn btn-info"
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-info btn-sm"
                                             onclick="viewProfilPenerimaan({{ $dudiItem->id }}, '{{ $dudiItem->nama_dudi }}', {{ json_encode($dudiItem->jurusan_diterima) }}, '{{ addslashes($dudiItem->jobdesk ?? '') }}')"
-                                            data-bs-toggle="tooltip" title="Lihat Profil Penerimaan">
+                                            title="Lihat Profil Penerimaan">
                                             <i class="fas fa-info-circle"></i>
                                         </button>
-                                    @endif
-                                    <button class="action-btn btn-success btn-upload-surat"
-                                        data-dudi-id="{{ $dudiItem->id }}"
-                                        data-dudi-nama="{{ $dudiItem->nama_dudi }}" title="Upload Surat Pengajuan">
-                                        <i class="fas fa-upload"></i>
-                                    </button>
-                                    <button class="action-btn btn-edit"
-                                        onclick="editDudi({{ $dudiItem->id }}, '{{ $dudiItem->nama_dudi }}', '{{ $dudiItem->nomor_telpon }}', '{{ $dudiItem->alamat }}', '{{ $dudiItem->person_in_charge }}')"
-                                        data-bs-toggle="tooltip" title="Edit Data">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button class="action-btn btn-reset"
-                                        onclick="resetPasswordDudi({{ $dudiItem->id }}, '{{ $dudiItem->nama_dudi }}')"
-                                        data-bs-toggle="tooltip" title="Reset Password">
-                                        <i class="fas fa-key"></i>
-                                    </button>
-                                    <button class="action-btn btn-delete"
-                                        onclick="deleteDudi({{ $dudiItem->id }}, '{{ $dudiItem->nama_dudi }}')"
-                                        data-bs-toggle="tooltip" title="Hapus Data">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
+                                        <button type="button" class="btn btn-secondary btn-sm dropdown-toggle dropdown-toggle-split"
+                                            data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                            <li>
+                                                <a class="dropdown-item btn-upload-surat" href="#"
+                                                    data-dudi-id="{{ $dudiItem->id }}"
+                                                    data-dudi-nama="{{ $dudiItem->nama_dudi }}"
+                                                    onclick="event.preventDefault();">
+                                                    <i class="fas fa-upload text-success"></i> Upload Surat
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item" href="#"
+                                                    onclick="event.preventDefault(); editDudi({{ $dudiItem->id }}, '{{ $dudiItem->nama_dudi }}', '{{ $dudiItem->nomor_telpon }}', '{{ $dudiItem->alamat }}', '{{ $dudiItem->person_in_charge }}')">
+                                                    <i class="fas fa-edit text-warning"></i> Edit Data
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item" href="#"
+                                                    onclick="event.preventDefault(); resetPasswordDudi({{ $dudiItem->id }}, '{{ $dudiItem->nama_dudi }}')">
+                                                    <i class="fas fa-key text-primary"></i> Reset Password
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <hr class="dropdown-divider">
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item text-danger" href="#"
+                                                    onclick="event.preventDefault(); deleteDudi({{ $dudiItem->id }}, '{{ $dudiItem->nama_dudi }}')">
+                                                    <i class="fas fa-trash"></i> Hapus
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </td>
                             </tr>
                         @empty
@@ -275,7 +284,7 @@
     <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
-                <div class="modal-header bg-danger">
+                <div class="modal-header bg-primary">
                     <h5 class="modal-title text-white" id="addModalLabel">
                         <i class="fas fa-plus-circle me-2"></i>
                         Tambah Data DUDI Baru
@@ -339,12 +348,12 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                        <i class="fas fa-times me-1"></i>
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        {{-- <i class="fas fa-times me-1"></i> --}}
                         Batal
                     </button>
-                    <button type="button" class="btn btn-danger" onclick="submitAdd()">
-                        <i class="fas fa-save me-1"></i>
+                    <button type="button" class="btn btn-primary" onclick="submitAdd()">
+                        {{-- <i class="fas fa-save me-1"></i> --}}
                         Simpan Data
                     </button>
                 </div>
@@ -972,7 +981,7 @@
             left: 0 !important;
             width: 90px !important;
             height: calc(100vh - 70px) !important;
-            background: #e53e3e !important;
+            background: #B32A2F !important;
             z-index: 1040 !important;
             padding: 20px 0 !important;
             visibility: visible !important;
@@ -999,7 +1008,7 @@
                 background: none !important;
                 border: none !important;
                 font-size: 1.5rem !important;
-                color: #e53e3e !important;
+                color: #B32A2F !important;
                 cursor: pointer !important;
                 padding: 8px !important;
             }

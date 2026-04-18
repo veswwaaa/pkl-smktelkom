@@ -30,16 +30,10 @@
 
         <!-- Right side -->
         <div class="navbar-right">
-            <!-- Notification -->
-            <button class="notification-btn">
-                <i class="fas fa-bell"></i>
-                <span class="notification-badge">3</span>
-            </button>
-
             <!-- Profile Dropdown -->
             <div class="dropdown">
                 <button class="profile-dropdown" type="button" data-bs-toggle="dropdown">
-                    <div class="profile-avatar">D</div>
+                    <div class="profile-avatar">I</div>
                     <i class="fas fa-chevron-down text-muted"></i>
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end">
@@ -78,20 +72,6 @@
                 <div>
                     <h1>Selamat Datang Di Dashboard PKL</h1>
                     <p>Kelola program Praktik Kerja Lapangan SMK Telkom Banjarbaru dengan mudah dan efisien</p>
-                </div>
-                <div class="user-avatars">
-                    <div class="user-avatar avatar-orange">
-                        <i class="fas fa-user"></i>
-                    </div>
-                    <div class="user-avatar avatar-green">
-                        <i class="fas fa-users"></i>
-                    </div>
-                    <div class="user-avatar avatar-gray">
-                        <i class="fas fa-user"></i>
-                    </div>
-                    <div class="user-avatar avatar-blue">
-                        <i class="fas fa-user"></i>
-                    </div>
                 </div>
             </div>
         </div>

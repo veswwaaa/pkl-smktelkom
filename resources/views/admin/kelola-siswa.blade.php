@@ -183,7 +183,7 @@
                         <tr>
                             <td class="text-center">{{ $index + 1 }}</td>
                             <td><span>{{ $siswaItem->nis }}</span></td>
-                            <td><p>{{ $siswaItem->nama }}</p></td>
+                            <td>{{ $siswaItem->nama }}</td>
                             <td>{{ $siswaItem->kelas }}</td>
                             <td>{{ $siswaItem->jenis_kelamin }}</td>
                             <td>{{ $siswaItem->angkatan }}</td>

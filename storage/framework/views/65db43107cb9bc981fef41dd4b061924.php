@@ -172,7 +172,7 @@
                         <tr>
                             <td class="text-center"><?php echo e($index + 1); ?></td>
                             <td><span><?php echo e($siswaItem->nis); ?></span></td>
-                            <td><p><?php echo e($siswaItem->nama); ?></p></td>
+                            <td><?php echo e($siswaItem->nama); ?></td>
                             <td><?php echo e($siswaItem->kelas); ?></td>
                             <td><?php echo e($siswaItem->jenis_kelamin); ?></td>
                             <td><?php echo e($siswaItem->angkatan); ?></td>

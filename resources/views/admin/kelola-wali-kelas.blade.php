@@ -172,7 +172,7 @@
                                         {{-- <div class="avatar-circle me-2">
                                             {{ substr($wk->nama_admin, 0, 1) }}
                                         </div> --}}
-                                        <p>{{ $wk->nama_admin }}</p>
+                                        <span>{{ $wk->nama_admin }}</span>
                                     </div>
                                 </td>
                                 <td>

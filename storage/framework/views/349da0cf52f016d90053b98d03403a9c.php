@@ -172,7 +172,7 @@
                                 <td>
                                     <div class="d-flex align-items-center">
                                         
-                                        <p><?php echo e($wk->nama_admin); ?></p>
+                                        <span><?php echo e($wk->nama_admin); ?></span>
                                     </div>
                                 </td>
                                 <td>

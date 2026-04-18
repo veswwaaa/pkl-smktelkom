@@ -483,7 +483,7 @@
                     </div>
                     <div class="alert alert-info mt-3">
                         <i class="fas fa-lightbulb me-2"></i>
-                        <strong>Format:</strong> dummy@NIP (contoh: dummy@197001012000012001)
+                        <strong>Format:</strong> dummy@NIP ('contoh: dummy@197001012000012001')
                     </div>
                 </div>
                 <div class="modal-footer">

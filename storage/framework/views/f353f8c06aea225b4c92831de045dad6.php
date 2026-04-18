@@ -128,7 +128,7 @@
                         <label class="form-label">Kelas</label>
                         <select name="kelas" class="form-select">
                             <option value="">Semua Kelas</option>
-                            <?php $__currentLoopData = ['XIIA', 'XIIB', 'XIIC', 'XIID', 'XIIE', 'XIIF', 'XIIG']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $kelas): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <?php $__currentLoopData = ['XII A', 'XII B', 'XII C', 'XII D', 'XII E', 'XII F', 'XII G']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $kelas): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <option value="<?php echo e($kelas); ?>"
                                     <?php echo e(request('kelas') == $kelas ? 'selected' : ''); ?>>
                                     <?php echo e($kelas); ?></option>

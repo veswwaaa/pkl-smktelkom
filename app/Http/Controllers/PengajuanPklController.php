@@ -52,7 +52,6 @@ class PengajuanPklController extends Controller
         $request->validate([
             'pilihan_1' => 'required',
             'pilihan_2' => 'required',
-            'pilihan_3' => 'required',
         ]);
 
         $user = \App\Models\User::where('id', Session::get('loginId'))->first();
@@ -99,15 +98,9 @@ class PengajuanPklController extends Controller
             $data['id_dudi_mandiri_pilihan_2'] = $id2;
         }
 
-        // Parse pilihan 3
-        list($type3, $id3) = explode('-', $request->pilihan_3);
-        if ($type3 == 'sekolah') {
-            $data['id_dudi_pilihan_3'] = $id3;
-            $data['id_dudi_mandiri_pilihan_3'] = null;
-        } else {
-            $data['id_dudi_pilihan_3'] = null;
-            $data['id_dudi_mandiri_pilihan_3'] = $id3;
-        }
+        // Parse pilihan 3 - Set null because only 2 choices now
+        $data['id_dudi_pilihan_3'] = null;
+        $data['id_dudi_mandiri_pilihan_3'] = null;
 
         // Simpan
         $pengajuan = PengajuanPkl::create($data);

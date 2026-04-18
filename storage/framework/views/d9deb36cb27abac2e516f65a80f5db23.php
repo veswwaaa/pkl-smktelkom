@@ -128,7 +128,7 @@
 
     <!-- Tanggal -->
     <p style="margin: 20px 0;">
-        Purwokerto, <?php echo e(\Carbon\Carbon::parse($tanggal)->locale('id')->isoFormat('D MMMM Y')); ?>
+        Banjarbaru, <?php echo e(\Carbon\Carbon::parse($tanggal)->locale('id')->isoFormat('D MMMM Y')); ?>
 
     </p>
 
@@ -150,7 +150,7 @@
         <p>Dengan hormat,</p>
 
         <p>
-            Dalam rangka mempersiapkan Program Praktek Kerja Lapangan (PKL) siswa SMK Telkom Purwokerto tahun ajaran
+            Dalam rangka mempersiapkan Program Praktek Kerja Lapangan (PKL) siswa SMK Telkom Banjarbaru tahun ajaran
             <?php echo e(date('Y')); ?>/<?php echo e(date('Y') + 1); ?>,
             dengan ini kami memohon kepada Bapak/Ibu untuk dapat memberikan informasi mengenai profil penerimaan PKL di
             <?php echo e($dudi->nama_dudi); ?>.
@@ -199,7 +199,7 @@
         <ul>
             <li>Email: pkl@smktelkom-pwt.sch.id</li>
             <li>Surat balasan (format bebas)</li>
-            <li>Sistem online PKL SMK Telkom Purwokerto</li>
+            <li>Sistem online PKL SMK Telkom Banjarbaru</li>
         </ul>
 
         <p>
@@ -221,7 +221,7 @@
 
     <!-- Footer -->
     <div class="footer">
-        <p>Dokumen ini dibuat secara otomatis oleh Sistem Informasi PKL SMK Telkom Purwokerto</p>
+        <p>Dokumen ini dibuat secara otomatis oleh Sistem Informasi PKL SMK Telkom Banjarbaru</p>
     </div>
 </body>
 

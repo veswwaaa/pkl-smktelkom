@@ -232,36 +232,6 @@
                                     </select>
                                 </div>
 
-                                <!-- Pilihan 3 -->
-                                <div class="mb-3">
-                                    <label class="form-label">Pilihan 3</label>
-                                    <select class="form-select" id="pilihan3" name="pilihan_3" required>
-                                        <option value="">Pilih DUDI</option>
-                                        <optgroup label="🏫 DUDI Sekolah">
-                                            <?php $__currentLoopData = $dudiSekolah; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $dudi): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                                <option value="sekolah-<?php echo e($dudi->id); ?>">
-                                                    <?php echo e($dudi->nama_dudi); ?></option>
-                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                                        </optgroup>
-                                        <?php if($dudiMandiriApproved->count() > 0): ?>
-                                            <optgroup label="👨‍🎓 DUDI Mandiri (Approved)">
-                                                <?php $__currentLoopData = $dudiMandiriApproved; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $dudi): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                                    <option value="sekolah-<?php echo e($dudi->id); ?>">
-                                                        <?php echo e($dudi->nama_dudi); ?></option>
-                                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                                            </optgroup>
-                                        <?php endif; ?>
-                                        <?php if($dudiMandiri->count() > 0): ?>
-                                            <optgroup label="⏳ DUDI Mandiri Anda (Belum Disetujui Admin)">
-                                                <?php $__currentLoopData = $dudiMandiri; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $dudi): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                                    <option value="mandiri-<?php echo e($dudi->id); ?>">
-                                                        <?php echo e($dudi->nama_dudi); ?> (Menunggu Persetujuan)</option>
-                                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                                            </optgroup>
-                                        <?php endif; ?>
-                                    </select>
-                                </div>
-
                                 <button type="submit" class="btn btn-primary">
                                     <i class="fas fa-paper-plane me-2"></i> Kirim Pengajuan
                                 </button>

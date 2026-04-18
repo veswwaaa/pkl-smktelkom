@@ -128,7 +128,7 @@
                         <label class="form-label">Kelas</label>
                         <select name="kelas" class="form-select">
                             <option value="">Semua Kelas</option>
-                            @foreach (['XIIA', 'XIIB', 'XIIC', 'XIID', 'XIIE', 'XIIF', 'XIIG'] as $kelas)
+                            @foreach (['XII A', 'XII B', 'XII C', 'XII D', 'XII E', 'XII F', 'XII G'] as $kelas)
                                 <option value="{{ $kelas }}"
                                     {{ request('kelas') == $kelas ? 'selected' : '' }}>
                                     {{ $kelas }}</option>

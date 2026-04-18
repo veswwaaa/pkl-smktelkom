@@ -227,36 +227,6 @@
                                     </select>
                                 </div>
 
-                                <!-- Pilihan 3 -->
-                                <div class="mb-3">
-                                    <label class="form-label">Pilihan 3</label>
-                                    <select class="form-select" id="pilihan3" name="pilihan_3" required>
-                                        <option value="">Pilih DUDI</option>
-                                        <optgroup label="🏫 DUDI Sekolah">
-                                            @foreach ($dudiSekolah as $dudi)
-                                                <option value="sekolah-{{ $dudi->id }}">
-                                                    {{ $dudi->nama_dudi }}</option>
-                                            @endforeach
-                                        </optgroup>
-                                        @if ($dudiMandiriApproved->count() > 0)
-                                            <optgroup label="👨‍🎓 DUDI Mandiri (Approved)">
-                                                @foreach ($dudiMandiriApproved as $dudi)
-                                                    <option value="sekolah-{{ $dudi->id }}">
-                                                        {{ $dudi->nama_dudi }}</option>
-                                                @endforeach
-                                            </optgroup>
-                                        @endif
-                                        @if ($dudiMandiri->count() > 0)
-                                            <optgroup label="⏳ DUDI Mandiri Anda (Belum Disetujui Admin)">
-                                                @foreach ($dudiMandiri as $dudi)
-                                                    <option value="mandiri-{{ $dudi->id }}">
-                                                        {{ $dudi->nama_dudi }} (Menunggu Persetujuan)</option>
-                                                @endforeach
-                                            </optgroup>
-                                        @endif
-                                    </select>
-                                </div>
-
                                 <button type="submit" class="btn btn-primary">
                                     <i class="fas fa-paper-plane me-2"></i> Kirim Pengajuan
                                 </button>

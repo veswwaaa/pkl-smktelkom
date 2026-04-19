@@ -13,10 +13,10 @@ class AlreadyLoggedIn
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-      public function handle(Request $request, Closure $next)
+    public function handle(Request $request, Closure $next)
     {
-        if(Session()->has('loginId') && (url('login') == $request->url() || url('registration') == $request->url())){
-            return back();
+        if (Session()->has('loginId') && ($request->is('login') || $request->is('registration*'))) {
+            return redirect('dashboard');
         }
         return $next($request);
     }

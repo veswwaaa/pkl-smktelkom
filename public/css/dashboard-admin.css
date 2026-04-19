@@ -161,7 +161,7 @@ body {
     left: 0;
     width: var(--sidebar-width);
     height: calc(100vh - 70px);
-    background: #B32A2F;
+    background: #b32a2f;
     z-index: 1040;
     padding: 20px 0;
 }
@@ -329,6 +329,34 @@ body {
     border-radius: 15px;
     padding: 25px;
     border: 2px solid #e53e3e;
+    max-height: 600px;
+    display: flex;
+    flex-direction: column;
+}
+
+.activities-list {
+    overflow-y: auto;
+    flex-grow: 1;
+    padding-right: 10px;
+}
+
+/* Custom Scrollbar for activities list */
+.activities-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.activities-list::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.activities-list::-webkit-scrollbar-thumb {
+    background: #e53e3e;
+    border-radius: 10px;
+}
+
+.activities-list::-webkit-scrollbar-thumb:hover {
+    background: #c53030;
 }
 
 .activities-header {

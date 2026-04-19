@@ -289,8 +289,8 @@ class AuthenController extends Controller
             return view('dashboardSiswa', compact('data', 'pengajuan', 'dudiTersedia', 'activities'));
 
         } elseif ($role === 'admin') {
-            // Ambil aktivitas terkini untuk dashboard admin
-            $activities = getRecentActivities(10);
+            // Ambil semua aktivitas hari ini untuk dashboard admin
+            $activities = getRecentActivities();
 
             $totalSiswa = DB::table('tb_siswa')->count();
             $totalDudi = DB::table('tb_dudi')->count();

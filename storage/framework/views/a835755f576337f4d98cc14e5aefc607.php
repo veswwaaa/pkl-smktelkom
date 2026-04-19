@@ -161,41 +161,43 @@
                     <span class="activities-subtitle">Kegiatan terbaru dalam sistem PKL (Hari Ini)</span>
                 </div>
 
-                <?php $__empty_1 = true; $__currentLoopData = $activities; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $activity): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
-                    <div class="activity-item">
-                        <?php
-                            $dotColor = match ($activity->type) {
-                                'login' => 'blue',
-                                'create' => 'green',
-                                'update' => 'orange',
-                                'delete' => 'red',
-                                'success' => 'green',
-                                'warning' => 'orange',
-                                'info' => 'blue',
-                                default => 'gray',
-                            };
-                        ?>
-                        <div class="activity-dot <?php echo e($dotColor); ?>"></div>
-                        <div class="activity-content">
-                            <h6><?php echo e($activity->title); ?></h6>
-                            <p><?php echo e($activity->description); ?></p>
-                            <span class="activity-time">
-                                <i class="fas fa-user me-1"></i><?php echo e($activity->username); ?> •
-                                <?php echo e($activity->created_at->diffForHumans()); ?>
+                <div class="activities-list">
+                    <?php $__empty_1 = true; $__currentLoopData = $activities; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $activity): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                        <div class="activity-item">
+                            <?php
+                                $dotColor = match ($activity->type) {
+                                    'login' => 'blue',
+                                    'create' => 'green',
+                                    'update' => 'orange',
+                                    'delete' => 'red',
+                                    'success' => 'green',
+                                    'warning' => 'orange',
+                                    'info' => 'blue',
+                                    default => 'gray',
+                                };
+                            ?>
+                            <div class="activity-dot <?php echo e($dotColor); ?>"></div>
+                            <div class="activity-content">
+                                <h6><?php echo e($activity->title); ?></h6>
+                                <p><?php echo e($activity->description); ?></p>
+                                <span class="activity-time">
+                                    <i class="fas fa-user me-1"></i><?php echo e($activity->username); ?> •
+                                    <?php echo e($activity->created_at->diffForHumans()); ?>
 
-                            </span>
+                                </span>
+                            </div>
                         </div>
-                    </div>
-                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
-                    <div class="activity-item">
-                        <div class="activity-dot gray"></div>
-                        <div class="activity-content">
-                            <h6>Belum Ada Aktivitas</h6>
-                            <p>Belum ada aktivitas yang tercatat hari ini</p>
-                            <span class="activity-time">-</span>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+                        <div class="activity-item">
+                            <div class="activity-dot gray"></div>
+                            <div class="activity-content">
+                                <h6>Belum Ada Aktivitas</h6>
+                                <p>Belum ada aktivitas yang tercatat hari ini</p>
+                                <span class="activity-time">-</span>
+                            </div>
                         </div>
-                    </div>
-                <?php endif; ?>
+                    <?php endif; ?>
+                </div>
             </div>
 
             <!-- Right Sidebar -->

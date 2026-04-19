@@ -55,7 +55,7 @@
     <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
 
     <!-- Left Sidebar -->
-     <div class="left-sidebar" id="leftSidebar">
+    <div class="left-sidebar" id="leftSidebar">
         <div class="sidebar-menu">
             <a href="/dashboard" class="sidebar-item" title="Dashboard">
                 <i class="fas fa-th-large"></i>
@@ -195,8 +195,7 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <code
-                                        class="text-dark px-2 py-1 rounded"><?php echo e($dudiItem->nomor_telpon); ?></code>
+                                    <code class="text-dark px-2 py-1 rounded"><?php echo e($dudiItem->nomor_telpon); ?></code>
                                 </td>
                                 <td>
                                     <span class=""><?php echo e($dudiItem->alamat); ?></span>
@@ -225,7 +224,8 @@
                                             title="Lihat Profil Penerimaan">
                                             <i class="fas fa-info-circle"></i>
                                         </button>
-                                        <button type="button" class="btn btn-secondary btn-sm dropdown-toggle dropdown-toggle-split"
+                                        <button type="button"
+                                            class="btn btn-secondary btn-sm dropdown-toggle dropdown-toggle-split"
                                             data-bs-toggle="dropdown" aria-expanded="false">
                                             <i class="fas fa-ellipsis-v"></i>
                                         </button>
@@ -954,27 +954,8 @@
     <script src="<?php echo e(asset('js/kelola-dudi-clean.js')); ?>"></script>
     <script src="<?php echo e(asset('js/kelola-dudi-reset-password.js')); ?>"></script>
 
-    <script>
-        // Toggle Sidebar untuk Mobile
-        function toggleSidebar() {
-            const sidebar = document.getElementById('leftSidebar');
-            const overlay = document.getElementById('sidebarOverlay');
-
-            sidebar.classList.toggle('show');
-            overlay.classList.toggle('show');
-        }
-
-        // Close sidebar when clicking on menu item (mobile)
-        document.querySelectorAll('.sidebar-item').forEach(item => {
-            item.addEventListener('click', function() {
-                if (window.innerWidth <= 768) {
-                    toggleSidebar();
-                }
-            });
-        });
-    </script>
+    <!-- toggleSidebar is defined in kelola-dudi-clean.js -->
     <style>
-        /* Force sidebar to display on desktop, toggleable on mobile */
         body .left-sidebar {
             position: fixed !important;
             top: 70px !important;
@@ -982,19 +963,29 @@
             width: 90px !important;
             height: calc(100vh - 70px) !important;
             background: #B32A2F !important;
-            z-index: 1040 !important;
+            z-index: 1060 !important;
             padding: 20px 0 !important;
             visibility: visible !important;
             display: block !important;
+            transition: transform 0.3s ease !important;
         }
 
         .sidebar-item {
             color: white !important;
             display: flex !important;
+            justify-content: center !important;
+            padding: 15px 0 !important;
+            font-size: 1.2rem !important;
+            text-decoration: none !important;
         }
 
         .sidebar-item i {
             color: white !important;
+        }
+
+        .sidebar-item.active {
+            background: rgba(255, 255, 255, 0.2) !important;
+            border-left: 4px solid white !important;
         }
 
         .hamburger-menu {
@@ -1004,18 +995,20 @@
         /* Mobile responsive */
         @media (max-width: 768px) {
             .hamburger-menu {
-                display: block !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
                 background: none !important;
                 border: none !important;
                 font-size: 1.5rem !important;
                 color: #B32A2F !important;
                 cursor: pointer !important;
                 padding: 8px !important;
+                z-index: 1100 !important;
             }
 
             body .left-sidebar {
                 transform: translateX(-100%) !important;
-                transition: transform 0.3s ease !important;
             }
 
             body .left-sidebar.show {
@@ -1027,11 +1020,23 @@
             }
 
             .sidebar-overlay {
-                display: none !important;
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 1055 !important;
+                opacity: 0;
+                transition: opacity 0.3s ease;
             }
 
             .sidebar-overlay.show {
                 display: block !important;
+                opacity: 1 !important;
             }
         }
     </style>

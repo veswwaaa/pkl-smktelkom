@@ -64,16 +64,14 @@ if (!function_exists('logActivity')) {
 
 if (!function_exists('getRecentActivities')) {
     /**
-     * Ambil 10 aktivitas terbaru hari ini
+     * Ambil semua aktivitas terbaru hari ini (tanpa limit)
      * 
-     * @param int $limit Jumlah aktivitas yang ditampilkan (default: 10)
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    function getRecentActivities($limit = 10)
+    function getRecentActivities()
     {
         return Activity::today()
             ->latest()
-            ->take($limit)
             ->get();
     }
 }

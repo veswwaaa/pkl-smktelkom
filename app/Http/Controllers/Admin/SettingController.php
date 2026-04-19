@@ -36,6 +36,13 @@ class SettingController extends Controller
                     'tanggal_selesai_pkl' => $request->tanggal_selesai_pkl
                 ]);
 
+            // Log activity
+            logActivity(
+                'update',
+                'Periode PKL Global Diperbarui',
+                "Periode PKL global diubah menjadi {$request->tanggal_mulai_pkl} s/d {$request->tanggal_selesai_pkl} dan diterapkan ke semua siswa."
+            );
+
             return redirect()->back()->with('success', 'Periode PKL global berhasil diperbarui dan diterapkan ke semua siswa!');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Gagal memperbarui periode PKL: ' . $e->getMessage());

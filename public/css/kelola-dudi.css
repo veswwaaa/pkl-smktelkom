@@ -143,7 +143,7 @@ body {
     width: 100%;
     height: 100%;
     background: rgba(0, 0, 0, 0.5);
-    z-index: 998;
+    z-index: 1055;
     opacity: 0;
     transition: opacity 0.3s;
 }
@@ -161,7 +161,7 @@ body {
     width: var(--sidebar-width);
     height: calc(100vh - 70px);
     background-color: #B32A2F;
-    z-index: 1040;
+    z-index: 1060;
     padding: 20px 0;
 }
 
@@ -755,7 +755,7 @@ transform: translateY(0);
         top: 70px;
         transform: translateX(-100%);
         transition: transform 0.3s;
-        z-index: 999;
+        z-index: 1060;
         box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
         width: var(--sidebar-width);
     }

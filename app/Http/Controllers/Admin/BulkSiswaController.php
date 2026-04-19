@@ -31,6 +31,13 @@ class BulkSiswaController extends Controller
 
             DB::commit();
 
+            // Log activity
+            logActivity(
+                'delete',
+                'Hapus Masal Siswa',
+                "$total data siswa berhasil dihapus secara massal dari sistem"
+            );
+
             return redirect()->back()->with('success', "$total data siswa berhasil dihapus secara massal!");
 
         } catch (\Exception $e) {

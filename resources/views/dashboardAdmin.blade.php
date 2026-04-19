@@ -161,40 +161,42 @@
                     <span class="activities-subtitle">Kegiatan terbaru dalam sistem PKL (Hari Ini)</span>
                 </div>
 
-                @forelse($activities as $activity)
-                    <div class="activity-item">
-                        @php
-                            $dotColor = match ($activity->type) {
-                                'login' => 'blue',
-                                'create' => 'green',
-                                'update' => 'orange',
-                                'delete' => 'red',
-                                'success' => 'green',
-                                'warning' => 'orange',
-                                'info' => 'blue',
-                                default => 'gray',
-                            };
-                        @endphp
-                        <div class="activity-dot {{ $dotColor }}"></div>
-                        <div class="activity-content">
-                            <h6>{{ $activity->title }}</h6>
-                            <p>{{ $activity->description }}</p>
-                            <span class="activity-time">
-                                <i class="fas fa-user me-1"></i>{{ $activity->username }} •
-                                {{ $activity->created_at->diffForHumans() }}
-                            </span>
+                <div class="activities-list">
+                    @forelse($activities as $activity)
+                        <div class="activity-item">
+                            @php
+                                $dotColor = match ($activity->type) {
+                                    'login' => 'blue',
+                                    'create' => 'green',
+                                    'update' => 'orange',
+                                    'delete' => 'red',
+                                    'success' => 'green',
+                                    'warning' => 'orange',
+                                    'info' => 'blue',
+                                    default => 'gray',
+                                };
+                            @endphp
+                            <div class="activity-dot {{ $dotColor }}"></div>
+                            <div class="activity-content">
+                                <h6>{{ $activity->title }}</h6>
+                                <p>{{ $activity->description }}</p>
+                                <span class="activity-time">
+                                    <i class="fas fa-user me-1"></i>{{ $activity->username }} •
+                                    {{ $activity->created_at->diffForHumans() }}
+                                </span>
+                            </div>
                         </div>
-                    </div>
-                @empty
-                    <div class="activity-item">
-                        <div class="activity-dot gray"></div>
-                        <div class="activity-content">
-                            <h6>Belum Ada Aktivitas</h6>
-                            <p>Belum ada aktivitas yang tercatat hari ini</p>
-                            <span class="activity-time">-</span>
+                    @empty
+                        <div class="activity-item">
+                            <div class="activity-dot gray"></div>
+                            <div class="activity-content">
+                                <h6>Belum Ada Aktivitas</h6>
+                                <p>Belum ada aktivitas yang tercatat hari ini</p>
+                                <span class="activity-time">-</span>
+                            </div>
                         </div>
-                    </div>
-                @endforelse
+                    @endforelse
+                </div>
             </div>
 
             <!-- Right Sidebar -->

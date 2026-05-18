@@ -137,17 +137,21 @@
                         <i class="fas fa-table"></i>
                         <h5>Daftar Siswa</h5>
                     </div>
-                    <button class="add-btn btn btn-primary" data-bs-toggle="modal" data-bs-target="#addSiswaModal">
-                        <i class="fas fa-plus"></i>
-                        Tambah Siswa
-                    </button>
-                    <button class="excel-btn" data-bs-toggle="modal" data-bs-target="#importSiswaModal">
-                        <i class="fas fa-file-excel"></i> Import Excel
-                    </button>
-                    <button id="btnBulkDelete" class="btn btn-danger" style="display: none;"
-                        onclick="bulkDeleteSiswa()">
-                        <i class="fas fa-trash"></i> Hapus Terpilih (<span id="selectedCount">0</span>)
-                    </button>
+                    <div class="d-flex align-items-center flex-wrap gap-3">
+                        <button class="add-btn btn btn-primary" data-bs-toggle="modal" data-bs-target="#addSiswaModal">
+                            <i class="fas fa-plus"></i>
+                            Tambah Data
+                        </button>
+                        <button class="excel-btn btn btn-success" data-bs-toggle="modal" data-bs-target="#importSiswaModal">
+                            <i class="fas fa-file-excel"></i>
+                            Import Excel
+                        </button>
+
+                        <button id="btnBulkDelete" class="btn btn-danger" style="display: none;" onclick="bulkDeleteSiswa()">
+                            <i class="fas fa-trash"></i>
+                            Hapus Terpilih (<span id="selectedCount">0</span>)
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -291,13 +295,13 @@
                         </tr>
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                         <tr>
-                            <td colspan="12" class="text-center">
-                                <div class="py-4">
-                                    <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
-                                    <h5 class="text-muted">Belum ada data siswa</h5>
-                                    <p class="text-muted">Klik "Tambah Siswa" untuk menambah data</p>
-                                </div>
-                            </td>
+                             <td colspan="14">
+                                    <div class="empty-state">
+                                        <i class="fas fa-inbox"></i>
+                                        <h6>Belum Ada Data Siswa</h6>
+                                        <p>Silakan tambah data Siswa baru dengan mengklik tombol "Tambah Data"</p>
+                                    </div>
+                                </td>
                         </tr>
                     <?php endif; ?>
                 </tbody>
@@ -309,11 +313,11 @@
     <div class="modal fade" id="addSiswaModal" tabindex="-1">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
-                <div class="modal-header bg-primary text-white">
+                <div class="modal-header custom-header text-black">
                     <h5 class="modal-title">
-                        <i class="fas fa-user-plus"></i> Tambah Siswa Baru
+                        <i class="fas fa-user-plus"></i> Tambah Data Siswa
                     </h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    <button type="button" class="btn-close btn-close-black" data-bs-dismiss="modal"></button>
                 </div>
                 <form action="/admin/siswa" method="POST">
                     <?php echo csrf_field(); ?>
@@ -381,13 +385,11 @@
                                     
                                     <select class="form-select" id="jurusan" name="jurusan" required>
                                         <option value="">Pilih Jurusan</option>
-                                        <option value="RPL">RPL (Rekayasa Perangkat Lunak)</option>
-                                        <option value="TKJ">TKJ (Teknik Komputer & Jaringan)</option>
                                         <option value="TJKT">TJKT (Teknik Jaringan Komputer
-                                            danTelekomunikasi)</option>
+                                            dan Telekomunikasi)</option>
                                         <option value="DKV">DKV (Desain Komunikasi Visual)</option>
+                                        <option value="PPLG">PPLG (Pengembangan Perangkat Lunak dan Gim)</option>
                                         <option value="ANM">ANM (Animasi)</option>
-                                        </option>
                                     </select>
                                 </div>
                             </div>
@@ -400,7 +402,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">
                             Batal
                         </button>
                         <button type="submit" class="btn btn-primary">
@@ -416,11 +418,11 @@
     <div class="modal fade" id="editSiswaModal" tabindex="-1">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
-                <div class="modal-header bg-warning text-white">
+                <div class="modal-header custom-header text-black">
                     <h5 class="modal-title">
                         <i class="fas fa-edit"></i> Edit Data Siswa
                     </h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    <button type="button" class="btn-close btn-close-black" data-bs-dismiss="modal"></button>
                 </div>
                 <form id="editSiswaForm" method="POST">
                     <?php echo csrf_field(); ?>
@@ -430,7 +432,7 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="edit_nis" class="form-label">
-                                        <i class="fas fa-id-card text-warning"></i> NIS
+                                        <i class="fas fa-id-card text-black"></i> NIS
                                     </label>
                                     <input type="text" class="form-control" id="edit_nis" name="nis"
                                         required placeholder="Masukkan NIS siswa">
@@ -439,7 +441,7 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="edit_nama" class="form-label">
-                                        <i class="fas fa-user text-warning"></i> Nama Lengkap
+                                        <i class="fas fa-user text-black"></i> Nama Lengkap
                                     </label>
                                     <input type="text" class="form-control" id="edit_nama" name="nama"
                                         required placeholder="Masukkan nama lengkap">
@@ -451,16 +453,16 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="edit_kelas" class="form-label">
-                                        <i class="fas fa-school text-warning"></i> Kelas
+                                        <i class="fas fa-school text-black"></i> Kelas
                                     </label>
                                     <input type="text" class="form-control" id="edit_kelas" name="kelas"
-                                        required placeholder="Contoh: XII RPL 1">
+                                        required placeholder="Contoh: XII A">
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="edit_jenis_kelamin" class="form-label">
-                                        <i class="fas fa-venus-mars text-warning"></i> Jenis Kelamin
+                                        <i class="fas fa-venus-mars text-black"></i> Jenis Kelamin
                                     </label>
                                     <select class="form-select" id="edit_jenis_kelamin" name="jenis_kelamin"
                                         required>
@@ -476,7 +478,7 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="edit_tahun_ajaran" class="form-label">
-                                        <i class="fas fa-calendar text-warning"></i> Tahun Ajaran
+                                        <i class="fas fa-calendar text-black"></i> Tahun Ajaran
                                     </label>
                                     <input type="text" class="form-control" id="edit_tahun_ajaran"
                                         name="tahun_ajaran" required placeholder="Contoh: 2024/2025">
@@ -485,15 +487,14 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="edit_jurusan" class="form-label">
-                                        <i class="fas fa-graduation-cap text-warning"></i> Jurusan
+                                        <i class="fas fa-graduation-cap text-black"></i> Jurusan
                                     </label>
                                     <select class="form-select" id="edit_jurusan" name="jurusan" required>
                                         <option value="">Pilih Jurusan</option>
-                                        <option value="RPL">RPL (Rekayasa Perangkat Lunak)</option>
-                                        <option value="TKJ">TKJ (Teknik Komputer & Jaringan)</option>
                                         <option value="TJKT">TJKT (Teknik Jaringan Komputer
-                                            danTelekomunikasi)</option>
+                                            dan Telekomunikasi)</option>
                                         <option value="DKV">DKV (Desain Komunikasi Visual)</option>
+                                        <option value="PPLG">PPLG (Pengembangan Perangkat Lunak dan Gim)</option>
                                         <option value="ANM">ANM (Animasi)</option>
                                     </select>
                                 </div>
@@ -507,11 +508,11 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                            <i class="fas fa-times"></i> Batal
+                        <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">
+                         Batal
                         </button>
-                        <button type="submit" class="btn btn-warning">
-                            <i class="fas fa-save"></i> Simpan Perubahan
+                        <button type="submit" class="btn btn-primary">
+                        Simpan Data
                         </button>
                     </div>
                 </form>
@@ -523,11 +524,11 @@
     <div class="modal fade" id="importSiswaModal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header bg-success text-white">
+                <div class="modal-header custom-header text-black">
                     <h5 class="modal-title">
                         <i class="fas fa-file-excel"></i> Import Data Siswa dari Excel
                     </h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    <button type="button" class="btn-close btn-close-black" data-bs-dismiss="modal"></button>
                 </div>
                 <form action="/admin/siswa/import" method="POST" enctype="multipart/form-data">
                     <?php echo csrf_field(); ?>
@@ -553,7 +554,7 @@
                                         <li><code>kelas</code> (contoh: XII E)</li>
                                         <li><code>jenis_kelamin</code> (Laki-laki/Perempuan)</li>
                                         <li><code>tahun_ajaran</code> (contoh: 2024/2025)</li>
-                                        <li><code>jurusan</code> (RPL/TKJ/DKV/dll)</li>
+                                        <li><code>jurusan</code> (TJKT/DKV/PPLG/ANIMASI)</li>
                                     </ul>
                                 </li>
                             </ul>
@@ -578,10 +579,10 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                            <i class="fas fa-times"></i> Batal
+                        <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">
+                        Batal
                         </button>
-                        <button type="submit" class="btn btn-success">
+                        <button type="submit" class="btn btn-primary">
                             <i class="fas fa-upload"></i> Import Data
                         </button>
                     </div>
@@ -592,49 +593,83 @@
     </div>
 
     <div class="modal fade" id="pklDetailModal" tabindex="-1" aria-labelledby="pklDetailModalLabel">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header bg-info text-white">
-                    <h5 class="modal-title" id="pklDetailModalLabel">
-                        <i class="fas fa-info-circle"></i> Detail Penempatan PKL
-                    </h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                        aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <table class="table table-borderless">
-                        <tr>
-                            <th width="40%"><i class="fas fa-user text-info"></i> Nama Siswa</th>
-                            <td id="detailNamaSiswa">-</td>
-                        </tr>
-                        <tr>
-                            <th><i class="fas fa-building text-info"></i> DUDI</th>
-                            <td id="detailNamaDudi">-</td>
-                        </tr>
-                        <tr>
-                            <th><i class="fas fa-calendar-alt text-info"></i> Tanggal Mulai</th>
-                            <td id="detailTanggalMulai">-</td>
-                        </tr>
-                        <tr>
-                            <th><i class="fas fa-calendar-check text-info"></i> Tanggal Selesai</th>
-                            <td id="detailTanggalSelesai">-</td>
-                        </tr>
-                    </table>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                        <i class="fas fa-times"></i> Tutup
-                    </button>
-                </div>
+    <div class="modal-dialog">
+        <div class="modal-content" style="border:none; border-radius:16px; overflow:hidden; box-shadow:0 8px 32px rgba(0,0,0,0.12);">
+
+            
+            <div class="modal-header custom-header text-black">
+                <h5 class="modal-title" id="pklDetailModalLabel">
+                    <i class="fas fa-info-circle"></i> Detail Penempatan PKL
+                </h5>
+                <button type="button" class="btn-close btn-close-black" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
+
+            
+            <div class="modal-body" style="padding:20px; display:flex; flex-direction:column; gap:10px; background:#f8fafc;">
+
+                
+                <div style="display:flex; align-items:center; gap:12px; background:#fff; border-radius:10px; padding:12px 14px; border:0.5px solid #e5e7eb;">
+                    <div style="width:34px; height:34px; background:#f1f5f9; border-radius:8px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                        <i class="fas fa-user" style="color:#475569; font-size:14px;"></i>
+                    </div>
+                    <div>
+                        <div style="font-size:11px; color:#9ca3af; font-weight:500; text-transform:uppercase; letter-spacing:0.05em;">Nama Siswa</div>
+                        <div style="font-size:14px; color:#111827; font-weight:500;" id="detailNamaSiswa">-</div>
+                    </div>
+                </div>
+
+                
+                <div style="display:flex; align-items:center; gap:12px; background:#fff; border-radius:10px; padding:12px 14px; border:0.5px solid #e5e7eb;">
+                    <div style="width:34px; height:34px; background:#e0f2fe; border-radius:8px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                        <i class="fas fa-building" style="color:#0369a1; font-size:14px;"></i>
+                    </div>
+                    <div>
+                        <div style="font-size:11px; color:#9ca3af; font-weight:500; text-transform:uppercase; letter-spacing:0.05em;">DUDI</div>
+                        <div style="font-size:14px; color:#111827; font-weight:500;" id="detailNamaDudi">-</div>
+                    </div>
+                </div>
+
+                
+                <div style="display:flex; align-items:center; gap:12px; background:#fff; border-radius:10px; padding:12px 14px; border:0.5px solid #e5e7eb;">
+                    <div style="width:34px; height:34px; background:#dcfce7; border-radius:8px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                        <i class="fas fa-calendar-alt" style="color:#15803d; font-size:14px;"></i>
+                    </div>
+                    <div>
+                        <div style="font-size:11px; color:#9ca3af; font-weight:500; text-transform:uppercase; letter-spacing:0.05em;">Tanggal Mulai</div>
+                        <div style="font-size:14px; color:#111827; font-weight:500;" id="detailTanggalMulai">-</div>
+                    </div>
+                </div>
+
+                
+                <div style="display:flex; align-items:center; gap:12px; background:#fff; border-radius:10px; padding:12px 14px; border:0.5px solid #e5e7eb;">
+                    <div style="width:34px; height:34px; background:#fee2e2; border-radius:8px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                        <i class="fas fa-calendar-check" style="color:#dc2626; font-size:14px;"></i>
+                    </div>
+                    <div>
+                        <div style="font-size:11px; color:#9ca3af; font-weight:500; text-transform:uppercase; letter-spacing:0.05em;">Tanggal Selesai</div>
+                        <div style="font-size:14px; color:#111827; font-weight:500;" id="detailTanggalSelesai">-</div>
+                    </div>
+                </div>
+
+            </div>
+
+            
+            <div class="modal-footer" style="border-top:0.5px solid #e5e7eb; padding:14px 20px;">
+                <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">
+                    Tutup
+                </button>
+            </div>
+
         </div>
     </div>
+</div>
+
 
     
     <div class="modal fade" id="gradeModal" tabindex="-1">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
-                <div class="modal-header bg-warning text-dark">
+                <div class="modal-header custom-header text-black">
                     <h5 class="modal-title">
                         <i class="fas fa-star"></i> Input Grade Siswa
                     </h5>
@@ -736,11 +771,11 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                            <i class="fas fa-times"></i> Batal
+                        <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">
+                         Batal
                         </button>
-                        <button type="submit" class="btn btn-warning">
-                            <i class="fas fa-save"></i> Simpan Grade
+                        <button type="submit" class="btn btn-primary">
+                        Simpan Grade
                         </button>
                     </div>
                 </form>

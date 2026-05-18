@@ -140,14 +140,14 @@ class SuratDudiController extends Controller
             if ($surat->file_surat_pengajuan) {
                 $filePengajuanExists = Storage::exists('public/surat_dudi/' . $surat->file_surat_pengajuan);
             }
-            if ($surat->file_surat_balasan) {
-                $fileBalasanPengajuanExists = Storage::exists('public/surat_dudi/' . $surat->file_surat_balasan);
-            }
             if ($surat->file_surat_permohonan) {
                 $filePermohonanExists = Storage::exists('public/surat_dudi/' . $surat->file_surat_permohonan);
             }
             if ($surat->file_balasan_permohonan) {
                 $fileBalasanPermohonanExists = Storage::exists('public/surat_dudi/' . $surat->file_balasan_permohonan);
+            }
+            if ($surat->file_balasan_pengajuan) {
+                $fileBalasanPengajuanExists = Storage::exists('public/surat_dudi/' . $surat->file_balasan_pengajuan);
             }
         }
 
@@ -184,7 +184,7 @@ class SuratDudiController extends Controller
                 $jobdeskList = $request->jobdesk;
                 $kuotaList = $request->kuota;
 
-                $validJurusan = ['PPLG', 'DKV', 'ANM', 'TKJ', 'TJAT'];
+                $validJurusan = ['PPLG', 'DKV', 'ANIMASI', 'TJKT', 'TJAT'];
 
                 foreach ($jurusanList as $jurusan) {
                     if (!in_array($jurusan, $validJurusan)) {

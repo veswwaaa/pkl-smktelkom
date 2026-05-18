@@ -1,7 +1,14 @@
 <?php $__env->startSection('title', 'Dokumen Siswa'); ?>
+<head>
+    <link rel="stylesheet" href="<?php echo e(asset('css/shared-components.css')); ?>">
+    <link href="<?php echo e(asset('css/dashboard-admin.css')); ?>" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="<?php echo e(asset('css/welcome-header.css')); ?>" rel="stylesheet">
+</head>
 
 <?php $__env->startPush('styles'); ?>
-    <link rel="stylesheet" href="<?php echo e(asset('css/shared-components.css')); ?>">
+
     <style>
         /* Status Badges dengan Warna Jelas */
         .status-badge {
@@ -58,46 +65,71 @@
         </div>
     </div>
 
-    <div class="container-fluid">
-        <!-- Stats Cards -->
-        <div class="row mb-4">
-            <div class="col-md-3">
-                <div class="card text-center shadow-sm">
-                    <div class="card-body">
-                        <i class="fas fa-users fa-2x mb-2" style="color: #ee1c25;"></i>
-                        <h5 class="mb-0"><?php echo e($dokumenList->count()); ?></h5>
-                        <small class="text-muted">Total Siswa</small>
-                    </div>
+    
+
+    <!-- CV & Portofolio -->
+
+<div class="row g-3 flex-nowrap">
+        <div class="col">
+            <div class="stat-card border-gray mb-3" onclick="window.location.href='/admin/siswa'" style="cursor:pointer;">
+              <div class="d-flex align-items-center gap-3">
+                <div class="icon-wrap ic-green">
+                    <i class="fas fa-upload"></i>
                 </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card text-center shadow-sm">
-                    <div class="card-body">
-                        <i class="fas fa-file-upload fa-2x mb-2" style="color: #28a745;"></i>
-                        <h5 class="mb-0"><?php echo e($dokumenList->where('status_cv_portofolio', 'sudah')->count()); ?></h5>
-                        <small class="text-muted">CV & Portofolio</small>
-                    </div>
+                <div>
+                    <div class="stat-num">  <?php echo e($dokumenList->where('status_cv_portofolio', 'sudah')->count()); ?></div>
+                    <div class="stat-lbl">CV & Portofolio</div>
                 </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card text-center shadow-sm">
-                    <div class="card-body">
-                        <i class="fas fa-envelope fa-2x mb-2" style="color: #17a2b8;"></i>
-                        <h5 class="mb-0"><?php echo e($dokumenList->where('status_surat_pernyataan', 'terkirim')->count()); ?></h5>
-                        <small class="text-muted">Surat Pernyataan</small>
-                    </div>
+               </div>
+                <hr>
+                <div class="stat-change positive">
+                    Lihat selengkapnya
                 </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card text-center shadow-sm">
-                    <div class="card-body">
-                        <i class="fas fa-file-signature fa-2x mb-2" style="color: #6610f2;"></i>
-                        <h5 class="mb-0"><?php echo e($dokumenList->where('status_surat_tugas', 'terkirim')->count()); ?></h5>
-                        <small class="text-muted">Surat Tugas</small>
-                    </div>
-                </div>
+                <i class="fas fa-chevron-right stat-arrow"></i>
             </div>
         </div>
+         <div class="col">
+            <div class="stat-card border-gray mb-3" onclick="window.location.href='/admin/dudi'" style="cursor:pointer;">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="icon-wrap ic-blue">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div>
+                        <div class="stat-num"><?php echo e($dokumenList->where('status_surat_pernyataan', 'terkirim')->count()); ?></div>
+                        <div class="stat-lbl">Surat Pernyataan</div>
+                    </div>
+                </div>
+                <hr>
+                <div class="stat-change positive">
+                    Lihat selengkapnya
+                </div>
+                <i class="fas fa-chevron-right stat-arrow"></i>
+            </div>
+        </div>
+        
+        <div class="col">
+            <div class="stat-card border-gray mb-3" onclick="window.location.href='/admin/dudi'" style="cursor:pointer;">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="icon-wrap ic-amber">
+                    <i class="fas fa-file-signature"></i>
+                    </div>
+                    <div>
+                         <div class="stat-num"><?php echo e($dokumenList->where('status_surat_tugas', 'terkirim')->count()); ?></div>
+                    <div class="stat-lbl">Surat Tugas</div>
+                    </div>
+                </div>
+                <hr>
+                <div class="stat-change positive">
+                    Lihat selengkapnya
+                </div>
+                <i class="fas fa-chevron-right stat-arrow"></i>
+            </div>
+        </div>
+
+
+    </div>
+
+
 
         <!-- Table -->
         <div class="card shadow-sm">

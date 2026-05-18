@@ -101,6 +101,7 @@
             </div>
         </div>
 
+
         <!-- Alert Messages -->
         <?php if(session('success')): ?>
             <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -143,7 +144,7 @@
                     </div>
                     <button class="add-btn btn btn-primary" onclick="showAddModal()">
                         <i class="fas fa-plus"></i>
-                        Tambah Wali Kelas
+                        Tambah Data
                     </button>
                 </div>
             </div>
@@ -193,7 +194,7 @@
                                         data-bs-toggle="tooltip" title="Edit Data">
                                         <i class="fas fa-edit"></i>
                                     </button>
-                                    <button class="action-btn btn-reset"
+                                    <button class="action-btn btn-rpw"
                                         onclick="resetPasswordWaliKelas(<?php echo e($wk->id); ?>, '<?php echo e($wk->nama_admin); ?>', '<?php echo e($wk->nip); ?>')"
                                         data-bs-toggle="tooltip" title="Reset Password">
                                         <i class="fas fa-key"></i>
@@ -210,9 +211,8 @@
                                 <td colspan="8">
                                     <div class="empty-state">
                                         <i class="fas fa-inbox"></i>
-                                        <h6>Belum ada data Wali Kelas</h6>
-                                        <p>Silakan tambah data Wali Kelas baru dengan mengklik tombol "Tambah Wali
-                                            Kelas"</p>
+                                        <h6>Belum Ada Data Wali Kelas</h6>
+                                        <p>Silakan tambah data Wali Kelas baru dengan mengklik tombol "Tambah Data"</p>
                                     </div>
                                 </td>
                             </tr>
@@ -227,12 +227,12 @@
     <div class="modal fade" id="addModal" tabindex="-1">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
-               <div class="modal-header bg-primary text-white">
+               <div class="modal-header custom-header text-black">
                     <h5 class="modal-title">
                         <i class="fas fa-plus-circle me-2"></i>
-                        Tambah Data Wali Kelas Baru
+                        Tambah Data Wali Kelas
                     </h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    <button type="button" class="btn-close btn-close-black" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     <div class="alert alert-info">
@@ -307,7 +307,7 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">
                         
                         Batal
                     </button>
@@ -324,12 +324,12 @@
     <div class="modal fade" id="editModal" tabindex="-1">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
-                <div class="modal-header bg-warning">
-                    <h5 class="modal-title text-white">
+                <div class="modal-header custom-header">
+                    <h5 class="modal-title text-black">
                         <i class="fas fa-edit me-2"></i>
                         Edit Data Wali Kelas
                     </h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    <button type="button" class="btn-close btn-close-black" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     <form id="editForm">
@@ -397,12 +397,12 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                        <i class="fas fa-times me-1"></i>
+                    <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">
+
                         Batal
                     </button>
-                    <button type="button" class="btn btn-warning text-white" onclick="submitEdit()">
-                        <i class="fas fa-save me-1"></i>
+                    <button type="button" class="btn btn-primary" onclick="submitEdit()">
+
                         Update Data
                     </button>
                 </div>
@@ -414,16 +414,16 @@
     <div class="modal fade" id="resetPasswordModal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header bg-warning text-white">
+                <div class="modal-header custom-header text-black">
                     <h5 class="modal-title">
                         <i class="fas fa-exclamation-triangle me-2"></i>
                         Konfirmasi Reset Password
                     </h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    <button type="button" class="btn-close btn-close-black" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     <div class="text-center mb-3">
-                        <i class="fas fa-key fa-3x text-warning mb-3"></i>
+                        <i class="fas fa-key fa-3x text-black mb-3"></i>
                         <h6>Apakah Anda yakin ingin reset password untuk:</h6>
                         <strong class="text-primary" id="reset_wali_kelas_name"></strong>
                     </div>
@@ -433,12 +433,11 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                        <i class="fas fa-times me-1"></i>
-                        Batal
+                    <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">
+                       Batal
                     </button>
-                    <button type="button" class="btn btn-warning text-white" onclick="confirmResetPassword()">
-                        <i class="fas fa-key me-1"></i>
+                    <button type="button" class="btn btn-danger text-white" onclick="confirmResetPassword()">
+
                         Ya, Reset Password
                     </button>
                 </div>
@@ -766,6 +765,15 @@
             display: none !important;
         }
 
+        .btn-rpw {
+                background: #4F5686;
+                color: #ffffff;
+            }
+        .btn-rpw:hover {
+                background: #454c78;
+                transform: scale(1.05);
+            }
+
         /* Mobile responsive */
         @media (max-width: 768px) {
             .hamburger-menu {
@@ -798,6 +806,8 @@
             .sidebar-overlay.show {
                 display: block !important;
             }
+
+
         }
     </style>
 </body>

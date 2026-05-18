@@ -108,19 +108,19 @@
                                     <h5 class="mb-0"><i class="fas fa-download me-2"></i>Download Surat Pengajuan</h5>
                                 </div>
                                 <div class="card-body">
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <p class="mb-2"><strong>Tanggal Dikirim:</strong></p>
-                                            <p>{{ $surat->tanggal_upload_pengajuan ? $surat->tanggal_upload_pengajuan->format('d M Y H:i') : '-' }}
-                                            </p>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <p class="mb-2"><strong>Catatan dari Admin:</strong></p>
-                                            <p>{{ $surat->catatan_admin_pengajuan ?? 'Tidak ada catatan' }}</p>
-                                        </div>
-                                    </div>
-
                                     @if ($surat->file_surat_pengajuan && $filePengajuanExists)
+                                        <div class="row mb-3">
+                                            <div class="col-md-6">
+                                                <p class="mb-2"><strong>Tanggal Dikirim:</strong></p>
+                                                <p>{{ $surat->tanggal_upload_pengajuan ? $surat->tanggal_upload_pengajuan->format('d M Y H:i') : '-' }}
+                                                </p>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <p class="mb-2"><strong>Catatan dari Admin:</strong></p>
+                                                <p>{{ $surat->catatan_admin_pengajuan ?? 'Tidak ada catatan' }}</p>
+                                            </div>
+                                        </div>
+
                                         <a href="/dudi/surat-pkl/{{ $surat->id }}/download?jenis=pengajuan&type=surat"
                                             class="btn btn-primary">
                                             <i class="fas fa-download me-2"></i>Download Surat Pengajuan
@@ -131,7 +131,10 @@
                                             File tidak tersedia di server. Hubungi admin untuk upload ulang.
                                         </div>
                                     @else
-                                        <button class="btn btn-secondary" disabled>Tidak ada file pengajuan</button>
+                                        <div class="text-center py-3">
+                                            <i class="fas fa-info-circle fa-2x text-muted mb-2"></i>
+                                            <p class="text-muted mb-0">Tidak ada file pengajuan dari admin</p>
+                                        </div>
                                     @endif
                                 </div>
                             </div>
@@ -229,19 +232,19 @@
                                     </h5>
                                 </div>
                                 <div class="card-body">
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <p class="mb-2"><strong>Tanggal Dikirim:</strong></p>
-                                            <p>{{ $surat->tanggal_upload_permohonan ? $surat->tanggal_upload_permohonan->format('d M Y H:i') : '-' }}
-                                            </p>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <p class="mb-2"><strong>Catatan dari Admin:</strong></p>
-                                            <p>{{ $surat->catatan_admin_permohonan ?? 'Tidak ada catatan' }}</p>
-                                        </div>
-                                    </div>
-
                                     @if ($surat->file_surat_permohonan && $filePermohonanExists)
+                                        <div class="row mb-3">
+                                            <div class="col-md-6">
+                                                <p class="mb-2"><strong>Tanggal Dikirim:</strong></p>
+                                                <p>{{ $surat->tanggal_upload_permohonan ? $surat->tanggal_upload_permohonan->format('d M Y H:i') : '-' }}
+                                                </p>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <p class="mb-2"><strong>Catatan dari Admin:</strong></p>
+                                                <p>{{ $surat->catatan_admin_permohonan ?? 'Tidak ada catatan' }}</p>
+                                            </div>
+                                        </div>
+
                                         <a href="/dudi/surat-pkl/{{ $surat->id }}/download?jenis=permohonan&type=surat"
                                             class="btn btn-info text-white">
                                             <i class="fas fa-download me-2"></i>Download Surat Permohonan
@@ -252,7 +255,10 @@
                                             File tidak tersedia di server. Hubungi admin untuk upload ulang.
                                         </div>
                                     @else
-                                        <button class="btn btn-secondary" disabled>Tidak ada file permohonan</button>
+                                        <div class="text-center py-3">
+                                            <i class="fas fa-info-circle fa-2x text-muted mb-2"></i>
+                                            <p class="text-muted mb-0">Tidak ada file permohonan dari admin</p>
+                                        </div>
                                     @endif
                                 </div>
                             </div>

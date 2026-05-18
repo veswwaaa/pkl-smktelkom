@@ -93,9 +93,14 @@
     <div class="main-content">
         <!-- Page Header -->
         <div class="page-header">
-            <div>
-                <h3><i class="fas fa-clipboard-list text-danger me-2"></i>Kelola Pengajuan PKL</h3>
-                <p class="text-muted mb-0">Kelola pengajuan PKL dari siswa</p>
+            <div class="page-title">
+                <div>
+                    <i class="fas fa-clipboard-list text-danger me-2"></i>
+                </div>
+                <div>
+                    <h1>Kelola Pengajuan PKL</h1>
+                    <p>Kelola pengajuan PKL dari siswa</p>
+                </div>
             </div>
         </div>
 
@@ -329,7 +334,7 @@
                                                         onclick="confirmApprove(<?php echo e($item->id); ?>, '<?php echo e($item->siswa->nama); ?>', '<?php echo e($dudi->nama_dudi ?? ''); ?>')">
                                                         <i class="fas fa-check"></i> Approve
                                                     </button>
-                                                    <button class="btn btn-sm btn-warning" title="Reject"
+                                                    <button class="btn btn-sm btn-danger" title="Reject"
                                                         onclick="confirmReject(<?php echo e($item->id); ?>, '<?php echo e($item->siswa->nama); ?>')">
                                                         <i class="fas fa-times"></i> Tolak
                                                     </button>
@@ -347,7 +352,7 @@
                                 <tr>
                                     <td colspan="9" class="text-center py-4">
                                         <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
-                                        <h5 class="text-muted">Belum ada pengajuan PKL</h5>
+                                        <h5 class="text-muted">Belum Ada Pengajuan PKL</h5>
                                     </td>
                                 </tr>
                             <?php endif; ?>
@@ -374,11 +379,11 @@
     <div class="modal fade" id="detailModal" tabindex="-1">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
-                <div class="modal-header bg-info text-white">
+                <div class="modal-header custom-header text-black">
                     <h5 class="modal-title">
                         <i class="fas fa-info-circle"></i> Detail Pengajuan PKL
                     </h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    <button type="button" class="btn-close btn-close-black" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body" id="detailContent">
                     <div class="text-center py-4">
@@ -387,7 +392,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                    <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Tutup</button>
                 </div>
             </div>
         </div>

@@ -207,10 +207,13 @@
                                         </tr>
                                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                                         <tr>
-                                            <td colspan="7" class="text-center py-4">
-                                                <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
-                                                <h5 class="text-muted">Belum ada surat pengajuan yang dikirim ke DUDI</h5>
+                                             <td colspan="8">
+                                                <div class="empty-state">
+                                                    <i class="fas fa-inbox"></i>
+                                                    <h6 class="text-muted">Belum ada surat pengajuan yang dikirim ke DUDI</h6>
+                                                </div>
                                             </td>
+
                                         </tr>
                                     <?php endif; ?>
                                 </tbody>
@@ -226,7 +229,7 @@
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <div class="input-group">
-                                    <span class="input-group-text bg-warning text-dark">
+                                    <span class="input-group-text bg-primary text-white">
                                         <i class="fas fa-search"></i>
                                     </span>
                                     <input type="text" id="searchPermohonan" class="form-control"
@@ -375,9 +378,11 @@
                                         </tr>
                                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                                         <tr>
-                                            <td colspan="7" class="text-center py-4">
-                                                <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
-                                                <h5 class="text-muted">Belum ada surat permohonan yang dikirim ke DUDI</h5>
+                                             <td colspan="8">
+                                                <div class="empty-state">
+                                                    <i class="fas fa-inbox"></i>
+                                                    <h6 class="text-muted">Belum ada surat permohonan yang dikirim ke DUDI</h6>
+                                                </div>
                                             </td>
                                         </tr>
                                     <?php endif; ?>

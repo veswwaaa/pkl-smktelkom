@@ -35,14 +35,14 @@ class BulkSiswaController extends Controller
             logActivity(
                 'delete',
                 'Hapus Masal Siswa',
-                "$total data siswa berhasil dihapus secara massal dari sistem"
+                "$total data siswa berhasil dihapus dari sistem"
             );
 
-            return redirect()->back()->with('success', "$total data siswa berhasil dihapus secara massal!");
+            return redirect()->back()->with('success', "$total data siswa berhasil dihapus!");
 
         } catch (\Exception $e) {
             DB::rollBack();
-            return redirect()->back()->with('error', 'Terjadi kesalahan saat menghapus data massal: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat menghapus data : ' . $e->getMessage());
         }
     }
 }

@@ -106,48 +106,104 @@
             </div>
         </div>
 
-        <!-- Stats Cards -->
-        <div class="stats-row">
-            <!-- Total Siswa -->
-            <div class="stat-card border-red" onclick="window.location.href='/admin/siswa'" style="cursor: pointer;">
-                <div class="stat-icon icon-red">
+        
+
+        
+    <div class="row g-3 flex-nowrap">
+        <div class="col">
+            <div class="stat-card border-gray mb-3" onclick="window.location.href='/admin/siswa'" style="cursor:pointer;">
+              <div class="d-flex align-items-center gap-3">
+                <div class="icon-wrap ic-purple">
                     <i class="fas fa-users"></i>
                 </div>
-                <div class="stat-number"><?php echo e($totalSiswa); ?></div>
-                <div class="stat-label">Total Siswa</div>
-                <div class="stat-change positive">
-                    Lihat selengkapnya
+                <div>
+                    <div class="stat-num"><?php echo e($totalSiswa); ?></div>
+                    <div class="stat-lbl">Total Siswa</div>
                 </div>
-                <i class="fas fa-chevron-right stat-arrow"></i>
-            </div>
-
-            <!-- Total DUDI -->
-            <div class="stat-card border-red" onclick="window.location.href='/admin/dudi'" style="cursor: pointer;">
-                <div class="stat-icon icon-red">
-                    <i class="fas fa-building"></i>
-                </div>
-                <div class="stat-number"><?php echo e($totalDudi); ?></div>
-                <div class="stat-label">Total DUDI</div>
-                <div class="stat-change positive">
-                    Lihat selengkapnya
-                </div>
-                <i class="fas fa-chevron-right stat-arrow"></i>
-            </div>
-
-            <!-- Total Wali Kelas -->
-            <div class="stat-card border-red" onclick="window.location.href='/admin/wali-kelas'"
-                style="cursor: pointer;">
-                <div class="stat-icon icon-red">
-                    <i class="fas fa-chalkboard-teacher"></i>
-                </div>
-                <div class="stat-number"><?php echo e($totalWaliKelas); ?></div>
-                <div class="stat-label">Total Wali Kelas</div>
+               </div>
+                <hr>
                 <div class="stat-change positive">
                     Lihat selengkapnya
                 </div>
                 <i class="fas fa-chevron-right stat-arrow"></i>
             </div>
         </div>
+         <div class="col">
+            <div class="stat-card border-gray mb-3" onclick="window.location.href='/admin/dudi'" style="cursor:pointer;">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="icon-wrap ic-blue">
+                        <i class="fas fa-building"></i>
+                    </div>
+                    <div>
+                        <div class="stat-num"><?php echo e($totalDudi); ?></div>
+                        <div class="stat-lbl">Total DUDI</div>
+                    </div>
+                </div>
+                <hr>
+                <div class="stat-change positive">
+                    Lihat selengkapnya
+                </div>
+                <i class="fas fa-chevron-right stat-arrow"></i>
+            </div>
+        </div>
+        
+        <div class="col">
+            <div class="stat-card border-gray mb-3" onclick="window.location.href='/admin/dudi'" style="cursor:pointer;">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="icon-wrap ic-green">
+                    <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div>
+                         <div class="stat-num"><?php echo e($pklApproved); ?></div>
+                    <div class="stat-lbl">PKL Disetujui</div>
+                    </div>
+                </div>
+                <hr>
+                <div class="stat-change positive">
+                    Lihat selengkapnya
+                </div>
+                <i class="fas fa-chevron-right stat-arrow"></i>
+            </div>
+        </div>
+
+         <div class="col">
+            <div class="stat-card border-gray mb-3" onclick="window.location.href='/admin/dudi'" style="cursor:pointer;">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="icon-wrap ic-amber">
+                    <i class="fas fa-clock"></i>
+                      </div>
+                   <div>
+                         <div class="stat-num"><?php echo e($pklPending); ?></div>
+                    <div class="stat-lbl">PKL Pending</div>
+                    </div>
+                </div>
+                <hr>
+                <div class="stat-change positive">
+                    Lihat selengkapnya
+                </div>
+                <i class="fas fa-chevron-right stat-arrow"></i>
+            </div>
+        </div>
+
+         <div class="col">
+            <div class="stat-card border-gray mb-3" onclick="window.location.href='/admin/dudi'" style="cursor:pointer;">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="icon-wrap ic-red">
+                    <i class="fa-solid fa-x"></i>
+                    </div>
+                   <div>
+                         <div class="stat-num"><?php echo e($pklGagal); ?></div>
+                    <div class="stat-lbl">PKL Ditolak</div>
+                    </div>
+                </div>
+                <hr>
+                <div class="stat-change positive">
+                    Lihat selengkapnya
+                </div>
+                <i class="fas fa-chevron-right stat-arrow"></i>
+            </div>
+        </div>
+    </div>
 
         <!-- Content Row -->
         <div class="content-row">
@@ -161,49 +217,85 @@
                     <span class="activities-subtitle">Kegiatan terbaru dalam sistem PKL (Hari Ini)</span>
                 </div>
 
-                <?php $__empty_1 = true; $__currentLoopData = $activities; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $activity): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
-                    <div class="activity-item">
-                        <?php
-                            $dotColor = match ($activity->type) {
-                                'login' => 'blue',
-                                'create' => 'green',
-                                'update' => 'orange',
-                                'delete' => 'red',
-                                'success' => 'green',
-                                'warning' => 'orange',
-                                'info' => 'blue',
-                                default => 'gray',
-                            };
-                        ?>
-                        <div class="activity-dot <?php echo e($dotColor); ?>"></div>
-                        <div class="activity-content">
-                            <h6><?php echo e($activity->title); ?></h6>
-                            <p><?php echo e($activity->description); ?></p>
-                            <span class="activity-time">
-                                <i class="fas fa-user me-1"></i><?php echo e($activity->username); ?> •
-                                <?php echo e($activity->created_at->diffForHumans()); ?>
+                <div class="activities-list">
+                    <?php $__empty_1 = true; $__currentLoopData = $activities; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $activity): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                        <div class="activity-item">
+                            <?php
+                                $dotColor = match ($activity->type) {
+                                    'login' => 'blue',
+                                    'create' => 'green',
+                                    'update' => 'orange',
+                                    'delete' => 'red',
+                                    'success' => 'green',
+                                    'warning' => 'orange',
+                                    'info' => 'blue',
+                                    default => 'gray',
+                                };
+                            ?>
+                            <div class="activity-dot <?php echo e($dotColor); ?>"></div>
+                            <div class="activity-content">
+                                <h6><?php echo e($activity->title); ?></h6>
+                                <p><?php echo e($activity->description); ?></p>
+                                <span class="activity-time">
+                                    <i class="fas fa-user me-1"></i><?php echo e($activity->username); ?> •
+                                    <?php echo e($activity->created_at->diffForHumans()); ?>
 
-                            </span>
+                                </span>
+                            </div>
                         </div>
-                    </div>
-                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
-                    <div class="activity-item">
-                        <div class="activity-dot gray"></div>
-                        <div class="activity-content">
-                            <h6>Belum Ada Aktivitas</h6>
-                            <p>Belum ada aktivitas yang tercatat hari ini</p>
-                            <span class="activity-time">-</span>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+                        <div class="activity-item">
+                            <div class="activity-dot gray"></div>
+                            <div class="activity-content">
+                                <h6>Belum Ada Aktivitas</h6>
+                                <p>Belum ada aktivitas yang tercatat hari ini</p>
+                                <span class="activity-time">-</span>
+                            </div>
                         </div>
-                    </div>
-                <?php endif; ?>
+                    <?php endif; ?>
+                </div>
             </div>
 
             <!-- Right Sidebar -->
             <div class="right-sidebar">
+                <!-- Global PKL Dates Settings -->
+                <div class="calendar-card">
+                    <div class="calendar-header d-flex align-items-center justify-content-between">
+                        <div>
+                            <i class="fas fa-calendar-check teks-periode"></i>
+                            <h6 class="d-inline ms-1">Periode PKL Global</h6>
+                        </div>
+                    </div>
+                    <div class="p-3">
+                        <form action="/admin/settings/update-pkl-dates" method="POST">
+                            <?php echo csrf_field(); ?>
+                            <div class="mb-3">
+                                <label class="form-label small fw-bold">Tanggal Mulai PKL</label>
+                                <input type="date" name="tanggal_mulai_pkl" class="form-control form-control-sm"
+                                    value="<?php echo e($tanggalMulaiPkl); ?>" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label small fw-bold">Tanggal Selesai PKL</label>
+                                <input type="date" name="tanggal_selesai_pkl" class="form-control form-control-sm"
+                                    value="<?php echo e($tanggalSelesaiPkl); ?>" required>
+                            </div>
+                            <button type="submit" class="btn btn-periode btn-sm w-100">
+                                <i class="fas fa-save me-1"></i> Simpan Periode
+                            </button>
+                        </form>
+                        <hr>
+                        <div class="alert alert-info py-2 px-3 m-0 small">
+                            <i class="fas fa-info-circle me-1"></i>
+                            Tanggal ini akan digunakan secara otomatis pada <strong>Surat Tugas</strong> dan
+                            <strong>Informasi Siswa</strong>.
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Calendar -->
                 <div class="calendar-card">
                     <div class="calendar-header">
-                        <i class="fas fa-calendar text-primary"></i>
+                        <i class="fas fa-calendar teks-calender"></i>
                         <h6>Kalender</h6>
                     </div>
                     <div class="calendar-widget">

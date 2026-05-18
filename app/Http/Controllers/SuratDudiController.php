@@ -184,7 +184,7 @@ class SuratDudiController extends Controller
                 $jobdeskList = $request->jobdesk;
                 $kuotaList = $request->kuota;
 
-                $validJurusan = ['RPL', 'DKV', 'ANM', 'TKJ', 'TJAT'];
+                $validJurusan = ['PPLG', 'DKV', 'ANM', 'TKJ', 'TJAT'];
 
                 foreach ($jurusanList as $jurusan) {
                     if (!in_array($jurusan, $validJurusan)) {

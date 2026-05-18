@@ -134,7 +134,7 @@
                             </div>
                         </div>
 
-                       
+
                         <!-- Catatan -->
                         <div class="mb-4">
                             <label for="catatan" class="form-label">
@@ -146,7 +146,7 @@
 
                         <!-- Buttons -->
                         <div class="d-flex justify-content-end gap-2">
-                            <a href="/admin/surat-dudi" class="btn btn-outline-secondary">
+                            <a href="/admin/surat-dudi" class="btn btn-cancel">
                                 Batal
                             </a>
                             <button type="submit" class="btn btn-primary text-light">

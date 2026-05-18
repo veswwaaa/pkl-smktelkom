@@ -294,6 +294,27 @@ class AuthenController extends Controller
 
             $totalSiswa = DB::table('tb_siswa')->count();
             $totalDudi = DB::table('tb_dudi')->count();
+            $pklApproved = DB::table('tb_pengajuan_pkl')
+                            ->where(function ($query) {
+                                $query->where('status_pilihan_1', 'approved')
+                                    ->orWhere('status_pilihan_2', 'approved')
+                                    ->orWhere('status_pilihan_3', 'approved');
+                            })
+                            ->count();
+            $pklPending = DB::table('tb_pengajuan_pkl')
+                            ->where(function ($query) {
+                                $query->where('status_pilihan_1', 'pending')
+                                    ->orWhere('status_pilihan_2', 'pending')
+                                    ->orWhere('status_pilihan_3', 'pending');
+                            })
+                            ->count();
+            $pklGagal = DB::table('tb_pengajuan_pkl')
+                            ->where(function ($query) {
+                                $query->where('status_pilihan_1', 'rejected')
+                                    ->orWhere('status_pilihan_2', 'rejected')
+                                    ->orWhere('status_pilihan_3', 'rejected');
+                            })
+                            ->count();
             $totalWaliKelas = DB::table('tb_users')->where('role', 'wali_kelas')->count();
 
             $siswaLastMonth = DB::table('tb_siswa')
@@ -331,6 +352,9 @@ class AuthenController extends Controller
                 'totalSiswa',
                 'totalDudi',
                 'totalWaliKelas',
+                'pklApproved',
+                'pklPending',
+                'pklGagal',
                 'siswaGrowth',
                 'dudiGrowth',
                 'siswaDitempatkan',

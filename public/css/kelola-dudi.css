@@ -217,6 +217,24 @@ body {
     margin-right: .5rem !important;
 }
 
+
+.btn-cancel{
+    background: transparent;
+    border: 1px solid #d1d5db;
+    color: #000000;
+    border-radius: 8px;
+    padding: 7px 20px;
+    transition: all 0.2s ease;
+    min-width: 120px;
+    text-align: center;
+}
+
+.btn-cancel:hover {
+    background: #f3f4f6;
+    border-color: #9ca3af;
+    color: #000000;
+}
+
 .btn-reset {
     background: #ffc107;
     border-color: #ffc107;
@@ -395,18 +413,19 @@ transform: translateY(0);
 }
 
 .add-btn {
-    display: flex;
+    display: inline-flex; /* 🔥 penting: biar inline & konsisten */
     align-items: center;
-    gap: 8px;
-    padding: 10px 20px;
-    /* background: #253bff; */
+    justify-content: center;
+    gap: 6px;
+    padding: 0.375rem 0.75rem; /* 🔥 samakan dengan bootstrap */
+    font-size: 1rem;
+    font-weight: 400;
     color: white;
-    border: 2px solid #888888;
-    border-radius: 8px;
-    text-decoration: none;
-    transition: all 0.3s;
+    border: 1px solid #888888; /* 🔥 samakan ketebalan */
+    border-radius: 0.375rem;
     cursor: pointer;
-    margin: 0px 20px 0px auto;
+    transition: all 0.2s ease-in-out;
+    margin: 0; /* ❗ hapus auto & margin aneh */
 }
 
 .add-btn:hover {
@@ -417,24 +436,31 @@ transform: translateY(0);
 }
 
 .excel-btn {
-    display: flex;
+    display: inline-flex; /* penting: biar sejajar dengan btn lain */
     align-items: center;
-    gap: 8px;
-    padding: 10px 20px;
-    background: rgba(255, 255, 255, 0.2);
-    color: white;
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    border-radius: 8px;
-    text-decoration: none;
-    transition: all 0.3s;
+    justify-content: center;
+    gap: 6px;
+
+    padding: 0.375rem 0.75rem; /* 🔥 samakan dengan Bootstrap */
+    font-size: 1rem;
+    font-weight: 400;
+
+    background-color: #198754; /* warna bootstrap success */
+    color: #fff;
+
+    border: 1px solid #198754;
+    border-radius: 0.375rem;
+
     cursor: pointer;
+    transition: all 0.2s ease-in-out;
 }
 
+/* Hover biar konsisten */
 .excel-btn:hover {
-    background: rgba(255, 255, 255, 0.3);
-    color: white;
-    transform: translateY(-2px);
+    background-color: #157347;
+    border-color: #146c43;
 }
+
 
 /* Table Styles */
 .table-container {
@@ -566,6 +592,9 @@ transform: translateY(0);
     border: none;
     border-radius: 15px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    max-width: 800px;  /* sesuaikan angka ini */
+    width: 120%;
+
 }
 
 .modal-header {
@@ -582,6 +611,16 @@ transform: translateY(0);
     background: linear-gradient(135deg, #ffc107, #e0a800) !important;
 }
 
+.custom-header {
+    background: #F9FAFC;
+    border-bottom: 2px solid #e5e7eb;
+}
+
+.btn-simpan
+{
+    backround: #151C24;
+
+}
 
 
 
@@ -592,6 +631,7 @@ transform: translateY(0);
 .modal-body {
     padding: 30px;
 }
+
 
 .modal-footer {
     border-top: none;
@@ -651,6 +691,42 @@ transform: translateY(0);
     color: #721c24;
     border-left: 4px solid #dc3545;
 }
+#btnBulkDelete{
+    display: none;
+    background-color: #dc3545;
+    color: white;
+    border: 1px solid rgba(255,255,255,0.35);
+
+    /* 🔥 Animasi */
+    transition: all 0.25s ease;
+
+    /* tambahan biar smooth */
+    transform: translateY(0);
+}
+
+/* 🔥 Hover */
+#btnBulkDelete:hover{
+    background-color: #bb2d3b;
+    border-color: rgba(255,255,255,0.6);
+
+    /* efek naik */
+    transform: translateY(-2px);
+
+    /* shadow merah soft */
+    box-shadow: 0 6px 14px rgba(220,53,69,0.25);
+
+    color: white;
+}
+
+/* 🔥 Saat diklik */
+#btnBulkDelete:active{
+    transform: scale(0.97);
+}
+
+/* 🔥 Focus */
+#btnBulkDelete:focus{
+    box-shadow: 0 0 0 0.2rem rgba(220,53,69,0.35);
+}
 
 /* Empty State */
 .empty-state {
@@ -671,9 +747,12 @@ transform: translateY(0);
 }
 
 .card {
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid rgba(0,0,0,0.08);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
 }
+
 
 .card .card-body {
     border-bottom-left-radius: 20px;
@@ -822,4 +901,6 @@ transform: translateY(0);
         padding: 5px 8px;
         font-size: 0.75rem;
     }
+
+
 }

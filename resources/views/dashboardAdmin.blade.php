@@ -106,8 +106,9 @@
             </div>
         </div>
 
-        <!-- Stats Cards -->
+        {{-- <!-- Stats Cards -->
         <div class="stats-row">
+
             <!-- Total Siswa -->
             <div class="stat-card border-red" onclick="window.location.href='/admin/siswa'" style="cursor: pointer;">
                 <div class="stat-icon icon-red">
@@ -147,7 +148,104 @@
                 </div>
                 <i class="fas fa-chevron-right stat-arrow"></i>
             </div>
+        </div> --}}
+
+        {{-- EDIT KA AYI - TAMPILKAN DATA BERDASARKAN STATUS PENGAJUAN PKL --}}
+    <div class="row g-3 flex-nowrap">
+        <div class="col">
+            <div class="stat-card border-gray mb-3" onclick="window.location.href='/admin/siswa'" style="cursor:pointer;">
+              <div class="d-flex align-items-center gap-3">
+                <div class="icon-wrap ic-purple">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div>
+                    <div class="stat-num">{{ $totalSiswa }}</div>
+                    <div class="stat-lbl">Total Siswa</div>
+                </div>
+               </div>
+                <hr>
+                <div class="stat-change positive">
+                    Lihat selengkapnya
+                </div>
+                <i class="fas fa-chevron-right stat-arrow"></i>
+            </div>
         </div>
+         <div class="col">
+            <div class="stat-card border-gray mb-3" onclick="window.location.href='/admin/dudi'" style="cursor:pointer;">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="icon-wrap ic-blue">
+                        <i class="fas fa-building"></i>
+                    </div>
+                    <div>
+                        <div class="stat-num">{{ $totalDudi }}</div>
+                        <div class="stat-lbl">Total DUDI</div>
+                    </div>
+                </div>
+                <hr>
+                <div class="stat-change positive">
+                    Lihat selengkapnya
+                </div>
+                <i class="fas fa-chevron-right stat-arrow"></i>
+            </div>
+        </div>
+        {{-- PKL Disetujui (approved) --}}
+        <div class="col">
+            <div class="stat-card border-gray mb-3" onclick="window.location.href='/admin/dudi'" style="cursor:pointer;">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="icon-wrap ic-green">
+                    <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div>
+                         <div class="stat-num">{{ $pklApproved }}</div>
+                    <div class="stat-lbl">PKL Disetujui</div>
+                    </div>
+                </div>
+                <hr>
+                <div class="stat-change positive">
+                    Lihat selengkapnya
+                </div>
+                <i class="fas fa-chevron-right stat-arrow"></i>
+            </div>
+        </div>
+
+         <div class="col">
+            <div class="stat-card border-gray mb-3" onclick="window.location.href='/admin/dudi'" style="cursor:pointer;">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="icon-wrap ic-amber">
+                    <i class="fas fa-clock"></i>
+                      </div>
+                   <div>
+                         <div class="stat-num">{{ $pklPending }}</div>
+                    <div class="stat-lbl">PKL Pending</div>
+                    </div>
+                </div>
+                <hr>
+                <div class="stat-change positive">
+                    Lihat selengkapnya
+                </div>
+                <i class="fas fa-chevron-right stat-arrow"></i>
+            </div>
+        </div>
+
+         <div class="col">
+            <div class="stat-card border-gray mb-3" onclick="window.location.href='/admin/dudi'" style="cursor:pointer;">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="icon-wrap ic-red">
+                    <i class="fa-solid fa-x"></i>
+                    </div>
+                   <div>
+                         <div class="stat-num">{{ $pklGagal }}</div>
+                    <div class="stat-lbl">PKL Ditolak</div>
+                    </div>
+                </div>
+                <hr>
+                <div class="stat-change positive">
+                    Lihat selengkapnya
+                </div>
+                <i class="fas fa-chevron-right stat-arrow"></i>
+            </div>
+        </div>
+    </div>
 
         <!-- Content Row -->
         <div class="content-row">
@@ -202,10 +300,10 @@
             <!-- Right Sidebar -->
             <div class="right-sidebar">
                 <!-- Global PKL Dates Settings -->
-                <div class="calendar-card mb-4">
+                <div class="calendar-card">
                     <div class="calendar-header d-flex align-items-center justify-content-between">
                         <div>
-                            <i class="fas fa-calendar-check text-success"></i>
+                            <i class="fas fa-calendar-check teks-periode"></i>
                             <h6 class="d-inline ms-1">Periode PKL Global</h6>
                         </div>
                     </div>
@@ -222,7 +320,7 @@
                                 <input type="date" name="tanggal_selesai_pkl" class="form-control form-control-sm"
                                     value="{{ $tanggalSelesaiPkl }}" required>
                             </div>
-                            <button type="submit" class="btn btn-success btn-sm w-100">
+                            <button type="submit" class="btn btn-periode btn-sm w-100">
                                 <i class="fas fa-save me-1"></i> Simpan Periode
                             </button>
                         </form>
@@ -238,7 +336,7 @@
                 <!-- Calendar -->
                 <div class="calendar-card">
                     <div class="calendar-header">
-                        <i class="fas fa-calendar text-primary"></i>
+                        <i class="fas fa-calendar teks-calender"></i>
                         <h6>Kalender</h6>
                     </div>
                     <div class="calendar-widget">

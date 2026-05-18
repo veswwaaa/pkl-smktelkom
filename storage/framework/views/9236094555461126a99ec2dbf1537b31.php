@@ -151,7 +151,7 @@
 
         <p>
             Dalam rangka mempersiapkan Program Praktek Kerja Lapangan (PKL) siswa SMK Telkom Banjarbaru tahun ajaran
-            <?php echo e(date('Y')); ?>/<?php echo e(date('Y') + 1); ?>,
+            <?php echo e($tahun_ajaran ?? date('Y') . '/' . (date('Y') + 1)); ?>,
             dengan ini kami memohon kepada Bapak/Ibu untuk dapat memberikan informasi mengenai profil penerimaan PKL di
             <?php echo e($dudi->nama_dudi); ?>.
         </p>

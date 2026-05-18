@@ -176,9 +176,9 @@
                                 <div class="col-md-4 mb-2">
                                     <div class="form-check">
                                         <input class="form-check-input jurusan-checkbox" type="checkbox"
-                                            name="jurusan[]" value="RPL" id="jurusan_rpl">
-                                        <label class="form-check-label" for="jurusan_rpl">
-                                            <strong>RPL</strong> - Rekayasa Perangkat Lunak
+                                            name="jurusan[]" value="TJKT" id="jurusan_tjkt">
+                                        <label class="form-check-label" for="jurusan_tjkt">
+                                            <strong>TJKT</strong> - Teknik Jaringan Komputer dan Telekomunikasi
                                         </label>
                                     </div>
                                 </div>
@@ -192,29 +192,23 @@
                                     </div>
                                 </div>
                                 <div class="col-md-4 mb-2">
+
+                                </div>
+                                <div class="col-md-4 mb-2">
                                     <div class="form-check">
                                         <input class="form-check-input jurusan-checkbox" type="checkbox"
-                                            name="jurusan[]" value="ANM" id="jurusan_anm">
-                                        <label class="form-check-label" for="jurusan_anm">
+                                            name="jurusan[]" value="PPLG" id="jurusan_pplg">
+                                        <label class="form-check-label" for="jurusan_pplg">
+                                            <strong>PPLG</strong> - Pengembangan Perangkat Lunak dan Gim
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input jurusan-checkbox" type="checkbox"
+                                            name="jurusan[]" value="ANIMASI" id="jurusan_animasi">
+                                        <label class="form-check-label" for="jurusan_animasi">
                                             <strong>ANM</strong> - Animasi
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="col-md-4 mb-2">
-                                    <div class="form-check">
-                                        <input class="form-check-input jurusan-checkbox" type="checkbox"
-                                            name="jurusan[]" value="TKJ" id="jurusan_tkj">
-                                        <label class="form-check-label" for="jurusan_tkj">
-                                            <strong>TKJ</strong> - Teknik Komputer dan Jaringan
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="col-md-4 mb-2">
-                                    <div class="form-check">
-                                        <input class="form-check-input jurusan-checkbox" type="checkbox"
-                                            name="jurusan[]" value="TJAT" id="jurusan_tjat">
-                                        <label class="form-check-label" for="jurusan_tjat">
-                                            <strong>TJAT</strong> - Teknik Jaringan Akses Telekomunikasi
                                         </label>
                                     </div>
                                 </div>

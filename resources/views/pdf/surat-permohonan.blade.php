@@ -160,7 +160,7 @@
                 <li>
                     <strong>Jurusan yang Diterima</strong><br>
                     <small>Jurusan/kompetensi keahlian siswa apa saja yang dapat diterima untuk melaksanakan PKL
-                        (contoh: RPL, TKJ, Multimedia, DKV, PPLG, TJKT)</small>
+                        (contoh: TJKT, DKV, PPLG, Animasi)</small>
                 </li>
                 <li>
                     <strong>Jobdesk Siswa PKL</strong><br>

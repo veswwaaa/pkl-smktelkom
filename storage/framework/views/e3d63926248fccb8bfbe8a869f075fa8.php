@@ -55,7 +55,7 @@
     <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
 
     <!-- Left Sidebar -->
-     <div class="left-sidebar" id="leftSidebar">
+    <div class="left-sidebar" id="leftSidebar">
         <div class="sidebar-menu">
             <a href="/dashboard" class="sidebar-item" title="Dashboard">
                 <i class="fas fa-th-large"></i>
@@ -195,8 +195,7 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <code
-                                        class="text-dark px-2 py-1 rounded"><?php echo e($dudiItem->nomor_telpon); ?></code>
+                                    <code class="text-dark px-2 py-1 rounded"><?php echo e($dudiItem->nomor_telpon); ?></code>
                                 </td>
                                 <td>
                                     <span class=""><?php echo e($dudiItem->alamat); ?></span>
@@ -225,7 +224,8 @@
                                             title="Lihat Profil Penerimaan">
                                             <i class="fas fa-info-circle"></i>
                                         </button>
-                                        <button type="button" class="btn btn-secondary btn-sm dropdown-toggle dropdown-toggle-split"
+                                        <button type="button"
+                                            class="btn btn-secondary btn-sm dropdown-toggle dropdown-toggle-split"
                                             data-bs-toggle="dropdown" aria-expanded="false">
                                             <i class="fas fa-ellipsis-v"></i>
                                         </button>
@@ -247,7 +247,7 @@
                                             <li>
                                                 <a class="dropdown-item" href="#"
                                                     onclick="event.preventDefault(); resetPasswordDudi(<?php echo e($dudiItem->id); ?>, '<?php echo e($dudiItem->nama_dudi); ?>')">
-                                                    <i class="fas fa-key text-primary"></i> Reset Password
+                                                    <i class="fas fa-lock text-secondary"></i>   Reset Password
                                                 </a>
                                             </li>
                                             <li>
@@ -265,11 +265,11 @@
                             </tr>
                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                             <tr>
-                                <td colspan="7">
+                                <td colspan="8">
                                     <div class="empty-state">
                                         <i class="fas fa-inbox"></i>
-                                        <h6>Belum ada data DUDI</h6>
-                                        <p>Silakan tambah data DUDI baru dengan mengklik tombol "Tambah DUDI"</p>
+                                        <h6>Belum Ada Data DUDI</h6>
+                                        <p>Silakan tambah data DUDI baru dengan mengklik tombol "Tambah Data"</p>
                                     </div>
                                 </td>
                             </tr>
@@ -284,12 +284,12 @@
     <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
-                <div class="modal-header bg-primary">
-                    <h5 class="modal-title text-white" id="addModalLabel">
+                <div class="modal-header custom-header">
+                    <h5 class="modal-title text-black" id="addModalLabel">
                         <i class="fas fa-plus-circle me-2"></i>
-                        Tambah Data DUDI Baru
+                        Tambah Data DUDI
                     </h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    <button type="button" class="btn-close btn-close-black" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     <form id="addForm">
@@ -323,7 +323,7 @@
                                         <i class="fas fa-map-marker-alt me-1"></i>
                                         Alamat
                                     </label>
-                                    <textarea class="form-control" id="alamat" name="alamat" rows="3" required></textarea>
+                                    <textarea class="form-control" id="alamat" name="alamat" rows="4" required></textarea>
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -348,7 +348,7 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">
                         
                         Batal
                     </button>
@@ -365,12 +365,12 @@
     <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
-                <div class="modal-header bg-warning">
-                    <h5 class="modal-title text-white" id="editModalLabel">
+                <div class="modal-header custom-header">
+                    <h5 class="modal-title text-black" id="editModalLabel">
                         <i class="fas fa-edit me-2"></i>
                         Edit Data DUDI
                     </h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    <button type="button" class="btn-close btn-close-black" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     <form id="editForm" method="POST">
@@ -422,12 +422,11 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                        <i class="fas fa-times me-1"></i>
+                    <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">
+
                         Batal
                     </button>
-                    <button type="button" class="btn btn-warning text-white" onclick="submitEdit()">
-                        <i class="fas fa-save me-1"></i>
+                    <button type="button" class="btn btn-primary text-white" onclick="submitEdit()">
                         Update Data
                     </button>
                 </div>
@@ -439,16 +438,16 @@
     <div class="modal fade" id="resetPasswordModal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header bg-warning text-white">
+                <div class="modal-header custom-header text-black">
                     <h5 class="modal-title">
                         <i class="fas fa-exclamation-triangle me-2"></i>
                         Konfirmasi Reset Password
                     </h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    <button type="button" class="btn-close btn-close-black" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     <div class="text-center mb-3">
-                        <i class="fas fa-key fa-3x text-warning mb-3"></i>
+                        <i class="fas fa-key fa-3x text-black mb-3"></i>
                         <h6>Apakah Anda yakin ingin reset password untuk:</h6>
                         <strong class="text-primary" id="reset_dudi_name"></strong>
                     </div>
@@ -458,12 +457,10 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                        <i class="fas fa-times me-1"></i>
-                        Batal
+                    <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">
+                       Batal
                     </button>
-                    <button type="button" class="btn btn-warning text-white" onclick="confirmResetPassword()">
-                        <i class="fas fa-key me-1"></i>
+                    <button type="button" class="btn btn-danger text-white" onclick="confirmResetPassword()">
                         Ya, Reset Password
                     </button>
                 </div>
@@ -521,83 +518,124 @@
         aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
-                <div class="modal-header bg-success text-white">
+                <div class="modal-header custom-header text-black">
                     <h5 class="modal-title" id="profilPenerimaanModalLabel">
                         <i class="fas fa-info-circle me-2"></i>
-                        Profil Penerimaan PKL
+                        Data Penerimaan PKL
                     </h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    <button type="button" class="btn-close btn-close-black" data-bs-dismiss="modal"></button>
                 </div>
                 <form id="profilPenerimaanForm">
                     <?php echo csrf_field(); ?>
                     <input type="hidden" id="profil_id_dudi" name="id_dudi">
                     <div class="modal-body">
                         <div class="mb-3">
-                            <h6 class="text-primary"><i class="fas fa-building me-2"></i>Nama DUDI:</h6>
+                            <h6 class="text-black"><i class="fas fa-building me-2"></i>Nama DUDI:</h6>
                             <p class="fs-5 fw-bold" id="detail_nama_dudi">-</p>
                         </div>
                         <hr>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <h6 class="text-primary"><i class="fas fa-graduation-cap me-2"></i>Jurusan yang
-                                    Diterima: <span class="text-danger">*</span>
-                                </h6>
-                                <div id="detail_jurusan_diterima">
-                                    <div class="form-check mb-2">
-                                        <input class="form-check-input" type="checkbox" name="jurusan_diterima[]"
-                                            value="RPL" id="jurusan_rpl">
-                                        <label class="form-check-label" for="jurusan_rpl">
-                                            <span class="badge bg-primary">RPL</span> - Rekayasa Perangkat Lunak
-                                        </label>
-                                    </div>
-                                    <div class="form-check mb-2">
-                                        <input class="form-check-input" type="checkbox" name="jurusan_diterima[]"
-                                            value="TKJ" id="jurusan_tkj">
-                                        <label class="form-check-label" for="jurusan_tkj">
-                                            <span class="badge bg-info">TKJ</span> - Teknik Komputer dan Jaringan
-                                        </label>
-                                    </div>
-                                    <div class="form-check mb-2">
-                                        <input class="form-check-input" type="checkbox" name="jurusan_diterima[]"
-                                            value="ANM" id="jurusan_anm">
-                                        <label class="form-check-label" for="jurusan_anm">
-                                            <span class="badge bg-warning text-dark">ANM</span> - Animasi
-                                        </label>
-                                    </div>
-                                    <div class="form-check mb-2">
-                                        <input class="form-check-input" type="checkbox" name="jurusan_diterima[]"
-                                            value="DKV" id="jurusan_dkv">
-                                        <label class="form-check-label" for="jurusan_dkv">
-                                            <span class="badge bg-danger">DKV</span> - Desain Komunikasi Visual
-                                        </label>
-                                    </div>
-                                    <div class="form-check mb-2">
-                                        <input class="form-check-input" type="checkbox" name="jurusan_diterima[]"
-                                            value="TJKT" id="jurusan_tjkt">
-                                        <label class="form-check-label" for="jurusan_tjkt">
-                                            <span class="badge bg-success">TJKT</span> - Teknik Jaringan Komputer dan
-                                            Telekomunikasi
-                                        </label>
-                                    </div>
-                                </div>
-                                <small class="text-muted">Centang jurusan yang diterima untuk PKL</small>
+                <div class="row">
+
+                    
+                    <div class="col-md-7 mb-3">
+                        <h6 class="text-black">
+                            <i class="fas fa-graduation-cap me-2"></i>
+                            Jurusan yang Diterima:
+                            <span class="text-danger">*</span>
+                        </h6>
+
+                        <div id="detail_jurusan_diterima"
+                            class="d-flex flex-column gap-2 mt-2">
+
+                            <div class="form-check">
+                                <input class="form-check-input"
+                                    type="checkbox"
+                                    name="jurusan_diterima[]"
+                                    value="TJKT"
+                                    id="jurusan_tjkt">
+                                <label class="form-check-label"
+                                    for="jurusan_tjkt">
+
+                                    <span class="badge bg-success">
+                                        TJKT
+                                    </span>
+                                    - Teknik Jaringan Komputer dan Telekomunikasi
+                                </label>
                             </div>
-                            <div class="col-md-6">
-                                <h6 class="text-primary"><i class="fas fa-briefcase me-2"></i>Jobdesk Siswa PKL: <span
-                                        class="text-danger">*</span></h6>
-                                <textarea class="form-control" id="detail_jobdesk" name="jobdesk" rows="10"
-                                    placeholder="Contoh: Membantu maintenance website, membuat aplikasi mobile, testing software, dll..."></textarea>
-                                <small class="text-muted">Jelaskan tugas yang akan dikerjakan siswa PKL</small>
+
+                            <div class="form-check">
+                                <input class="form-check-input"
+                                    type="checkbox"
+                                    name="jurusan_diterima[]"
+                                    value="DKV"
+                                    id="jurusan_dkv">
+                                <label class="form-check-label"
+                                    for="jurusan_dkv">
+                                    <span class="badge bg-danger">
+                                        DKV
+                                    </span>
+                                    - Desain Komunikasi Visual
+                                </label>
                             </div>
+
+                            <div class="form-check">
+                                <input class="form-check-input"
+                                    type="checkbox"
+                                    name="jurusan_diterima[]"
+                                    value="PPLG"
+                                    id="jurusan_pplg">
+                                <label class="form-check-label"
+                                    for="jurusan_pplg">
+                                    <span class="badge bg-primary">
+                                        PPLG
+                                    </span>
+                                    - Pengembangan Perangkat Lunak dan Gim
+                                </label>
+                            </div>
+
+                            <div class="form-check">
+                                <input class="form-check-input"
+                                    type="checkbox"
+                                    name="jurusan_diterima[]"
+                                    value="ANM"
+                                    id="jurusan_anm">
+                                <label class="form-check-label"
+                                    for="jurusan_anm">
+                                    <span class="badge bg-warning text-dark">
+                                        ANM
+                                    </span>
+                                    - Animasi
+                                </label>
+                            </div>
+
                         </div>
+
+                        <small class="text-muted">
+                            Centang jurusan yang diterima untuk PKL
+                        </small>
+                    </div>
+
+                    
+                    <div class="col-md-5">
+                        <h6 class="text-black">
+                            <i class="fas fa-briefcase me-2"></i>
+                            Jobdesk Siswa PKL:
+                            <span class="text-danger">*</span>
+                        </h6>
+                        <textarea class="form-control" id="detail_jobdesk" name="jobdesk" rows="10"
+                            placeholder="Contoh: Membantu maintenance website, membuat aplikasi mobile, testing software, dll..."></textarea>
+                        <small class="text-muted">
+                            Jelaskan tugas yang akan dikerjakan siswa PKL
+                        </small>
+                    </div>
+
+                </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                            <i class="fas fa-times me-1"></i>
-                            Batal
+                        <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">
+                           Batal
                         </button>
-                        <button type="button" class="btn btn-success" onclick="submitProfilPenerimaan()">
-                            <i class="fas fa-save me-1"></i>
+                        <button type="button" class="btn btn-primary" onclick="submitProfilPenerimaan()">
                             Simpan Profil
                         </button>
                     </div>
@@ -611,12 +649,12 @@
         aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header bg-primary text-white">
+                <div class="modal-header custom-header text-black">
                     <h5 class="modal-title" id="uploadSuratModalLabel">
                         <i class="fas fa-upload me-2"></i>
                         Upload Surat Pengajuan PKL
                     </h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    <button type="button" class="btn-close btn-close-black" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     <form id="uploadSuratForm" enctype="multipart/form-data">
@@ -624,7 +662,7 @@
                         <input type="hidden" id="upload_id_dudi" name="id_dudi">
 
                         <div class="mb-3">
-                            <label class="form-label">Untuk DUDI:</label>
+                            <label class="form-label">Nama DUDI</label>
                             <input type="text" class="form-control bg-light" id="upload_nama_dudi" readonly>
                         </div>
 
@@ -654,12 +692,11 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                        <i class="fas fa-times me-1"></i>
+                    <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">
                         Batal
                     </button>
                     <button type="button" class="btn btn-primary" onclick="submitUploadSurat()">
-                        <i class="fas fa-upload me-1"></i>
+                        <i class="fas fa-upload"></i>
                         Upload Surat
                     </button>
                 </div>
@@ -954,27 +991,8 @@
     <script src="<?php echo e(asset('js/kelola-dudi-clean.js')); ?>"></script>
     <script src="<?php echo e(asset('js/kelola-dudi-reset-password.js')); ?>"></script>
 
-    <script>
-        // Toggle Sidebar untuk Mobile
-        function toggleSidebar() {
-            const sidebar = document.getElementById('leftSidebar');
-            const overlay = document.getElementById('sidebarOverlay');
-
-            sidebar.classList.toggle('show');
-            overlay.classList.toggle('show');
-        }
-
-        // Close sidebar when clicking on menu item (mobile)
-        document.querySelectorAll('.sidebar-item').forEach(item => {
-            item.addEventListener('click', function() {
-                if (window.innerWidth <= 768) {
-                    toggleSidebar();
-                }
-            });
-        });
-    </script>
+    <!-- toggleSidebar is defined in kelola-dudi-clean.js -->
     <style>
-        /* Force sidebar to display on desktop, toggleable on mobile */
         body .left-sidebar {
             position: fixed !important;
             top: 70px !important;
@@ -982,19 +1000,30 @@
             width: 90px !important;
             height: calc(100vh - 70px) !important;
             background: #B32A2F !important;
-            z-index: 1040 !important;
+            z-index: 1060 !important;
             padding: 20px 0 !important;
             visibility: visible !important;
             display: block !important;
+            transition: transform 0.3s ease !important;
         }
 
         .sidebar-item {
             color: white !important;
             display: flex !important;
+            justify-content: center !important;
+            padding: 15px 0 !important;
+            font-size: 1.2rem !important;
+            text-decoration: none !important;
         }
 
         .sidebar-item i {
             color: white !important;
+        }
+
+        .sidebar-item.active {
+            background: rgba(255, 255, 255, 0.25) !important;
+            border-radius: 12px;
+            transform: scale(1.05);
         }
 
         .hamburger-menu {
@@ -1004,18 +1033,20 @@
         /* Mobile responsive */
         @media (max-width: 768px) {
             .hamburger-menu {
-                display: block !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
                 background: none !important;
                 border: none !important;
                 font-size: 1.5rem !important;
                 color: #B32A2F !important;
                 cursor: pointer !important;
                 padding: 8px !important;
+                z-index: 1100 !important;
             }
 
             body .left-sidebar {
                 transform: translateX(-100%) !important;
-                transition: transform 0.3s ease !important;
             }
 
             body .left-sidebar.show {
@@ -1027,11 +1058,27 @@
             }
 
             .sidebar-overlay {
-                display: none !important;
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 1055 !important;
+                opacity: 0;
+                transition: opacity 0.3s ease;
             }
 
             .sidebar-overlay.show {
                 display: block !important;
+                opacity: 1 !important;
+            }
+
+            .bg-darkblue{
+                background: #4F5686;
             }
         }
     </style>

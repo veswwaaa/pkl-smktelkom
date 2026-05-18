@@ -50,10 +50,10 @@ function viewDetail(id) {
                     if (!dudiMandiri) return "";
 
                     return `
-                        <div class="dudi-mandiri-detail mt-2 p-3 border-start border-info border-3 bg-light">
-                            <div class="mb-2">
-                                <i class="fas fa-info-circle text-info me-1"></i>
-                                <strong class="text-info">Detail DUDI Mandiri:</strong>
+                        <div class="dudi-mandiri-detail mt-2 p-3 border-start border-gray-900 border-3 bg-light">
+                            <div class="mb-3">
+                                <i class="fas fa-info-circle text-black me-1"></i>
+                                <strong class="text-black">Detail DUDI Mandiri:</strong>
                             </div>
                             <table class="table table-sm table-borderless mb-0">
                                 <tr>
@@ -85,7 +85,7 @@ function viewDetail(id) {
                             <h6 class="text-primary"><i class="fas fa-building me-2"></i>Pilihan DUDI</h6>
                             <table class="table table-borderless table-sm">
                                 <tr>
-                                    <th width="20%">Pilihan 1</th>
+                                    <th width="30%">Pilihan 1</th>
                                     <td>
                                         ${pilihan1} ${
                     p.pilihan_aktif == "1"
@@ -110,19 +110,7 @@ function viewDetail(id) {
                                         )}
                                     </td>
                                 </tr>
-                                <tr>
-                                    <th>Pilihan 3</th>
-                                    <td>
-                                        ${pilihan3} ${
-                    p.pilihan_aktif == "3"
-                        ? '<span class="badge bg-success">Aktif</span>'
-                        : ""
-                }
-                                        ${getDudiMandiriDetailHTML(
-                                            p.dudi_mandiri_pilihan3
-                                        )}
-                                    </td>
-                                </tr>
+
                                 <tr>
                                     <th>Tanggal Pengajuan</th>
                                     <td>${new Date(
@@ -179,17 +167,7 @@ function viewDetail(id) {
                                                     : " (Tidak diisi)"
                                             }
                                         </option>
-                                        <option value="3" ${
-                                            p.pilihan_aktif == "3"
-                                                ? "selected"
-                                                : ""
-                                        } ${pilihan3 === "-" ? "disabled" : ""}>
-                                            Pilihan 3${
-                                                pilihan3 !== "-"
-                                                    ? ": " + pilihan3
-                                                    : " (Tidak diisi)"
-                                            }
-                                        </option>
+
                                         ${
                                             siswa.grade_kurikulum === "D" ||
                                             siswa.grade_kurikulum === "E" ||
@@ -373,7 +351,7 @@ function confirmReject(id, nama) {
         html: `Anda akan menolak pengajuan PKL dari:<br><strong>${nama}</strong>`,
         icon: "warning",
         showCancelButton: true,
-        confirmButtonColor: "#ffc107",
+        confirmButtonColor: "#B32A2F",
         cancelButtonColor: "#6c757d",
         confirmButtonText: "Ya, Tolak",
         cancelButtonText: "Batal",
@@ -440,7 +418,7 @@ function confirmCreateDudiAccount(
         confirmButtonColor: "#0d6efd",
         cancelButtonColor: "#6c757d",
         confirmButtonText:
-            '<i class="fas fa-user-plus"></i> Ya, Buat Akun DUDI',
+            'Ya, Buat Akun DUDI',
         cancelButtonText: "Batal",
         reverseButtons: true,
         width: "650px",
@@ -511,7 +489,7 @@ function confirmRejectDudiMandiri(pengajuanId, namaSiswa, namaDudi) {
         showCancelButton: true,
         confirmButtonColor: "#dc3545",
         cancelButtonColor: "#6c757d",
-        confirmButtonText: '<i class="fas fa-times-circle"></i> Ya, Tolak!',
+        confirmButtonText: 'Ya, Tolak!',
         cancelButtonText: "Batal",
         reverseButtons: true,
         width: "600px",
@@ -589,7 +567,7 @@ function confirmDudiTidakBersedia(pengajuanId, namaSiswa, namaDudi) {
         showCancelButton: true,
         confirmButtonColor: "#dc3545",
         cancelButtonColor: "#6c757d",
-        confirmButtonText: '<i class="fas fa-ban"></i> Ya, Tidak Bersedia',
+        confirmButtonText: 'Ya, Tidak Bersedia',
         cancelButtonText: "Batal",
         reverseButtons: true,
         width: "600px",

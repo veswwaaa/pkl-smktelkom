@@ -152,7 +152,8 @@
                             <p><strong>Status:</strong></p>
                             <?php
                                 $isPklDiSekolah = $pengajuan->pilihan_aktif == 'SMK Telkom Banjarbaru';
-                                $isPilihan1Inactive = $isPklDiSekolah;
+                                $isPilihan2Approved = $pengajuan->status_pilihan_2 == 'approved';
+                                $isPilihan1Inactive = $isPklDiSekolah || $isPilihan2Approved;
                             ?>
 
                             <?php if($isPilihan1Inactive): ?>
@@ -274,7 +275,7 @@
         <?php endif; ?>
 
         <!-- Back Button -->
-       
+
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>

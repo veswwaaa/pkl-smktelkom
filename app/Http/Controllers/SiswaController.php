@@ -7,6 +7,7 @@ use App\Models\tb_siswa;
 use App\Imports\SiswaImport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 
 class SiswaController extends Controller
@@ -42,24 +43,25 @@ class SiswaController extends Controller
      */
     public function store(Request $request)
     {
-        try {
-            //validasi input
-            $request->validate([
-                'nis' => 'required|numeric|digits:9|unique:tb_siswa,nis|unique:tb_users,username',
-                'nama' => 'required|string|max:255',
-                'kelas' => 'required|string|max:50',
-                'jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
-                'tahun_ajaran' => 'required|string|max:20',
-                'jurusan' => 'required|string|max:20'
-            ], [
-                // pesan eror form data
-                'nis.required' => 'NIS wajib diisi',
-                'nis.numeric' => 'NIS harus berupa angka saja',
-                'nis.digits' => 'NIS harus tepat 9 digit angka',
-                'nis.unique' => 'NIS sudah terdaftar di sistem',
-                'kelas.required' => 'Kelas wajib diisi',
-            ]);
+        // Validasi input di luar transaksi
+        $request->validate([
+            'nis' => 'required|numeric|digits:9|unique:tb_siswa,nis|unique:tb_users,username',
+            'nama' => 'required|string|max:255',
+            'kelas' => 'required|string|max:50',
+            'jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
+            'tahun_ajaran' => 'required|string|max:20',
+            'jurusan' => 'required|string|max:20'
+        ], [
+            // pesan eror form data
+            'nis.required' => 'NIS wajib diisi',
+            'nis.numeric' => 'NIS harus berupa angka saja',
+            'nis.digits' => 'NIS harus tepat 9 digit angka',
+            'nis.unique' => 'NIS sudah terdaftar di sistem',
+            'kelas.required' => 'Kelas wajib diisi',
+        ]);
 
+        try {
+            DB::beginTransaction();
 
             // simpan data siswa
             $siswa = new tb_siswa();
@@ -71,14 +73,12 @@ class SiswaController extends Controller
             $siswa->jurusan = $request->jurusan;
             $siswa->save();
 
-
-            // Generate password otomatis
+            // Generate password otomatis: dummy@NIS
             $password = 'dummy@' . $request->nis;
 
-
-            //ngebuat akun usernya di tb_users untuk siswa
+            // Buat akun user di tb_users untuk siswa
             $user = new User();
-            $user->username = $request->nis;
+            $user->username = (string) $request->nis;
             $user->password = Hash::make($password);
             $user->role = 'siswa';
             $user->id_admin = null;
@@ -86,18 +86,22 @@ class SiswaController extends Controller
             $user->id_siswa = $siswa->id;
             $user->save();
 
-            //ngebuat log untuk di tampilan activity nya
+            DB::commit();
+
+            // Buat log aktivitas
             logActivity(
                 'create',
                 'Siswa Baru Ditambahkan',
                 "Siswa {$siswa->nama} (NIS : {$siswa->nis}) berhasil ditambahkan"
             );
 
-            return redirect('/admin/siswa')->with('success', 'Siswa berhasil ditambahkan!');
+            return redirect('/admin/siswa')->with('success',
+                "Siswa {$siswa->nama} berhasil ditambahkan! Login menggunakan username: {$siswa->nis} dan password: dummy@{$siswa->nis}"
+            );
 
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', ' Terjadi kesalahan! ' . $e->getMessage());
-
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat menyimpan data: ' . $e->getMessage());
         }
     }
 

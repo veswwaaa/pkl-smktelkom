@@ -173,7 +173,7 @@ class AuthenController extends Controller
     {
         $request->validate([
             'username' => 'required',
-            'password' => 'required|min:8|max:20'
+            'password' => 'required|min:8|max:100'
         ]);
 
         // Trim whitespace dari username untuk menghindari error
@@ -295,25 +295,16 @@ class AuthenController extends Controller
             $totalSiswa = DB::table('tb_siswa')->count();
             $totalDudi = DB::table('tb_dudi')->count();
             $pklApproved = DB::table('tb_pengajuan_pkl')
-                            ->where(function ($query) {
-                                $query->where('status_pilihan_1', 'approved')
-                                    ->orWhere('status_pilihan_2', 'approved')
-                                    ->orWhere('status_pilihan_3', 'approved');
-                            })
+                            ->join('tb_siswa', 'tb_pengajuan_pkl.id_siswa', '=', 'tb_siswa.id')
+                            ->where('tb_pengajuan_pkl.status', 'approved')
                             ->count();
             $pklPending = DB::table('tb_pengajuan_pkl')
-                            ->where(function ($query) {
-                                $query->where('status_pilihan_1', 'pending')
-                                    ->orWhere('status_pilihan_2', 'pending')
-                                    ->orWhere('status_pilihan_3', 'pending');
-                            })
+                            ->join('tb_siswa', 'tb_pengajuan_pkl.id_siswa', '=', 'tb_siswa.id')
+                            ->whereIn('tb_pengajuan_pkl.status', ['pending', 'diproses'])
                             ->count();
             $pklGagal = DB::table('tb_pengajuan_pkl')
-                            ->where(function ($query) {
-                                $query->where('status_pilihan_1', 'rejected')
-                                    ->orWhere('status_pilihan_2', 'rejected')
-                                    ->orWhere('status_pilihan_3', 'rejected');
-                            })
+                            ->join('tb_siswa', 'tb_pengajuan_pkl.id_siswa', '=', 'tb_siswa.id')
+                            ->where('tb_pengajuan_pkl.status', 'rejected')
                             ->count();
             $totalWaliKelas = DB::table('tb_users')->where('role', 'wali_kelas')->count();
 

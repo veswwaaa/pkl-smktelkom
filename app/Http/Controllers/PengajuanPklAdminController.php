@@ -34,7 +34,11 @@ class PengajuanPklAdminController extends Controller
 
         // Filter by status
         if ($request->has('status') && $request->status != '') {
-            $query->where('status', $request->status);
+            if ($request->status == 'pending') {
+                $query->whereIn('status', ['pending', 'diproses']);
+            } else {
+                $query->where('status', $request->status);
+            }
         }
 
         // Filter by kelas
@@ -149,6 +153,66 @@ class PengajuanPklAdminController extends Controller
                 "Siswa {$pengajuan->siswa->nama} (NIS: {$pengajuan->siswa->nis}) ditempatkan untuk PKL di SMK Telkom Banjarbaru (Grade {$pengajuan->siswa->grade_kurikulum})",
                 Session::get('loginId')
             );
+        }
+
+        // Jika sudah approved, update status pilihan individual
+        if ($pengajuan->status === 'approved') {
+            // Revert pilihan lama menjadi rejected jika sebelumnya approved
+            if ($oldPilihan == '1') {
+                $pengajuan->status_pilihan_1 = 'rejected';
+                $pengajuan->catatan_pilihan_1 = 'Pilihan ini tidak lagi aktif karena Anda dialihkan ke pilihan lain oleh admin.';
+            } elseif ($oldPilihan == '2') {
+                $pengajuan->status_pilihan_2 = 'rejected';
+                $pengajuan->catatan_pilihan_2 = 'Pilihan ini tidak lagi aktif karena Anda dialihkan ke pilihan lain oleh admin.';
+            } elseif ($oldPilihan == '3') {
+                $pengajuan->status_pilihan_3 = 'rejected';
+                $pengajuan->catatan_pilihan_3 = 'Pilihan ini tidak lagi aktif karena Anda dialihkan ke pilihan lain oleh admin.';
+            }
+
+            // Set pilihan baru menjadi approved jika itu 1, 2, atau 3
+            if ($newPilihan == '1') {
+                $pengajuan->status_pilihan_1 = 'approved';
+                $pengajuan->tanggal_response_pilihan_1 = now();
+                $pengajuan->catatan_pilihan_1 = 'Disetujui oleh admin (Dialihkan dari pilihan sebelumnya)';
+            } elseif ($newPilihan == '2') {
+                $pengajuan->status_pilihan_2 = 'approved';
+                $pengajuan->tanggal_response_pilihan_2 = now();
+                $pengajuan->catatan_pilihan_2 = 'Disetujui oleh admin (Dialihkan dari pilihan sebelumnya)';
+            } elseif ($newPilihan == '3') {
+                $pengajuan->status_pilihan_3 = 'approved';
+                $pengajuan->tanggal_response_pilihan_3 = now();
+                $pengajuan->catatan_pilihan_3 = 'Disetujui oleh admin (Dialihkan dari pilihan sebelumnya)';
+            }
+
+            // Update penempatan di tabel siswa
+            $siswa = $pengajuan->siswa;
+            if ($siswa) {
+                if ($newPilihan === 'SMK Telkom Banjarbaru') {
+                    $siswa->id_dudi = null;
+                    $siswa->status_penempatan = 'ditempatkan';
+                } else {
+                    $idDudi = null;
+                    if ($newPilihan == '1') {
+                        $idDudi = $pengajuan->id_dudi_pilihan_1 ?? $pengajuan->id_dudi_mandiri_pilihan_1;
+                    } elseif ($newPilihan == '2') {
+                        $idDudi = $pengajuan->id_dudi_pilihan_2 ?? $pengajuan->id_dudi_mandiri_pilihan_2;
+                    } elseif ($newPilihan == '3') {
+                        $idDudi = $pengajuan->id_dudi_pilihan_3 ?? $pengajuan->id_dudi_mandiri_pilihan_3;
+                    }
+
+                    if ($idDudi) {
+                        $siswa->id_dudi = $idDudi;
+                        $siswa->status_penempatan = 'ditempatkan';
+
+                        // Juga set tanggal jika belum ada (antisipasi auto-approve SMK Telkom)
+                        if (!$siswa->tanggal_mulai_pkl) {
+                            $siswa->tanggal_mulai_pkl = \DB::table('settings')->where('key', 'tanggal_mulai_pkl')->value('value');
+                            $siswa->tanggal_selesai_pkl = \DB::table('settings')->where('key', 'tanggal_selesai_pkl')->value('value');
+                        }
+                    }
+                }
+                $siswa->save();
+            }
         }
 
         $pengajuan->save();

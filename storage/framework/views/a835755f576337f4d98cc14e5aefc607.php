@@ -148,7 +148,7 @@
         </div>
         
         <div class="col">
-            <div class="stat-card border-gray mb-3" onclick="window.location.href='/admin/dudi'" style="cursor:pointer;">
+            <div class="stat-card border-gray mb-3" onclick="window.location.href='/admin/pengajuan-pkl?status=approved'" style="cursor:pointer;">
                 <div class="d-flex align-items-center gap-3">
                     <div class="icon-wrap ic-green">
                     <i class="fas fa-check-circle"></i>
@@ -167,7 +167,7 @@
         </div>
 
          <div class="col">
-            <div class="stat-card border-gray mb-3" onclick="window.location.href='/admin/dudi'" style="cursor:pointer;">
+            <div class="stat-card border-gray mb-3" onclick="window.location.href='/admin/pengajuan-pkl?status=pending'" style="cursor:pointer;">
                 <div class="d-flex align-items-center gap-3">
                     <div class="icon-wrap ic-amber">
                     <i class="fas fa-clock"></i>
@@ -186,7 +186,7 @@
         </div>
 
          <div class="col">
-            <div class="stat-card border-gray mb-3" onclick="window.location.href='/admin/dudi'" style="cursor:pointer;">
+            <div class="stat-card border-gray mb-3" onclick="window.location.href='/admin/pengajuan-pkl?status=rejected'" style="cursor:pointer;">
                 <div class="d-flex align-items-center gap-3">
                     <div class="icon-wrap ic-red">
                     <i class="fa-solid fa-x"></i>

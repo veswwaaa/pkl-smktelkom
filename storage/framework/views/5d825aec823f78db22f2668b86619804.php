@@ -134,7 +134,7 @@
                                      <?php
                                          $badgeColor = '';
                                          switch ($jurusan) {
-                                             case 'RPL':
+                                             case 'PPLG':
                                                  $badgeColor = 'background: #3b82f6; color: white;';
                                                  break;
                                              case 'TKJ':

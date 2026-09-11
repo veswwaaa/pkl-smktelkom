@@ -269,14 +269,13 @@ class AuthenController extends Controller
                 ->where('id_siswa', $data->id)
                 ->first();
 
-            // Ambil semua DUDI sekolah yang sudah mengisi profil penerimaan PKL
-            // Filter berdasarkan jurusan siswa
-            $dudiTersedia = tb_dudi::where('jenis_dudi', 'sekolah')
-                ->whereNotNull('jurusan_diterima')
+            // Ambil semua DUDI yang sudah mengisi profil penerimaan PKL
+            // Filter berdasarkan jurusan siswa (tanpa peduli jenis sekolah/mandiri)
+            $dudiTersedia = tb_dudi::whereNotNull('jurusan_diterima')
                 ->whereNotNull('jobdesk')
                 ->get()
                 ->filter(function ($dudi) use ($data) {
-                    // Jika jurusan_diterima tidak null, cek apakah jurusan siswa ada di array
+                    // Cek apakah jurusan siswa ada di array jurusan yang diterima DUDI
                     if ($dudi->jurusan_diterima && is_array($dudi->jurusan_diterima)) {
                         return in_array($data->jurusan, $dudi->jurusan_diterima);
                     }

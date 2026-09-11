@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\SuratDudi;
 use App\Models\tb_dudi;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Session;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
 
 class SuratDudiController extends Controller
 {
@@ -16,34 +16,57 @@ class SuratDudiController extends Controller
     {
         $user = \App\Models\User::where('id', Session::get('loginId'))->first();
 
-        if (!$user || $user->role != 'dudi') {
+        if (! $user || $user->role != 'dudi') {
             return redirect('/login')->with('fail', 'Anda harus login sebagai DUDI.');
         }
 
         $dudi = tb_dudi::find($user->id_dudi);
 
-        if (!$dudi) {
+        if (! $dudi) {
             return redirect('/login')->with('fail', 'Data DUDI tidak ditemukan.');
         }
 
-        // Ambil surat untuk DUDI ini
-        $surat = SuratDudi::where('id_dudi', $dudi->id)->first();
+        // Ambil surat dari Admin untuk DUDI ini
+        $suratList = SuratDudi::where('id_dudi', $dudi->id)->get();
+        $surat = $suratList->first();
 
-        // Get pengajuan PKL yang mendaftar ke DUDI ini
-        // Baik DUDI sekolah maupun mandiri menggunakan field id_dudi_pilihan_1/2/3
-        $pengajuanList = \App\Models\PengajuanPkl::where(function ($query) use ($dudi) {
-            $query->where('id_dudi_pilihan_1', $dudi->id)
-                ->orWhere('id_dudi_pilihan_2', $dudi->id)
-                ->orWhere('id_dudi_pilihan_3', $dudi->id);
-        })
-            ->with('siswa')
-            ->orderBy('created_at', 'desc')
-            ->limit(10)
-            ->get();
+        // Data siswa yang saat ini magang / ditempatkan di DUDI ini
+        $siswaMagang = \App\Models\tb_siswa::where('id_dudi', $dudi->id)->get();
+        $totalSiswaMagang = $siswaMagang->count();
 
-        $pengajuanCount = $pengajuanList->count();
+        // Rekap statistik siswa magang per jurusan untuk Chart
+        $jurusanGroup = $siswaMagang->groupBy('jurusan');
+        $jurusanLabels = [];
+        $jurusanCounts = [];
 
-        return view('dudi.dashboard', compact('dudi', 'surat', 'pengajuanList', 'pengajuanCount'));
+        foreach ($jurusanGroup as $jurusan => $items) {
+            $jurusanLabels[] = $jurusan ?: 'Lainnya';
+            $jurusanCounts[] = $items->count();
+        }
+
+        // Jika belum ada data siswa magang, sediakan label standar untuk tampilan Chart
+        if (empty($jurusanLabels)) {
+            $jurusanLabels = ['PPLG', 'DKV', 'TJKT', 'ANM'];
+            $jurusanCounts = [0, 0, 0, 0];
+        }
+
+        // Status surat
+        $totalSuratMasuk = $suratList->count();
+        $suratPerluBalasan = $suratList->filter(function ($s) {
+            return ($s->file_surat_pengajuan && ! $s->file_balasan_pengajuan) || ($s->file_surat_permohonan && ! $s->file_balasan_permohonan);
+        })->count();
+
+        return view('dudi.dashboard', compact(
+            'dudi',
+            'surat',
+            'suratList',
+            'siswaMagang',
+            'totalSiswaMagang',
+            'jurusanLabels',
+            'jurusanCounts',
+            'totalSuratMasuk',
+            'suratPerluBalasan'
+        ));
     }
 
     // Halaman Surat Pengajuan
@@ -51,13 +74,13 @@ class SuratDudiController extends Controller
     {
         $user = \App\Models\User::where('id', Session::get('loginId'))->first();
 
-        if (!$user || $user->role != 'dudi') {
+        if (! $user || $user->role != 'dudi') {
             return redirect('/login')->with('fail', 'Anda harus login sebagai DUDI.');
         }
 
         $dudi = tb_dudi::find($user->id_dudi);
 
-        if (!$dudi) {
+        if (! $dudi) {
             return redirect('/login')->with('fail', 'Data DUDI tidak ditemukan.');
         }
 
@@ -68,10 +91,10 @@ class SuratDudiController extends Controller
 
         if ($surat) {
             if ($surat->file_surat_pengajuan) {
-                $filePengajuanExists = Storage::exists('public/surat_dudi/' . $surat->file_surat_pengajuan);
+                $filePengajuanExists = Storage::exists('public/surat_dudi/'.$surat->file_surat_pengajuan);
             }
             if ($surat->file_balasan_pengajuan) {
-                $fileBalasanPengajuanExists = Storage::exists('public/surat_dudi/' . $surat->file_balasan_pengajuan);
+                $fileBalasanPengajuanExists = Storage::exists('public/surat_dudi/'.$surat->file_balasan_pengajuan);
             }
         }
 
@@ -83,13 +106,13 @@ class SuratDudiController extends Controller
     {
         $user = \App\Models\User::where('id', Session::get('loginId'))->first();
 
-        if (!$user || $user->role != 'dudi') {
+        if (! $user || $user->role != 'dudi') {
             return redirect('/login')->with('fail', 'Anda harus login sebagai DUDI.');
         }
 
         $dudi = tb_dudi::find($user->id_dudi);
 
-        if (!$dudi) {
+        if (! $dudi) {
             return redirect('/login')->with('fail', 'Data DUDI tidak ditemukan.');
         }
 
@@ -100,10 +123,10 @@ class SuratDudiController extends Controller
 
         if ($surat) {
             if ($surat->file_surat_permohonan) {
-                $filePermohonanExists = Storage::exists('public/surat_dudi/' . $surat->file_surat_permohonan);
+                $filePermohonanExists = Storage::exists('public/surat_dudi/'.$surat->file_surat_permohonan);
             }
             if ($surat->file_balasan_permohonan) {
-                $fileBalasanPermohonanExists = Storage::exists('public/surat_dudi/' . $surat->file_balasan_permohonan);
+                $fileBalasanPermohonanExists = Storage::exists('public/surat_dudi/'.$surat->file_balasan_permohonan);
             }
         }
 
@@ -115,13 +138,13 @@ class SuratDudiController extends Controller
     {
         $user = \App\Models\User::where('id', Session::get('loginId'))->first();
 
-        if (!$user || $user->role != 'dudi') {
+        if (! $user || $user->role != 'dudi') {
             return redirect('/login')->with('fail', 'Anda harus login sebagai DUDI.');
         }
 
         $dudi = tb_dudi::find($user->id_dudi);
 
-        if (!$dudi) {
+        if (! $dudi) {
             return redirect('/login')->with('fail', 'Data DUDI tidak ditemukan.');
         }
 
@@ -138,16 +161,16 @@ class SuratDudiController extends Controller
 
         if ($surat) {
             if ($surat->file_surat_pengajuan) {
-                $filePengajuanExists = Storage::exists('public/surat_dudi/' . $surat->file_surat_pengajuan);
+                $filePengajuanExists = Storage::exists('public/surat_dudi/'.$surat->file_surat_pengajuan);
             }
             if ($surat->file_surat_permohonan) {
-                $filePermohonanExists = Storage::exists('public/surat_dudi/' . $surat->file_surat_permohonan);
+                $filePermohonanExists = Storage::exists('public/surat_dudi/'.$surat->file_surat_permohonan);
             }
             if ($surat->file_balasan_permohonan) {
-                $fileBalasanPermohonanExists = Storage::exists('public/surat_dudi/' . $surat->file_balasan_permohonan);
+                $fileBalasanPermohonanExists = Storage::exists('public/surat_dudi/'.$surat->file_balasan_permohonan);
             }
             if ($surat->file_balasan_pengajuan) {
-                $fileBalasanPengajuanExists = Storage::exists('public/surat_dudi/' . $surat->file_balasan_pengajuan);
+                $fileBalasanPengajuanExists = Storage::exists('public/surat_dudi/'.$surat->file_balasan_pengajuan);
             }
         }
 
@@ -160,10 +183,10 @@ class SuratDudiController extends Controller
         try {
             $user = \App\Models\User::where('id', Session::get('loginId'))->first();
 
-            if (!$user || $user->role != 'dudi') {
+            if (! $user || $user->role != 'dudi') {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Unauthorized'
+                    'message' => 'Unauthorized',
                 ], 403);
             }
 
@@ -176,7 +199,7 @@ class SuratDudiController extends Controller
                     'jobdesk' => 'required|array|min:1',
                     'kuota' => 'required|array|min:1',
                     'catatan_dudi' => 'nullable|string',
-                    'jenis_surat' => 'required|in:pengajuan,permohonan'
+                    'jenis_surat' => 'required|in:pengajuan,permohonan',
                 ]);
 
                 // Validasi manual untuk memastikan setiap jurusan punya jobdesk dan kuota
@@ -187,24 +210,24 @@ class SuratDudiController extends Controller
                 $validJurusan = ['PPLG', 'DKV', 'ANIMASI', 'TJKT', 'TJAT'];
 
                 foreach ($jurusanList as $jurusan) {
-                    if (!in_array($jurusan, $validJurusan)) {
+                    if (! in_array($jurusan, $validJurusan)) {
                         return response()->json([
                             'success' => false,
-                            'message' => "Jurusan {$jurusan} tidak valid"
+                            'message' => "Jurusan {$jurusan} tidak valid",
                         ], 422);
                     }
 
-                    if (!isset($jobdeskList[$jurusan]) || empty(trim($jobdeskList[$jurusan]))) {
+                    if (! isset($jobdeskList[$jurusan]) || empty(trim($jobdeskList[$jurusan]))) {
                         return response()->json([
                             'success' => false,
-                            'message' => "Jobdesk untuk jurusan {$jurusan} harus diisi"
+                            'message' => "Jobdesk untuk jurusan {$jurusan} harus diisi",
                         ], 422);
                     }
 
-                    if (!isset($kuotaList[$jurusan]) || !is_numeric($kuotaList[$jurusan]) || $kuotaList[$jurusan] < 1) {
+                    if (! isset($kuotaList[$jurusan]) || ! is_numeric($kuotaList[$jurusan]) || $kuotaList[$jurusan] < 1) {
                         return response()->json([
                             'success' => false,
-                            'message' => "Kuota untuk jurusan {$jurusan} harus diisi minimal 1"
+                            'message' => "Kuota untuk jurusan {$jurusan} harus diisi minimal 1",
                         ], 422);
                     }
                 }
@@ -212,7 +235,7 @@ class SuratDudiController extends Controller
                 $request->validate([
                     'file_surat_balasan' => 'required|file|mimes:pdf,doc,docx|max:5120', // 5MB
                     'catatan_dudi' => 'nullable|string',
-                    'jenis_surat' => 'required|in:pengajuan,permohonan'
+                    'jenis_surat' => 'required|in:pengajuan,permohonan',
                 ]);
             }
 
@@ -221,10 +244,10 @@ class SuratDudiController extends Controller
             // Cari atau buat record surat
             $surat = SuratDudi::where('id_dudi', $dudi->id)->first();
 
-            if (!$surat) {
+            if (! $surat) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Belum ada surat dari admin untuk DUDI ini.'
+                    'message' => 'Belum ada surat dari admin untuk DUDI ini.',
                 ], 404);
             }
 
@@ -235,7 +258,7 @@ class SuratDudiController extends Controller
                 foreach ($request->jurusan as $jurusan) {
                     $dataPenerimaanPkl[$jurusan] = [
                         'jobdesk' => $request->jobdesk[$jurusan] ?? '',
-                        'kuota' => (int) ($request->kuota[$jurusan] ?? 0)
+                        'kuota' => (int) ($request->kuota[$jurusan] ?? 0),
                     ];
                 }
 
@@ -248,17 +271,17 @@ class SuratDudiController extends Controller
                     'dudi' => $dudi,
                     'surat' => $surat,
                     'dataPenerimaan' => $dataPenerimaanPkl,
-                    'catatan' => $request->catatan_dudi
+                    'catatan' => $request->catatan_dudi,
                 ]);
 
                 // Simpan PDF
-                $fileName = 'surat_balasan_permohonan_dudi_' . $dudi->id . '_' . time() . '.pdf';
+                $fileName = 'surat_balasan_permohonan_dudi_'.$dudi->id.'_'.time().'.pdf';
                 $pdfContent = $pdf->output();
-                Storage::put('public/surat_dudi/' . $fileName, $pdfContent);
+                Storage::put('public/surat_dudi/'.$fileName, $pdfContent);
 
                 // Delete old file if exists
-                if ($surat->file_balasan_permohonan && Storage::exists('public/surat_dudi/' . $surat->file_balasan_permohonan)) {
-                    Storage::delete('public/surat_dudi/' . $surat->file_balasan_permohonan);
+                if ($surat->file_balasan_permohonan && Storage::exists('public/surat_dudi/'.$surat->file_balasan_permohonan)) {
+                    Storage::delete('public/surat_dudi/'.$surat->file_balasan_permohonan);
                 }
 
                 $surat->file_balasan_permohonan = $fileName;
@@ -270,19 +293,19 @@ class SuratDudiController extends Controller
                 logActivity(
                     'create',
                     'Surat Balasan Permohonan Dikirim',
-                    "DUDI {$dudi->nama_dudi} mengirim balasan data penerimaan PKL: " . implode(', ', array_keys($dataPenerimaanPkl)),
+                    "DUDI {$dudi->nama_dudi} mengirim balasan data penerimaan PKL: ".implode(', ', array_keys($dataPenerimaanPkl)),
                     Session::get('loginId')
                 );
 
             } else {
                 // Handle file upload untuk pengajuan (existing code)
                 $file = $request->file('file_surat_balasan');
-                $fileName = 'surat_balasan_pengajuan_dudi_' . $dudi->id . '_' . time() . '.' . $file->getClientOriginalExtension();
+                $fileName = 'surat_balasan_pengajuan_dudi_'.$dudi->id.'_'.time().'.'.$file->getClientOriginalExtension();
                 $filePath = $file->storeAs('public/surat_dudi', $fileName);
 
                 // Delete old file if exists
-                if ($surat->file_balasan_pengajuan && Storage::exists('public/surat_dudi/' . $surat->file_balasan_pengajuan)) {
-                    Storage::delete('public/surat_dudi/' . $surat->file_balasan_pengajuan);
+                if ($surat->file_balasan_pengajuan && Storage::exists('public/surat_dudi/'.$surat->file_balasan_pengajuan)) {
+                    Storage::delete('public/surat_dudi/'.$surat->file_balasan_pengajuan);
                 }
 
                 $surat->file_balasan_pengajuan = $fileName;
@@ -302,7 +325,7 @@ class SuratDudiController extends Controller
             if ($request->ajax() || $request->wantsJson()) {
                 return response()->json([
                     'success' => true,
-                    'message' => 'Surat balasan berhasil dikirim ke admin!'
+                    'message' => 'Surat balasan berhasil dikirim ke admin!',
                 ]);
             }
 
@@ -311,12 +334,12 @@ class SuratDudiController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Validasi gagal',
-                'errors' => $e->errors()
+                'errors' => $e->errors(),
             ], 422);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Terjadi kesalahan: ' . $e->getMessage()
+                'message' => 'Terjadi kesalahan: '.$e->getMessage(),
             ], 500);
         }
     }
@@ -326,7 +349,7 @@ class SuratDudiController extends Controller
     {
         $user = \App\Models\User::where('id', Session::get('loginId'))->first();
 
-        if (!$user || $user->role != 'admin') {
+        if (! $user || $user->role != 'admin') {
             return redirect('/login')->with('fail', 'Anda harus login sebagai admin.');
         }
 
@@ -339,18 +362,18 @@ class SuratDudiController extends Controller
         foreach ($suratList as $surat) {
             // Pengajuan
             $surat->file_pengajuan_exists = $surat->file_surat_pengajuan
-                ? Storage::exists('public/surat_dudi/' . $surat->file_surat_pengajuan)
+                ? Storage::exists('public/surat_dudi/'.$surat->file_surat_pengajuan)
                 : false;
             $surat->file_balasan_pengajuan_exists = $surat->file_balasan_pengajuan
-                ? Storage::exists('public/surat_dudi/' . $surat->file_balasan_pengajuan)
+                ? Storage::exists('public/surat_dudi/'.$surat->file_balasan_pengajuan)
                 : false;
 
             // Permohonan
             $surat->file_permohonan_exists = $surat->file_surat_permohonan
-                ? Storage::exists('public/surat_dudi/' . $surat->file_surat_permohonan)
+                ? Storage::exists('public/surat_dudi/'.$surat->file_surat_permohonan)
                 : false;
             $surat->file_balasan_permohonan_exists = $surat->file_balasan_permohonan
-                ? Storage::exists('public/surat_dudi/' . $surat->file_balasan_permohonan)
+                ? Storage::exists('public/surat_dudi/'.$surat->file_balasan_permohonan)
                 : false;
         }
 
@@ -365,13 +388,13 @@ class SuratDudiController extends Controller
     {
         $surat = SuratDudi::find($id);
 
-        if (!$surat) {
+        if (! $surat) {
             return back()->with('error', 'Surat tidak ditemukan.');
         }
 
         $user = \App\Models\User::where('id', Session::get('loginId'))->first();
 
-        if (!$user) {
+        if (! $user) {
             return redirect('/login')->with('fail', 'Silakan login terlebih dahulu.');
         }
 
@@ -381,7 +404,7 @@ class SuratDudiController extends Controller
             // Get DUDI from user
             $dudi = tb_dudi::find($user->id_dudi);
 
-            if (!$dudi) {
+            if (! $dudi) {
                 abort(403, 'Data DUDI tidak ditemukan.');
             }
 
@@ -415,11 +438,11 @@ class SuratDudiController extends Controller
                 return back()->with('error', 'Tipe file tidak valid.');
         }
 
-        if (!$fileName || !Storage::exists('public/surat_dudi/' . $fileName)) {
+        if (! $fileName || ! Storage::exists('public/surat_dudi/'.$fileName)) {
             return back()->with('error', 'File tidak ditemukan.');
         }
 
-        return Storage::download('public/surat_dudi/' . $fileName);
+        return Storage::download('public/surat_dudi/'.$fileName);
     }
 
     // Hapus surat (Admin only)
@@ -427,13 +450,13 @@ class SuratDudiController extends Controller
     {
         $user = \App\Models\User::where('id', Session::get('loginId'))->first();
 
-        if (!$user || $user->role != 'admin') {
+        if (! $user || $user->role != 'admin') {
             return back()->with('error', 'Anda tidak memiliki akses.');
         }
 
         $surat = SuratDudi::find($id);
 
-        if (!$surat) {
+        if (! $surat) {
             return back()->with('error', 'Surat tidak ditemukan.');
         }
 
@@ -441,11 +464,11 @@ class SuratDudiController extends Controller
         $namaDudi = $surat->dudi ? $surat->dudi->nama_dudi : 'Unknown';
 
         // Delete files from storage
-        if ($surat->file_surat_pengajuan && Storage::exists('public/surat_dudi/' . $surat->file_surat_pengajuan)) {
-            Storage::delete('public/surat_dudi/' . $surat->file_surat_pengajuan);
+        if ($surat->file_surat_pengajuan && Storage::exists('public/surat_dudi/'.$surat->file_surat_pengajuan)) {
+            Storage::delete('public/surat_dudi/'.$surat->file_surat_pengajuan);
         }
-        if ($surat->file_surat_balasan && Storage::exists('public/surat_dudi/' . $surat->file_surat_balasan)) {
-            Storage::delete('public/surat_dudi/' . $surat->file_surat_balasan);
+        if ($surat->file_surat_balasan && Storage::exists('public/surat_dudi/'.$surat->file_surat_balasan)) {
+            Storage::delete('public/surat_dudi/'.$surat->file_surat_balasan);
         }
 
         // Delete record
@@ -467,7 +490,7 @@ class SuratDudiController extends Controller
     {
         $user = \App\Models\User::where('id', Session::get('loginId'))->first();
 
-        if (!$user || $user->role != 'admin') {
+        if (! $user || $user->role != 'admin') {
             return redirect('/login')->with('fail', 'Anda harus login sebagai admin.');
         }
 
@@ -485,7 +508,7 @@ class SuratDudiController extends Controller
         try {
             $user = \App\Models\User::where('id', Session::get('loginId'))->first();
 
-            if (!$user || $user->role != 'admin') {
+            if (! $user || $user->role != 'admin') {
                 return redirect('/login')->with('fail', 'Anda harus login sebagai admin.');
             }
 
@@ -496,14 +519,14 @@ class SuratDudiController extends Controller
                 'nomor_surat' => 'required|string|max:100',
                 'use_template' => 'nullable|boolean',
                 'template_file' => 'nullable|file|mimes:pdf,doc,docx|max:5120', // 5MB
-                'catatan' => 'nullable|string'
+                'catatan' => 'nullable|string',
             ], [
                 'id_dudi.required' => 'Pilih DUDI tujuan',
                 'siswa_ids.required' => 'Pilih minimal 1 siswa',
                 'siswa_ids.min' => 'Pilih minimal 1 siswa',
                 'nomor_surat.required' => 'Nomor surat harus diisi',
                 'template_file.mimes' => 'Template harus berformat PDF, DOC, atau DOCX',
-                'template_file.max' => 'Ukuran file maksimal 5MB'
+                'template_file.max' => 'Ukuran file maksimal 5MB',
             ]);
 
             $dudi = tb_dudi::find($request->id_dudi);
@@ -515,7 +538,7 @@ class SuratDudiController extends Controller
             if ($request->hasFile('template_file') && $request->use_template) {
                 // Use uploaded template file
                 $file = $request->file('template_file');
-                $fileName = 'surat_pengajuan_' . $dudi->id . '_' . time() . '.' . $file->getClientOriginalExtension();
+                $fileName = 'surat_pengajuan_'.$dudi->id.'_'.time().'.'.$file->getClientOriginalExtension();
                 $file->storeAs('public/surat_dudi', $fileName);
             } else {
                 // Ambil setting tanggal PKL global
@@ -526,7 +549,7 @@ class SuratDudiController extends Controller
                 if ($tanggalMulaiPkl && $tanggalSelesaiPkl) {
                     $mulai = \Carbon\Carbon::parse($tanggalMulaiPkl)->translatedFormat('d F Y');
                     $selesai = \Carbon\Carbon::parse($tanggalSelesaiPkl)->translatedFormat('d F Y');
-                    $periodePkl = $mulai . ' s.d ' . $selesai;
+                    $periodePkl = $mulai.' s.d '.$selesai;
                 }
 
                 // Generate PDF from system template
@@ -536,14 +559,14 @@ class SuratDudiController extends Controller
                     'tanggal' => now(),
                     'catatan' => $request->catatan,
                     'periode_pkl' => $periodePkl,
-                    'nomor_surat' => $request->nomor_surat
+                    'nomor_surat' => $request->nomor_surat,
                 ];
 
                 $pdf = Pdf::loadView('pdf.surat-pengajuan', $pdfData);
-                $fileName = 'surat_pengajuan_' . $dudi->id . '_' . time() . '.pdf';
+                $fileName = 'surat_pengajuan_'.$dudi->id.'_'.time().'.pdf';
 
                 // Save PDF to storage
-                Storage::put('public/surat_dudi/' . $fileName, $pdf->output());
+                Storage::put('public/surat_dudi/'.$fileName, $pdf->output());
             }
 
             // Check if surat already exists for this DUDI
@@ -551,8 +574,8 @@ class SuratDudiController extends Controller
             if ($surat) {
                 // Update existing surat
                 // Delete old file if exists
-                if ($surat->file_surat_pengajuan && Storage::exists('public/surat_dudi/' . $surat->file_surat_pengajuan)) {
-                    Storage::delete('public/surat_dudi/' . $surat->file_surat_pengajuan);
+                if ($surat->file_surat_pengajuan && Storage::exists('public/surat_dudi/'.$surat->file_surat_pengajuan)) {
+                    Storage::delete('public/surat_dudi/'.$surat->file_surat_pengajuan);
                 }
 
                 $surat->file_surat_pengajuan = $fileName;
@@ -563,7 +586,7 @@ class SuratDudiController extends Controller
                 $surat->save();
             } else {
                 // Create new surat
-                $surat = new SuratDudi();
+                $surat = new SuratDudi;
                 $surat->id_dudi = $dudi->id;
                 $surat->uploaded_by_admin = $user->id_admin;
                 $surat->file_surat_pengajuan = $fileName;
@@ -577,18 +600,18 @@ class SuratDudiController extends Controller
             logActivity(
                 'upload',
                 'Surat Pengajuan PKL Dikirim',
-                "Surat pengajuan PKL untuk " . count($request->siswa_ids) . " siswa dikirim ke DUDI {$dudi->nama_dudi}",
+                'Surat pengajuan PKL untuk '.count($request->siswa_ids)." siswa dikirim ke DUDI {$dudi->nama_dudi}",
                 Session::get('loginId')
             );
 
             return redirect('/admin/surat-dudi')->with(
                 'success',
-                'Surat pengajuan PKL berhasil dikirim ke ' . $dudi->nama_dudi . ' untuk ' . count($request->siswa_ids) . ' siswa!'
+                'Surat pengajuan PKL berhasil dikirim ke '.$dudi->nama_dudi.' untuk '.count($request->siswa_ids).' siswa!'
             );
         } catch (\Illuminate\Validation\ValidationException $e) {
             return redirect()->back()->withErrors($e->validator)->withInput();
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage())->withInput();
+            return redirect()->back()->with('error', 'Terjadi kesalahan: '.$e->getMessage())->withInput();
         }
     }
 
@@ -597,7 +620,7 @@ class SuratDudiController extends Controller
     {
         $user = \App\Models\User::where('id', Session::get('loginId'))->first();
 
-        if (!$user || $user->role != 'admin') {
+        if (! $user || $user->role != 'admin') {
             return redirect('/login')->with('fail', 'Anda harus login sebagai admin.');
         }
 
@@ -615,7 +638,7 @@ class SuratDudiController extends Controller
         try {
             $user = \App\Models\User::where('id', Session::get('loginId'))->first();
 
-            if (!$user || $user->role != 'admin') {
+            if (! $user || $user->role != 'admin') {
                 return redirect('/login')->with('fail', 'Anda harus login sebagai admin.');
             }
 
@@ -624,12 +647,12 @@ class SuratDudiController extends Controller
                 'nomor_surat' => 'required|string|max:100',
                 'use_template' => 'nullable|boolean',
                 'template_file' => 'nullable|file|mimes:pdf,doc,docx|max:5120',
-                'catatan' => 'nullable|string'
+                'catatan' => 'nullable|string',
             ], [
                 'id_dudi.required' => 'Pilih DUDI tujuan',
                 'nomor_surat.required' => 'Nomor surat harus diisi',
                 'template_file.mimes' => 'Template harus berformat PDF, DOC, atau DOCX',
-                'template_file.max' => 'Ukuran file maksimal 5MB'
+                'template_file.max' => 'Ukuran file maksimal 5MB',
             ]);
 
             $dudi = tb_dudi::find($request->id_dudi);
@@ -638,11 +661,11 @@ class SuratDudiController extends Controller
             if ($request->hasFile('template_file') && $request->use_template) {
                 // Use uploaded template file
                 $file = $request->file('template_file');
-                $fileName = 'surat_permohonan_' . $dudi->id . '_' . time() . '.' . $file->getClientOriginalExtension();
+                $fileName = 'surat_permohonan_'.$dudi->id.'_'.time().'.'.$file->getClientOriginalExtension();
                 $file->storeAs('public/surat_dudi', $fileName);
             } else {
                 // Ambil tahun ajaran dari siswa pertama (atau fallback ke tahun sekarang)
-                $tahunAjaran = \App\Models\tb_siswa::orderBy('id', 'desc')->value('tahun_ajaran') ?? (date('Y') . '/' . (date('Y') + 1));
+                $tahunAjaran = \App\Models\tb_siswa::orderBy('id', 'desc')->value('tahun_ajaran') ?? (date('Y').'/'.(date('Y') + 1));
 
                 // Generate PDF from system template
                 $pdfData = [
@@ -650,14 +673,14 @@ class SuratDudiController extends Controller
                     'tanggal' => now(),
                     'catatan' => $request->catatan,
                     'nomor_surat' => $request->nomor_surat,
-                    'tahun_ajaran' => $tahunAjaran
+                    'tahun_ajaran' => $tahunAjaran,
                 ];
 
                 $pdf = Pdf::loadView('pdf.surat-permohonan', $pdfData);
-                $fileName = 'surat_permohonan_' . $dudi->id . '_' . time() . '.pdf';
+                $fileName = 'surat_permohonan_'.$dudi->id.'_'.time().'.pdf';
 
                 // Save PDF to storage
-                Storage::put('public/surat_dudi/' . $fileName, $pdf->output());
+                Storage::put('public/surat_dudi/'.$fileName, $pdf->output());
             }
 
             // Check if surat already exists for this DUDI
@@ -665,8 +688,8 @@ class SuratDudiController extends Controller
             if ($surat) {
                 // Update existing surat permohonan
                 // Delete old file if exists
-                if ($surat->file_surat_permohonan && Storage::exists('public/surat_dudi/' . $surat->file_surat_permohonan)) {
-                    Storage::delete('public/surat_dudi/' . $surat->file_surat_permohonan);
+                if ($surat->file_surat_permohonan && Storage::exists('public/surat_dudi/'.$surat->file_surat_permohonan)) {
+                    Storage::delete('public/surat_dudi/'.$surat->file_surat_permohonan);
                 }
 
                 $surat->file_surat_permohonan = $fileName;
@@ -677,7 +700,7 @@ class SuratDudiController extends Controller
                 $surat->save();
             } else {
                 // Create new surat
-                $surat = new SuratDudi();
+                $surat = new SuratDudi;
                 $surat->id_dudi = $dudi->id;
                 $surat->uploaded_by_admin = $user->id_admin;
                 $surat->file_surat_permohonan = $fileName;
@@ -697,12 +720,12 @@ class SuratDudiController extends Controller
 
             return redirect('/admin/surat-dudi')->with(
                 'success',
-                'Surat permohonan data berhasil dikirim ke ' . $dudi->nama_dudi . '!'
+                'Surat permohonan data berhasil dikirim ke '.$dudi->nama_dudi.'!'
             );
         } catch (\Illuminate\Validation\ValidationException $e) {
             return redirect()->back()->withErrors($e->validator)->withInput();
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage())->withInput();
+            return redirect()->back()->with('error', 'Terjadi kesalahan: '.$e->getMessage())->withInput();
         }
     }
 
@@ -712,10 +735,10 @@ class SuratDudiController extends Controller
         try {
             $dudi = tb_dudi::find($id_dudi);
 
-            if (!$dudi) {
+            if (! $dudi) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'DUDI tidak ditemukan'
+                    'message' => 'DUDI tidak ditemukan',
                 ], 404);
             }
 
@@ -744,14 +767,14 @@ class SuratDudiController extends Controller
                         'nama' => $siswa->nama,
                         'nis' => $siswa->nis,
                         'jurusan' => $siswa->jurusan,
-                        'kelas' => $siswa->kelas
+                        'kelas' => $siswa->kelas,
                     ];
-                })
+                }),
             ]);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Terjadi kesalahan: ' . $e->getMessage()
+                'message' => 'Terjadi kesalahan: '.$e->getMessage(),
             ], 500);
         }
     }
